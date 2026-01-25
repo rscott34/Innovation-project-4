@@ -1,7 +1,5 @@
 ## TC-TL-01: Traceability timeline shows exactly 5 stages
 
-## TC-TL-01: Traceability timeline shows exactly 5 stages
-
 Status: Planned (not yet executed)
 
 Test Objective:
