@@ -1,38 +1,43 @@
 ## TC-TL-01: Traceability timeline shows exactly 5 stages
 
-Status: Planned (not yet executed)
+Status: Planned
+
+Feature:
+Traceability Timeline (FR2)
 
 Test Objective:
-Verify that the traceability timeline accurately represents the full
-end-to-end supply chain in a clear and correct order, in line with
-CW1 success criteria.
+Verify that the product traceability timeline displays the complete
+end-to-end supply chain in the correct order.
+
+Preconditions:
+- Product exists in the dataset
+- Product contains full traceability data
 
 Assumptions:
-- Product data has been seeded correctly
-- Product contains a complete traceability history
-- User has access to view the product page
-
-Feature: Traceability Timeline
-Precondition: Product exists in dataset with full timeline
+- Timeline stages are derived from product data
+- User has access to the product page
 
 Steps:
-1. Enter valid ProductID
-2. Navigate to product page
-3. Observe traceability timeline
+1. Enter a valid ProductID
+2. Navigate to the product page
+3. Observe the traceability timeline
+
+Expected Result:
+- Timeline displays exactly 5 stages:
+  Raw → Processing → Assembly → Transport → Retail
+- Stages appear in the correct order
+- No stages are missing or duplicated
 
 Pass Criteria:
-- Exactly 5 stages are displayed
-- Stages appear in the correct order:
-  Raw → Processing → Assembly → Transport → Retail
-- No stages missing or duplicated
+- All 5 stages are displayed in the correct order
 
 Fail Criteria:
 - Fewer or more than 5 stages displayed
-- Incorrect ordering of stages
-- Duplicate or missing stages
+- Incorrect ordering
+- Missing or duplicate stages
 
-- Actual Result:
-TBD (pending implementation)
+Actual Result:
+TBD
 
 Evidence:
-To be captured after execution (screenshots)
+To be captured after execution
