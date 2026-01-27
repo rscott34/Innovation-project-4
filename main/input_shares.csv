@@ -1,0 +1,6 @@
+input_id,product_id,input_name,country,percentage,notes
+IN-01,P001,Spanish Origin Materials,Spain,40,
+IN-02,P001,Italian Origin Materials,Italy,60,
+IN-03,P002,Brazilian Origin Materials,Brazil,70,
+IN-04,P002,Portuguese Origin Materials,Portugal,20,
+IN-05,P002,French Origin Materials,France,10,

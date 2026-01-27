@@ -1,0 +1,11 @@
+stage_id,product_id,stage_type,location,start_date,end_date,description
+S1-001,P001,Raw Materials,"Catalonia, Spain",2025-10-15,,Harvesting of raw olives.
+S1-002,P001,Processing,"Tuscany, Italy",2025-10-20,,Cold pressing and filtration.
+S1-003,P001,Assembly,"Tuscany, Italy",2025-10-22,,Blending and bottling in glass containers.
+S1-004,P001,Transport,"Dover, UK",2025-11-01,,Freight shipping via road and ferry.
+S1-005,P001,Retail,"London, UK",2025-11-05,,Stocked at WholeFoods Market.
+S2-001,P002,Raw Materials,"Minas Gerais, Brazil",2025-08-10,,Sourcing of raw cowhide.
+S2-002,P002,Processing,"Porto, Portugal",2025-09-01,,Vegetable tanning and dyeing.
+S2-003,P002,Assembly,"Lyon, France",2025-09-15,,"Cutting, stitching, and hardware attachment."
+S2-004,P002,Transport,"Paris, France",2025-09-20,,Distribution center sorting.
+S2-005,P002,Retail,"Milan, Italy",2025-10-01,,Flagship store inventory.
