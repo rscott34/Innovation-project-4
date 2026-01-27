@@ -2,9 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Tracer Input</title>
+    <link rel="stylesheet" th:href="@{style.css}">
 </head>
 <body>
-    <h2>Enter something</h2>
+    <h2>Enter Product ID</h2>
 
     <form action="/submit" method="post">
         <input type="text" name="userInput" placeholder="Type here" required />
@@ -12,7 +13,7 @@
     </form>
 
     <p th:if="${result}">
-        You entered: <strong th:text="${result}"></strong>
+        Product ID entered: <strong th:text="${result}"></strong>
     </p>
 </body>
 </html>

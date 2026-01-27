@@ -11,3 +11,7 @@ public class TracerApplication {
 	}
 
 }
+
+/*
+file is responsible for starting the Spring Boot application
+*/

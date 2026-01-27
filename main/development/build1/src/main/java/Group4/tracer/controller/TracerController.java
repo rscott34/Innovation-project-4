@@ -16,8 +16,13 @@ public class TracerController {
 
     @PostMapping("/submit")
     public String handleInput(@RequestParam String userInput, Model model) {
-        System.out.println(userInput);
-        model.addAttribute("result", userInput);
-        return "index";
+        if (userInput != null){
+            System.out.println(userInput); //need to implement some sort of error handling when we know what product id will be like
+            model.addAttribute("result", userInput);
+        }
+        else {
+            model.addAttribute("result", "No input provided.");
+        }
+        return "index"; 
     }
 }
