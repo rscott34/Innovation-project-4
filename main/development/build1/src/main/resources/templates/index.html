@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Tracer Input</title>
+</head>
+<body>
+    <h2>Enter something</h2>
+
+    <form action="/submit" method="post">
+        <input type="text" name="userInput" placeholder="Type here" required />
+        <button type="submit">Send</button>
+    </form>
+
+    <p th:if="${result}">
+        You entered: <strong th:text="${result}"></strong>
+    </p>
+</body>
+</html>
