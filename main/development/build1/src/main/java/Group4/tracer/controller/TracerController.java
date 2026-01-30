@@ -1,5 +1,7 @@
 package Group4.tracer.controller;
 
+import Group4.tracer.repository.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +10,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class TracerController {
+
+    //allows interaction with database
+    @Autowired
+    private ProductRepository productRepository; //dependency Injection,
 
     @GetMapping("/")
     public String showForm() {
@@ -23,6 +29,6 @@ public class TracerController {
         else {
             model.addAttribute("result", "No input provided.");
         }
-        return "index"; 
+        return "index";
     }
 }

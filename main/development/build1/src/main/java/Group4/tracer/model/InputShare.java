@@ -1,4 +1,4 @@
-package Group4.tracer;
+package Group4.tracer.model;
 
 public class InputShare {
     private String inputId;

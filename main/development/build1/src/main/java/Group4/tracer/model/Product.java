@@ -1,6 +1,11 @@
-package Group4.tracer;
+package Group4.tracer.model;
+//import jakarta in order to use API implementation with postgreSLQ
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
+@Entity
 public class Product {
+    @Id
     private String productId;
     private String name;
     private String category;
