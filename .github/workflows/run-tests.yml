@@ -19,6 +19,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '21'
+          cache: maven
 
       - name: Set up Maven
         working-directory: main/development/build1
