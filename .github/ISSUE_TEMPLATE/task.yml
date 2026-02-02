@@ -1,6 +1,5 @@
 name: Task
 description: Sprint task for Traceability Quest project
-title: ""
 labels: ["task"]
 
 body:
