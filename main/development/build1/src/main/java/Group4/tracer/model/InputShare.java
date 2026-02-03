@@ -2,40 +2,40 @@ package Group4.tracer.model;
 
 public class InputShare {
     private String inputId;
-    private String productId;
     private String inputName;
     private String country;
-    private int percentage;
+    private float percentage;
     private String notes;
 
     //getters and setters
     public String getInputId() {
-        return inputId;}
+        return inputId;
+    }
     public void setInputId(String inputId) {
-        this.inputId = inputId;}
-
-    public String getProductId() {
-        return productId;}
-    public void setProductId(String productId) {
-        this.productId = productId;}
-
+        this.inputId = inputId;
+    }
     public String getInputName() {
-        return inputName;}
+        return inputName;
+    }
     public void setInputName(String inputName) {
-        this.inputName = inputName;}
-
+        this.inputName = inputName;
+    }
     public String getCountry() {
-        return country;}
+        return country;
+    }
     public void setCountry(String country) {
-        this.country = country;}
-
-    public int getPercentage() {
-        return percentage;}
+        this.country = country;
+    }
+    public float getPercentage() {
+        return percentage;
+    }
     public void setPercentage(int percentage) {
-        this.percentage = percentage;}
-
+        this.percentage = percentage;
+    }
     public String getNotes() {
-        return notes;}
+        return notes;
+    }
     public void setNotes(String notes) {
-        this.notes = notes;}
+        this.notes = notes;
+    }
 }

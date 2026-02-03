@@ -1,9 +1,10 @@
 package Group4.tracer.model;
 
+import Group4.tracer.enums.StageType;
+
 public class Stage {
     private String stageId;
-    private String productId;
-    private String stageType;
+    private StageType stageName;
     private String location;
     private String startDate;
     private String endDate;
@@ -11,37 +12,40 @@ public class Stage {
 
     //getters and setters
     public String getStageId() {
-        return stageId;}
+        return stageId;
+    }
     public void setStageId(String stageId) {
-        this.stageId = stageId;}
-
-    public String getProductId() {
-        return productId;}
-    public void setProductId(String productId) {
-        this.productId = productId;}
-
-    public String getStageType() {
-        return stageType;}
-    public void setStageType(String stageType) {
-        this.stageType = stageType;}
-
+        this.stageId = stageId;
+    }
+    public StageType getStageType() {
+        return stageName;
+    }
+    public void setStageType(StageType stageType) {
+        stageName = stageType;
+    }
     public String getLocation() {
-        return location;}
+        return location;
+    }
     public void setLocation(String location) {
-        this.location = location;}
-
+        this.location = location;
+    }
     public String getStartDate() {
-        return startDate;}
+        return startDate;
+    }
     public void setStartDate(String startDate) {
-        this.startDate = startDate;}
+        this.startDate = startDate;
+    }
 
     public String getEndDate() {
-        return endDate;}
+        return endDate;
+    }
     public void setEndDate(String endDate) {
-        this.endDate = endDate;}
-
+        this.endDate = endDate;
+    }
     public String getDescription() {
-        return description;}
+        return description;
+    }
     public void setDescription(String description) {
-        this.description = description;}
+        this.description = description;
+    }
 }
