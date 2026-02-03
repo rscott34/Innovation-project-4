@@ -1,5 +1,8 @@
 package Group4.tracer.model;
-//import jakarta in order to use API implementation with postgreSLQ
+import java.util.ArrayList;
+import java.util.NoSuchElementException;
+
+import Group4.tracer.enums.ProductType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
@@ -8,33 +11,131 @@ public class Product {
     @Id
     private String productId;
     private String name;
-    private String category;
+    private ProductType category;
     private String brand;
     private String description;
+    private ArrayList<InputShare> components;
+    private ArrayList<Stage> stages;
+    private ArrayList<Claim> claims;
 
+    public void addComponent(InputShare item) {
+        if (item == null)
+            throw new IllegalArgumentException("InputShare cannot be null");
+        if (components == null)
+            components = new ArrayList<>();
+        if (getTotalPerc() + item.getPercentage() > 100)
+            throw new IllegalArgumentException("Adding component would valid percentage limits (0-100%)");
+        components.add(item);
+    }
+
+    public void removeComponent(String inputId) {
+        for (InputShare item : components) {
+            if (item.getInputId().equals(inputId)) {
+                components.remove(item);
+                return;
+            }
+        }
+    }
+    public InputShare getComponent (String inputId) {
+        for (InputShare item : components) {
+            if (item.getInputId().equals(inputId))
+                return item;
+        }
+        throw new NoSuchElementException("Input not found: " + inputId);
+    }
+
+    public void addClaim(Claim item) {
+        if (item == null)
+            throw new IllegalArgumentException("Claim cannot be null");
+        if (claims == null)
+            claims = new ArrayList<>();
+        claims.add(item);
+    }
+
+    public void removeClaim(String claimId) {
+        for (Claim item : claims) {
+            if (item.getClaimId().equals(claimId)) {
+                claims.remove(item);
+                return;
+            }
+        }
+    }
+
+    public Claim getClaim(String claimId) {
+        for (Claim item : claims) {
+            if (item.getClaimId().equals(claimId))
+                return item;
+        }
+        throw new NoSuchElementException("Claim not found: " + claimId);
+    }
+
+    public void addStage(Stage item) {
+        if (item == null)
+            throw new IllegalArgumentException("Stage cannot be null");
+        if (stages == null)
+            stages = new ArrayList<>();
+        stages.add(item);
+    }
+
+    public void removeStage(String stageId) {
+        for (Stage item : stages) {
+            if (item.getStageId().equals(stageId)) {
+                stages.remove(item);
+                return;
+            }
+        }
+    }
+
+    public Stage getStage(String stageId) {
+        for (Stage item : stages) {
+            if (item.getStageId().equals(stageId))
+                return item;
+        }
+        throw new NoSuchElementException("Input not found: " + stageId);
+    }
+
+    public float getTotalPerc() {
+        if (components == null)
+            return 0;
+        float total = 0;
+        for (InputShare input : components) {
+            total += input.getPercentage();
+        }
+        return total;
+    }
     //getters and setters
     public String getProductId() {
-        return productId;}
+        return productId;
+    }
     public void setProductId(String productId) {
-        this.productId = productId;}
+        this.productId = productId;
+    }
 
     public String getName() {
-        return name;}
+        return name;
+    }
     public void setName(String name) {
-        this.name = name;}
+        this.name = name;
+    }
 
-    public String getCategory() {
-        return category;}
-    public void setCategory(String category) {
-        this.category = category;}
+    public ProductType getCategory() {
+        return category;
+    }
+    public void setCategory(ProductType category) {
+        this.category = category;
+    }
 
     public String getBrand() {
-        return brand;}
+        return brand;
+    }
     public void setBrand(String brand) {
-        this.brand = brand;}
+        this.brand = brand;
+    }
 
     public String getDescription() {
-        return description;}
+        return description;
+    }
     public void setDescription(String description) {
-        this.description = description;}
+        this.description = description;
+    }
 }

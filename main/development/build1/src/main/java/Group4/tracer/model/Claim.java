@@ -1,41 +1,46 @@
 package Group4.tracer.model;
 
+import Group4.tracer.enums.ClaimType;
+import Group4.tracer.enums.ConfidenceLevel;
+
 public class Claim {
     private String claimId;
-    private String productId;
-    private String claimType;
+    private ClaimType claimType;
     private String claimText;
-    private String confidenceLabel;
+    private ConfidenceLevel confidenceLabel;
     private String rationale;
 
     //getters and setters
     public String getClaimId() {
-        return claimId;}
+        return claimId;
+    }
     public void setClaimId(String claimId) {
-        this.claimId = claimId;}
-
-    public String getProductId() {
-        return productId;}
-    public void setProductId(String productId) {
-        this.productId = productId;}
-
-    public String getClaimType() {
-        return claimType;}
-    public void setClaimType(String claimType) {
-        this.claimType = claimType;}
+        this.claimId = claimId;
+    }
+    public ClaimType getClaimType() {
+        return claimType;
+    }
+    public void setClaimType(ClaimType claimType) {
+        this.claimType = claimType;
+    }
 
     public String getClaimText() {
-        return claimText;}
+        return claimText;
+    }
     public void setClaimText(String claimText) {
-        this.claimText = claimText;}
+        this.claimText = claimText;
+    }
 
-    public String getConfidenceLabel() {
-        return confidenceLabel;}
-    public void setConfidenceLabel(String confidenceLabel) {
+    public ConfidenceLevel getConfidenceLabel() {
+        return confidenceLabel;
+    }
+    public void setConfidenceLabel(ConfidenceLevel confidenceLabel) {
         this.confidenceLabel = confidenceLabel;}
 
     public String getRationale() {
-        return rationale;}
+        return rationale;
+    }
     public void setRationale(String rationale) {
-        this.rationale = rationale;}
+        this.rationale = rationale;
+    }
 }
