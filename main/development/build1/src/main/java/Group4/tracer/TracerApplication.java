@@ -12,6 +12,4 @@ public class TracerApplication {
 
 }
 
-/*
-file is responsible for starting the Spring Boot application
-*/
+//file is responsible for starting the Spring Boot application
