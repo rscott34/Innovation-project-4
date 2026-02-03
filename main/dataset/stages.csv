@@ -1,12 +1,11 @@
 stage_id,product_id,stage_type,location,start_date,end_date,description
-S1-001,P001,Raw Materials,"Catalonia, Spain",2025-10-15,,Harvesting of raw olives.
-S1-002,P001,Processing,"Tuscany, Italy",2025-10-20,,Cold pressing and filtration.
-S1-003,P001,Assembly,"Tuscany, Italy",2025-10-22,,Blending and bottling in glass containers.
-S1-004,P001,Transport,"Dover, UK",2025-11-01,,Freight shipping via road and ferry.
-S1-005,P001,Retail,"London, UK",2025-11-05,,Stocked at WholeFoods Market.
-S2-001,P002,Raw Materials,"Minas Gerais, Brazil",2025-08-10,,Sourcing of raw cowhide.
-S2-002,P002,Processing,"Porto, Portugal",2025-09-01,,Vegetable tanning and dyeing.
-S2-003,P002,Assembly,"Lyon, France",2025-09-15,,"Cutting, stitching, and hardware attachment."
-S2-004,P002,Transport,"Paris, France",2025-09-20,,Distribution center sorting.
-S2-005,P002,Retail,"Milan, Italy",2025-10-01,,Flagship store inventory.
-s
+S1-001,P001,Raw Materials,"Catalonia, Spain",15/10/25,,Harvesting of raw olives.
+S1-002,P001,Processing,"Tuscany, Italy",20/10/25,,Cold pressing and filtration.
+S1-003,P001,Assembly,"Tuscany, Italy",22/10/25,,Blending and bottling in glass containers.
+S1-004,P001,Transport,"Dover, UK",1/11/25,,Freight shipping via road and ferry.
+S1-005,P001,Retail,"London, UK",5/11/25,,Stocked at WholeFoods Market.
+S2-001,P002,Raw Materials,"Minas Gerais, Brazil",10/8/25,,Sourcing of raw cowhide.
+S2-002,P002,Processing,"Porto, Portugal",1/9/25,,Vegetable tanning and dyeing.
+S2-003,P002,Assembly,"Lyon, France",15/9/25,,"Cutting, stitching, and hardware attachment."
+S2-004,P002,Transport,"Paris, France",20/9/25,,Distribution center sorting.
+S2-005,P002,Retail,"Milan, Italy",1/10/25,,Flagship store inventory.
