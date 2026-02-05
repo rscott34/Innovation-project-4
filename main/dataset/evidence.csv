@@ -1,3 +1,3 @@
 evidence_id,linked_to,type,issuer,date,summary,file_reference
-E1,C001,Certificate,EU organic label,2025-01-15,certificate for eu organic label,organic.img
-E2,C003,Cerfification,FLA certificate,2025-01-28,Fair labour association verification,FLA.img
+E1,C001,Certificate,Verifier_1,2025-01-15,certificate for eu organic label,organic.img
+E2,C003,Cerfification,Verifier_2,2025-01-28,Fair labour association verification,FLA.img
