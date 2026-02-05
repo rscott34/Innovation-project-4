@@ -1,4 +1,5 @@
 claim_id,product_id,claim_type,claim_text,confidence_label,rationale
-C001,P001,Sustainability,Organic Certified,Verified,EU Organic Leaf certificate attached.
-C002,P001,Environmental,Carbon Neutral Shipping,Unverified,Pending audit report from logistics provider.
-C003,P002,Social Responsibility,Fair Labour,Partially Verified,Factory audit complete; raw material supplier audit pending.
+C001,P001,Sustainability,Organic Certified,Verified,EU Organic certificate attached
+C002,P001,Environmental,Carbon Neutral Shipping,Unverified,unable to verify
+
+C003,P002,Social Responsibility,Fair Labour,Partially Verified,certification does not meet uk standards
