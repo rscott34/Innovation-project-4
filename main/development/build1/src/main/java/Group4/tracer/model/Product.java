@@ -18,6 +18,19 @@ public class Product {
     private ArrayList<Stage> stages;
     private ArrayList<Claim> claims;
 
+    public Product(String productId, String name, String category, String brand, String description) {
+        this.productId = productId;
+        this.name = name;
+        this.brand = brand;
+        this.description = description;
+        for (ProductType type : ProductType.values()) {
+            if (type.name().equalsIgnoreCase(category))
+                this.category = type;
+            else
+                this.category = null;
+        }
+    }
+
     public void addComponent(InputShare item) {
         if (item == null)
             throw new IllegalArgumentException("InputShare cannot be null");

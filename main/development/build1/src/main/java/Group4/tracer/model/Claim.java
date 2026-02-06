@@ -1,14 +1,16 @@
 package Group4.tracer.model;
 
-import Group4.tracer.enums.ClaimType;
 import Group4.tracer.enums.ConfidenceLevel;
+
+import java.util.ArrayList;
 
 public class Claim {
     private String claimId;
-    private ClaimType claimType;
+    private String claimType;
     private String claimText;
     private ConfidenceLevel confidenceLabel;
     private String rationale;
+    private ArrayList<Evidence> evidence;
 
     //getters and setters
     public String getClaimId() {
@@ -17,10 +19,10 @@ public class Claim {
     public void setClaimId(String claimId) {
         this.claimId = claimId;
     }
-    public ClaimType getClaimType() {
+    public String getClaimType() {
         return claimType;
     }
-    public void setClaimType(ClaimType claimType) {
+    public void setClaimType(String claimType) {
         this.claimType = claimType;
     }
 
@@ -42,5 +44,14 @@ public class Claim {
     }
     public void setRationale(String rationale) {
         this.rationale = rationale;
+    }
+
+    public void addEvidence(Evidence evidence) {
+        if (this.evidence == null)
+            this.evidence = new ArrayList<>();
+        this.evidence.add(evidence);
+    }
+    public Evidence getEvidence(int index) {
+        return evidence.get(index);
     }
 }
