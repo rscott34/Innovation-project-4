@@ -1,5 +1,6 @@
 package Group4.tracer.model;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import Group4.tracer.enums.ProductType;
@@ -14,20 +15,22 @@ public class Product {
     private ProductType category;
     private String brand;
     private String description;
-    private ArrayList<InputShare> components;
-    private ArrayList<Stage> stages;
-    private ArrayList<Claim> claims;
+    private List<InputShare> components;
+    private List<Stage> stages;
+    private List<Claim> claims;
 
     public Product(String productId, String name, String category, String brand, String description) {
         this.productId = productId;
         this.name = name;
         this.brand = brand;
         this.description = description;
-        for (ProductType type : ProductType.values()) {
-            if (type.name().equalsIgnoreCase(category))
-                this.category = type;
-            else
-                this.category = null;
+        setCategoryString(category);
+    }
+
+    public void addClaimsFromStrings(List<List<String>> claimRecords) {
+        for (int i = 0; i < claimRecords.size(); i++) {
+            List<String> current = claimRecords.get(i);
+            this.addClaim(new Claim(current.get(0), current.get(2), current.get(3), current.get(4), current.get(5)));
         }
     }
 
@@ -82,6 +85,10 @@ public class Product {
         throw new NoSuchElementException("Claim not found: " + claimId);
     }
 
+    public Claim getClaimByIndex(int index) {
+        return claims.get(index);
+    }
+
     public void addStage(Stage item) {
         if (item == null)
             throw new IllegalArgumentException("Stage cannot be null");
@@ -116,7 +123,6 @@ public class Product {
         }
         return total;
     }
-    //getters and setters
     public String getProductId() {
         return productId;
     }
@@ -137,6 +143,16 @@ public class Product {
     public void setCategory(ProductType category) {
         this.category = category;
     }
+
+    public final void setCategoryString(String category) {
+        for (ProductType type : ProductType.values()) {
+            if (type.name().equalsIgnoreCase(category))
+                this.category = type;
+            else
+                this.category = null;
+        }
+    }
+    
 
     public String getBrand() {
         return brand;

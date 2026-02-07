@@ -4,11 +4,26 @@ public class Evidence {
     private String evidenceId;
     private Stage stageLinked = null;
     private String issuer;
-    // **TO DO** date attribute
+    private String date;
     private String summary;
     private String fileReference = "This/is/a/file/path";
     // **TO DO** fileReference attribute
 
+    public Evidence(String id, String stageLinked, String issuer, String date, String summary, String fileReference) {
+        evidenceId = id;
+        this.issuer = issuer;
+        this.date = date;
+        this.summary = summary;
+        this.fileReference = fileReference;
+        // **TO DO** - write stageLinked part (later)
+    }
+    public Evidence(String id, String issuer, String date, String summary, String fileReference) {
+        evidenceId = id;
+        this.issuer = issuer;
+        this.date = date;
+        this.summary = summary;
+        this.fileReference = fileReference;
+    }
     public String getId() {
         return evidenceId;
     }
@@ -29,6 +44,12 @@ public class Evidence {
     }
     public void setIssuer(String issuer) {
         this.issuer = issuer;
+    }
+    public String getDate() {
+        return date;
+    }
+    public void setDate(String date) {
+        this.date = date;
     }
     public String getSummary() {
         return summary;

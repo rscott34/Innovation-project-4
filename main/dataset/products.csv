@@ -1,4 +1,4 @@
-,product_id,name,category,brand,description
+product_id,product_id,name,category,brand,description
 0,0,Apple,FOOD,Tesco,Apple from Germany
 1,1,Banana,FOOD,Tesco,A bunch of Bananas from Netherlands
 2,2,Orange,FOOD,Tesco,Orange from Belgium
