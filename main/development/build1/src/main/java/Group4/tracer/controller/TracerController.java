@@ -27,12 +27,26 @@ public class TracerController {
 
             //I had to use ToString() to output the array or else it would print an memory address instead
             if (productData != null) { //checks if requested data exists
-                String readableData = java.util.Arrays.deepToString((Object[]) productData); //converts array to string to be printed
-                System.out.println(readableData);
-                model.addAttribute("result", readableData);
+                // String readableData = java.util.Arrays.deepToString((Object[]) productData); //converts array to string to be printed
+                
+                Object[] innerArray = (Object[]) productData[0]; // George - better way of accessing the elements in the list since obj returned is [[]] just get the 0th element which is the list 
+
+                String productId = innerArray[0].toString();
+                String name = innerArray[1].toString();
+                String category = innerArray[2].toString();
+                String brand = innerArray[3].toString();
+                String description = innerArray[4].toString();    
+
+                model.addAttribute("productId", productId);
+                model.addAttribute("name", name);
+                model.addAttribute("category", category);
+                model.addAttribute("brand", brand);
+                model.addAttribute("description", description);
+
+                System.out.println("Product found");
             }
             else {
-                model.addAttribute("result", "Product ID " + userInput + " not found.");
+                model.addAttribute("productId", "Product ID " + userInput + " not found.");
             }
         }
         else {

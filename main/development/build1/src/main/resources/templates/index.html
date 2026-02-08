@@ -2,18 +2,43 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Tracer Input</title>
-    <link rel="stylesheet" th:href="@{style.css}">
+    <link rel="stylesheet" th:href="@{/style.css}">
 </head>
 <body>
-    <h2>Enter Product ID</h2>
+    <div class="header">
+        <h1>Enter Product ID</h1>
+    </div>
+    <div class="search">
+        <form action="/submit" method="post">
+            <input type="text" name="userInput" placeholder="e.g. P100" required />
+            <button type="submit">Send</button>
+        </form>
+    </div>
+    <div class="product-card">
+        <div class="card-body">
+            <div class="info">
+                <span class="label">Product ID:</span>
+                <span class="value" th:text="${productId}">P100</span>
+            </div>
+            <div class="info">
+                <span class="label">Name:</span>
+                <span class="value" th:text="${name}">P100</span>
+            </div>
+            <div class="info">
+                <span class="label">Category:</span>
+                <span class="value" th:text="${category}">P100</span>
+            </div>
+            <div class="info">
+                <span class="label">Brand:</span>
+                <span class="value" th:text="${brand}">P100</span>
+            </div>
+            <div class="info">
+                <span class="label">Description:</span>
+                <span class="value" th:text="${description}">P100</span>
+            </div>
 
-    <form action="/submit" method="post">
-        <input type="text" name="userInput" placeholder="Type here" required />
-        <button type="submit">Send</button>
-    </form>
+        </div>
+    </div>
 
-    <p th:if="${result}">
-        Product ID entered: <strong th:text="${result}"></strong>
-    </p>
 </body>
 </html>
