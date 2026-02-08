@@ -30,6 +30,23 @@ public class Claims {
         setConfidenceLabelString(confidenceLabel);
     }
 
+    public String[][] getListOfEvidenceDetails() {
+        int i = 0;
+        String[][] result = new String[evidence.size()][5];
+        for (Evidence e : evidence) {
+            String[] current = new String[5];
+            current[0] = e.getId();
+            current[1] = e.getIssuer();
+            current[2] = e.getDate();
+            current[3] = e.getSummary();
+            current[4] = e.getFileRef();
+            result[i] = current;
+            i++;
+            // **TO DO** - write stageLinked part (later)
+        }
+        return result;
+    }
+
     public void addEvidenceFromStrings(List<List<String>> evidenceRecords) {
         for (int i = 0; i < evidenceRecords.size(); i++) {
             List<String> current = evidenceRecords.get(i);
@@ -58,6 +75,9 @@ public class Claims {
     public ConfidenceLevel getConfidenceLabel() {
         return confidenceLabel;
     }
+    public String getConfidenceLabelText() {
+        return confidenceLabel.name();
+    }
     public void setConfidenceLabel(ConfidenceLevel confidenceLabel) {
         this.confidenceLabel = confidenceLabel;
     }
@@ -83,7 +103,10 @@ public class Claims {
             this.evidence = new ArrayList<>();
         this.evidence.add(evidence);
     }
-    public Evidence getEvidence(int index) {
+    public Evidence getEvidenceByIndex(int index) {
         return evidence.get(index);
+    }
+    public int getNumEvidence() {
+        return evidence.size();
     }
 }

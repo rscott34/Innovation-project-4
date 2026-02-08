@@ -105,13 +105,33 @@ public class Products {
     }
 
     public void addStage(Stages item) {
+        //public String[][] getListOfClaimsDetails () { //original code
+        String[][] getListOfClaimsDetails; {
+            int i = 0;
+            String[][] result = new String[claims.size()][5];
+            for (Claims claims : claims) {
+                String[] current = new String[5];
+                current[0] = claims.getClaimId();
+                current[1] = claims.getClaimType();
+                current[2] = claims.getClaimText();
+                current[3] = claims.getConfidenceLabelText();
+                current[4] = claims.getRationale();
+                result[i] = current;
+                i++;
+            }
+            //return result; //void method cant return, maybe print instead idk
+        }
+    }
+
+/*
+    public void addStage(Stages item) {
         if (item == null)
             throw new IllegalArgumentException("Stage cannot be null");
         if (stages == null)
             stages = new ArrayList<>();
         stages.add(item);
     }
-
+*/
     public void removeStage(String stageId) {
         for (Stages item : stages) {
             if (item.getStageId().equals(stageId)) {
