@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 product_id,product_id,name,category,brand,description
 0,0,Apple,FOOD,Tesco,Apple from Germany
 1,1,Banana,FOOD,Tesco,A bunch of Bananas from Netherlands
@@ -199,3 +200,206 @@ product_id,product_id,name,category,brand,description
 197,197,Vacuum Cleaner,HOME,Dyson,Vacuum Cleaner from Czech Republic
 198,198,Heater,HOME,Dyson,Heater from Sweden
 199,199,Ceiling Fan,HOME,Dyson,Ceiling Fan from Austria
+=======
+product_id,name,category,brand,description
+P000,Apple,FOOD,Tesco,Apple from Germany
+P001,Banana,FOOD,Tesco,A bunch of Bananas from Netherlands
+P002,Orange,FOOD,Tesco,Orange from Belgium
+P003,Strawberry,FOOD,Tesco,Fresh Strawberries from France
+P004,Blueberry,FOOD,Tesco,A punnet of Blueberries from Italy
+P005,Grapes,FOOD,Tesco,A bunch of Grapes from Spain
+P006,Mango,FOOD,Tesco,Mango from Poland
+P007,Pineapple,FOOD,Tesco,Pineapple from Czech Republic
+P008,Watermelon,FOOD,Tesco,Watermelon from Sweden
+P009,Pear,FOOD,Tesco,Pear from Austria
+P010,Carrot,FOOD,Tesco,Carrot from Denmark
+P011,Broccoli,FOOD,Tesco,Head of Broccoli from Finland
+P012,Spinach,FOOD,Tesco,Bag of Spinach from Hungary
+P013,Kale,FOOD,Tesco,Fresh Kale from Slovakia
+P014,Tomato,FOOD,Tesco,Tomato from Romania
+P015,Cucumber,FOOD,Tesco,Cucumber from Portugal
+P016,Bell Pepper,FOOD,Tesco,Bell Pepper from Norway
+P017,Potato,FOOD,Tesco,Sack of Potatoes from Switzerland
+P018,Onion,FOOD,Tesco,Onion from United Kingdom
+P019,Garlic,FOOD,Tesco,Clove of Garlic from Germany
+P020,Chicken Breast,FOOD,Tesco,Chicken Breast from Netherlands
+P021,Beef Steak,FOOD,Tesco,Beef Steak from Belgium
+P022,Pork Chop,FOOD,Tesco,Pork Chop from France
+P023,Salmon,FOOD,Tesco,Fillet of Salmon from Italy
+P024,Tuna,FOOD,Tesco,Tuna from Spain
+P025,Milk,FOOD,Tesco,Carton of Milk from Poland
+P026,Cheddar Cheese,FOOD,Tesco,Block of Cheddar Cheese from Czech Republic
+P027,Yogurt,FOOD,Tesco,Pot of Yogurt from Sweden
+P028,Butter,FOOD,Tesco,Pack of Butter from Austria
+P029,Rice,FOOD,Tesco,Bag of Rice from Denmark
+P030,Pasta,FOOD,Tesco,Box of Pasta from Finland
+P031,Bread,FOOD,Tesco,Loaf of Bread from Hungary
+P032,eggs,FOOD,Tesco,Dozen eggs from Slovakia
+P033,Oats,FOOD,Tesco,Bag of Oats from Romania
+P034,Quinoa,FOOD,Tesco,Bag of Quinoa from Portugal
+P035,Lentils,FOOD,Tesco,Bag of Lentils from Norway
+P036,Chickpeas,FOOD,Tesco,Can of Chickpeas from Switzerland
+P037,Almonds,FOOD,Tesco,Bag of Almonds from United Kingdom
+P038,Walnuts,FOOD,Tesco,Bag of Walnuts from Germany
+P039,Peanuts,FOOD,Tesco,Bag of Peanuts from Netherlands
+P040,Olive Oil,FOOD,Tesco,Bottle of Olive Oil from Belgium
+P041,Tomato Sauce,FOOD,Tesco,Jar of Tomato Sauce from France
+P042,Honey,FOOD,Tesco,Pot of Honey from Italy
+P043,Sugar,FOOD,Tesco,Bag of Sugar from Spain
+P044,Salt,FOOD,Tesco,Pot of Salt from Poland
+P045,Black Pepper,FOOD,Tesco,Black Pepper from Czech Republic
+P046,Cinnamon,FOOD,Tesco,Cinnamon from Sweden
+P047,Chocolate,FOOD,Tesco,Bar of Chocolate from Austria
+P048,Coffee,FOOD,Tesco,Jar of Coffee from Denmark
+P049,Tea,FOOD,Tesco,Box of Tea from Finland
+P050,Rolex Watch,LUXURY,Rolex,Watch from Hungary
+P051,Patek Philippe Watch,LUXURY,Patek Philippe,Watch from Slovakia
+P052,Cartier Necklace,LUXURY,Cartier,Necklace from Romania
+P053,Tiffany & Co. Ring,LUXURY,Tiffany & Co.,Ring from Portugal
+P054,Panerai Watch,LUXURY,Panerai,Watch from Norway
+P055,Omega Watch,LUXURY,Omega,Watch from Switzerland
+P056,Bvlgari Watch,LUXURY,Bvlgari,Watch from United Kingdom
+P057,Van Cleef & Arpels Jewelry,LUXURY,Van Cleef & Arpels,Jewelry from Germany
+P058,Chopard Jewelry,LUXURY,Chopard,Jewelry from Netherlands
+P059,Audemars Piguet Watch,LUXURY,Audemars Piguet,Watch from Belgium
+P060,HermÃ¨s Birkin Bag,LUXURY,HermÃ¨s,Birkin Bag from France
+P061,Chanel Handbag,LUXURY,Chanel,Handbag from Italy
+P062,Louis Vuitton Bag,LUXURY,Louis Vuitton,Bag from Spain
+P063,Prada Handbag,LUXURY,Prada,Handbag from Poland
+P064,Gucci Shoes,LUXURY,Gucci,Pair of Shoes from Czech Republic
+P065,Balenciaga Sneakers,LUXURY,Balenciaga,Pair of Sneakers from Sweden
+P066,Fendi Jacket,LUXURY,Fendi,Jacket from Austria
+P067,Burberry Coat,LUXURY,Burberry,Coat from Denmark
+P068,Moncler Jacket,LUXURY,Moncler,Jacket from Finland
+P069,HermÃ¨s Scarf,LUXURY,HermÃ¨s,Scarf from Hungary
+P070,Ray Ban Sunglasses,LUXURY,Ray Ban,Pair of Sunglasses from Slovakia
+P071,Tom Ford Sunglasses,LUXURY,Tom Ford,Pair of Sunglasses from Romania
+P072,Loro Piana Cashmere Sweater,LUXURY,Loro Piana,Cashmere Sweater from Portugal
+P073,Christian Louboutin Shoes,LUXURY,Christian Louboutin,Pair of Shoes from Norway
+P074,Ralph Lauren Shirt,LUXURY,Ralph Lauren,Shirt from Switzerland
+P075,Ferrari Car,LUXURY,Ferrari,Car from United Kingdom
+P076,Lamborghini Car,LUXURY,Lamborghini,Car from Germany
+P077,Bentley Car,LUXURY,Bentley,Car from Netherlands
+P078,Rolls-Royce Car,LUXURY,Rolls-Royce,Car from Belgium
+P079,Maserati Car,LUXURY,Maserati,Car from France
+P080,Tesla Model S,LUXURY,Tesla,Model S from Italy
+P081,Aston Martin Car,LUXURY,Aston Martin,Car from Spain
+P082,Yacht,LUXURY,Sunseeker,Yacht from Poland
+P083,Private Jet,LUXURY,Boeing,Private Jet from Czech Republic
+P084,Bugatti Car,LUXURY,Bugatti,Car from Sweden
+P085,MoÃ«t & Chandon Champagne,LUXURY,MoÃ«t & Chandon,Bottle of Champagne from Austria
+P086,Dom PÃ©rignon Champagne,LUXURY,Dom PÃ©rignon,Bottle of Champagne from Denmark
+P087,Krug Champagne,LUXURY,Krug,Bottle of Champagne from Finland
+P088,Louis XIII Cognac,LUXURY,Louis XIII,Bottle of Cognac from Hungary
+P089,Hennessy Cognac,LUXURY,Hennessy,Bottle of Cognac from Slovakia
+P090,Vintage Wine,LUXURY,The Italian Wine Shop,Vintage Wine from Romania
+P091,Bang & Olufsen Speaker,LUXURY,Bang & Olufsen,Speaker from Portugal
+P092,Bose High-End Headphones,LUXURY,Bose,Headphones from Norway
+P093,MacBook Pro,LUXURY,Apple,Laptop from Switzerland
+P094,Sony Master Series TV,LUXURY,Sony,TV from United Kingdom
+P095,iPhone 17,LUXURY,Apple,Smartphone from Germany
+P096,Rimowa Luggage,LUXURY,Rimowa,Luggage from Netherlands
+P097,Steinway & Sons Piano,LUXURY,Steinway & Sons,Piano from Belgium
+P098,Caviar,LUXURY,Harrods,Tin of Caviar from France
+P099,Truffle,LUXURY,Harrods,Fresh Truffle from Italy
+P100,T-shirt,CLOTHING,Next,T-shirt from Spain
+P101,Shirt,CLOTHING,Crew Clothing Company,Shirt from Poland
+P102,Blouse,CLOTHING,H&M,Blouse from Czech Republic
+P103,Tank Top,CLOTHING,H&M,Tank Top from Sweden
+P104,Polo Shirt,CLOTHING,Penguin,Polo Shirt from Austria
+P105,Sweater,CLOTHING,Paul Smith,Sweater from Denmark
+P106,Hoodie,CLOTHING,Nicce,Hoodie from Finland
+P107,Cardigan,CLOTHING,Next,Cardigan from Hungary
+P108,Skirt,CLOTHING,Hollister,Skirt from Slovakia
+P109,Pants,CLOTHING,Calvin Klein,Pants from Romania
+P110,Jeans,CLOTHING,Levi,Jeans from Portugal
+P111,Shorts,CLOTHING,Nike,Shorts from Norway
+P112,Leggings,CLOTHING,Adidas,Leggings from Switzerland
+P113,Chinos,CLOTHING,Levi,Chinos from United Kingdom
+P114,Sweatpants,CLOTHING,Nike,Sweatpants from Germany
+P115,Jacket,CLOTHING,Mountain Warehouse,Jacket from Netherlands
+P116,Coat,CLOTHING,Tommy Hilfiger,Coat from Belgium
+P117,Trench Coat,CLOTHING,H&M,Trench Coat from France
+P118,Blazer,CLOTHING,Moss Bros,Blazer from Italy
+P119,Suit Jacket,CLOTHING,Charles Tyrwhitt,Suit Jacket from Spain
+P120,Stockings,CLOTHING,M&S,Stockings from Poland
+P121,Tights,CLOTHING,M&S,Tights from Czech Republic
+P122,Bra,CLOTHING,Victoria Secret,Bra from Sweden
+P123,Boxers,CLOTHING,Calvin Klein,Boxers from Austria
+P124,Briefs,CLOTHING,M&S,Briefs from Denmark
+P125,Swim Shorts,CLOTHING,Quicksilver,Swim Shorts from Finland
+P126,Swimsuit,CLOTHING,Quicksilver,Swimsuit from Hungary
+P127,Bikini,CLOTHING,Victoria Secret,Bikini from Slovakia
+P128,Shoes,CLOTHING,Next,Shoes from Romania
+P129,Sneakers,CLOTHING,Nike,Sneakers from Portugal
+P130,Boots,CLOTHING,Timberland,Boots from Norway
+P131,Sandals,CLOTHING,Next,Sandals from Switzerland
+P132,Loafers,CLOTHING,John Lewis,Loafers from United Kingdom
+P133,Heels,CLOTHING,New Look,Heels from Germany
+P134,Flip Flops,CLOTHING,Havianas,Flip Flops from Netherlands
+P135,Slippers,CLOTHING,M&S,Slippers from Belgium
+P136,Scarf,CLOTHING,Sainsburys,Scarf from France
+P137,Hat,CLOTHING,Nike,Hat from Italy
+P138,Beanie,CLOTHING,Tesco,Beanie from Spain
+P139,Cap,CLOTHING,Adidas,Cap from Poland
+P140,Gloves,CLOTHING,Tesco,Gloves from Czech Republic
+P141,Belt,CLOTHING,Hugo Boss,Belt from Sweden
+P142,Tie,CLOTHING,Moss Bros,Tie from Austria
+P143,Bow Tie,CLOTHING,Moss Bros,Bow Tie from Denmark
+P144,Socks,CLOTHING,Nike,Socks from Finland
+P145,Dress,CLOTHING,John Lewis,Dress from Hungary
+P146,Tracksuit,CLOTHING,Adidas,Tracksuit from Slovakia
+P147,Overalls,CLOTHING,Levi,Overalls from Romania
+P148,Jumpsuit,CLOTHING,Next,Jumpsuit from Portugal
+P149,Pajamas,CLOTHING,M&S,Pajamas from Norway
+P150,Sofa,HOME,John Lewis,Sofa from Switzerland
+P151,Armchair,HOME,DFS,Armchair from United Kingdom
+P152,Dining Table,HOME,John Lewis,Dining Table from Germany
+P153,Dining Chair,HOME,John Lewis,Dining Chair from Netherlands
+P154,Bed,HOME,Fishpools,Bed from Belgium
+P155,Wardrobe,HOME,John Lewis,Wardrobe from France
+P156,Dresser,HOME,John Lewis,Dresser from Italy
+P157,Nightstand,HOME,Ikea,Nightstand from Spain
+P158,Coffee Table,HOME,Ikea,Coffee Table from Poland
+P159,Bookshelf,HOME,John Lewis,Bookshelf from Czech Republic
+P160,TV Stand,HOME,Ikea,TV Stand from Sweden
+P161,Desk,HOME,Ikea,Desk from Austria
+P162,Office Chair,HOME,John Lewis,Office Chair from Denmark
+P163,Refrigerator,HOME,Russel Hobs,Refrigerator from Finland
+P164,Oven,HOME,Bosch,Oven from Hungary
+P165,Microwave,HOME,Bosch,Microwave from Slovakia
+P166,Dishwasher,HOME,Bosch,Dishwasher from Romania
+P167,Cutlery Set,HOME,Dunelm,Cutlery Set from Portugal
+P168,Plates,HOME,Dunelm,Plates from Norway
+P169,Bowls,HOME,Dunelm,Bowls from Switzerland
+P170,Glasses,HOME,Dunelm,Glasses from United Kingdom
+P171,Mugs,HOME,Sainsburys,Mugs from Germany
+P172,Cooking Pots,HOME,Le Creuset,Cooking Pots from Netherlands
+P173,Pans,HOME,Tesco,Pans from Belgium
+P174,Toaster,HOME,Russel Hobs,Toaster from France
+P175,Kettle,HOME,Russel Hobs,Kettle from Italy
+P176,Coffee Machine,HOME,Nescafe,Coffee Machine from Spain
+P177,Towels,HOME,Tesco,Towels from Poland
+P178,Shower Curtain,HOME,Dunelm,Shower Curtain from Czech Republic
+P179,Blankets,HOME,John Lewis,Blankets from Sweden
+P180,Bedding Set,HOME,John Lewis,Bedding Set from Austria
+P181,Pillows,HOME,Dunelm,Pillows from Denmark
+P182,Mattress,HOME,Emma,Mattress from Finland
+P183,Mirror,HOME,Sainsburys,Mirror from Hungary
+P184,Picture Frame,HOME,Sainsburys,Picture Frame from Slovakia
+P185,Vase,HOME,John Lewis,Vase from Romania
+P186,Candle,HOME,Yankee,Candle from Portugal
+P187,Books,HOME,Waterstones,Books from Norway
+P188,Lampshade,HOME,John Lewis,Lampshade from Switzerland
+P189,Floor Lamp,HOME,Tesco,Floor Lamp from United Kingdom
+P190,Wall Clock,HOME,John Lewis,Wall Clock from Germany
+P191,Rug,HOME,Fishpools,Rug from Netherlands
+P192,Curtains,HOME,John Lewis,Curtains from Belgium
+P193,Blinds,HOME,Ikea,Blinds from France
+P194,Plant Pot,HOME,Ikea,Plant Pot from Italy
+P195,Washing Machine,HOME,Bosch,Washing Machine from Spain
+P196,Dryer,HOME,Bosch,Dryer from Poland
+P197,Vacuum Cleaner,HOME,Dyson,Vacuum Cleaner from Czech Republic
+P198,Heater,HOME,Dyson,Heater from Sweden
+P199,Ceiling Fan,HOME,Dyson,Ceiling Fan from Austria
+>>>>>>> Stashed changes
