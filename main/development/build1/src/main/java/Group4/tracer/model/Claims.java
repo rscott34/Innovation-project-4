@@ -4,16 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Group4.tracer.enums.ConfidenceLevel;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
-public class Claim {
-    private String claimId;
+@Entity
+@Table(name = "Claims")
+public class Claims {
+    @Id
+    private String claimId; //primary key of table
     private String claimType;
     private String claimText;
     private ConfidenceLevel confidenceLabel;
     private String rationale;
     private ArrayList<Evidence> evidence;
 
-    public Claim (String claimId, String claimType, String claimText, String confidenceLabel, String rationale) {
+    public Claims() {
+    }
+
+    public Claims(String claimId, String claimType, String claimText, String confidenceLabel, String rationale) {
         this.claimId = claimId;
         this.claimType = claimType;
         this.claimText = claimText;
@@ -40,14 +49,12 @@ public class Claim {
     public void setClaimType(String claimType) {
         this.claimType = claimType;
     }
-
     public String getClaimText() {
         return claimText;
     }
     public void setClaimText(String claimText) {
         this.claimText = claimText;
     }
-
     public ConfidenceLevel getConfidenceLabel() {
         return confidenceLabel;
     }

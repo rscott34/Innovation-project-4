@@ -4,22 +4,34 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import Group4.tracer.enums.ProductType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
-public class Product {
-    @Id
+public class Products {
+    @Id //productId is primary key
     private String productId;
     private String name;
+
+    @Enumerated(EnumType.STRING) //store enum as a string
     private ProductType category;
+
     private String brand;
     private String description;
-    private List<InputShare> components;
-    private List<Stage> stages;
-    private List<Claim> claims;
 
-    public Product(String productId, String name, String category, String brand, String description) {
+    //creates a one-to-many relation between Products table and Input_shares table
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true) //enforces inheritance
+    @JoinColumn(name = "product_id") //creates a foreign key in the InputShare table
+    private List<Input_shares> components = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "product_id")
+    private List<Stages> stages = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "product_id")
+    private List<Claims> claims = new ArrayList<>();
+
+    public Products(String productId, String name, String category, String brand, String description) {
         this.productId = productId;
         this.name = name;
         this.brand = brand;
@@ -27,14 +39,17 @@ public class Product {
         setCategoryString(category);
     }
 
+    public Products() {
+    }
+
     public void addClaimsFromStrings(List<List<String>> claimRecords) {
         for (int i = 0; i < claimRecords.size(); i++) {
             List<String> current = claimRecords.get(i);
-            this.addClaim(new Claim(current.get(0), current.get(2), current.get(3), current.get(4), current.get(5)));
+            this.addClaim(new Claims(current.get(0), current.get(2), current.get(3), current.get(4), current.get(5)));
         }
     }
 
-    public void addComponent(InputShare item) {
+    public void addComponent(Input_shares item) {
         if (item == null)
             throw new IllegalArgumentException("InputShare cannot be null");
         if (components == null)
@@ -45,22 +60,22 @@ public class Product {
     }
 
     public void removeComponent(String inputId) {
-        for (InputShare item : components) {
+        for (Input_shares item : components) {
             if (item.getInputId().equals(inputId)) {
                 components.remove(item);
                 return;
             }
         }
     }
-    public InputShare getComponent (String inputId) {
-        for (InputShare item : components) {
+    public Input_shares getComponent (String inputId) {
+        for (Input_shares item : components) {
             if (item.getInputId().equals(inputId))
                 return item;
         }
         throw new NoSuchElementException("Input not found: " + inputId);
     }
 
-    public void addClaim(Claim item) {
+    public void addClaim(Claims item) {
         if (item == null)
             throw new IllegalArgumentException("Claim cannot be null");
         if (claims == null)
@@ -69,7 +84,7 @@ public class Product {
     }
 
     public void removeClaim(String claimId) {
-        for (Claim item : claims) {
+        for (Claims item : claims) {
             if (item.getClaimId().equals(claimId)) {
                 claims.remove(item);
                 return;
@@ -77,19 +92,19 @@ public class Product {
         }
     }
 
-    public Claim getClaim(String claimId) {
-        for (Claim item : claims) {
+    public Claims getClaim(String claimId) {
+        for (Claims item : claims) {
             if (item.getClaimId().equals(claimId))
                 return item;
         }
         throw new NoSuchElementException("Claim not found: " + claimId);
     }
 
-    public Claim getClaimByIndex(int index) {
+    public Claims getClaimByIndex(int index) {
         return claims.get(index);
     }
 
-    public void addStage(Stage item) {
+    public void addStage(Stages item) {
         if (item == null)
             throw new IllegalArgumentException("Stage cannot be null");
         if (stages == null)
@@ -98,7 +113,7 @@ public class Product {
     }
 
     public void removeStage(String stageId) {
-        for (Stage item : stages) {
+        for (Stages item : stages) {
             if (item.getStageId().equals(stageId)) {
                 stages.remove(item);
                 return;
@@ -106,8 +121,8 @@ public class Product {
         }
     }
 
-    public Stage getStage(String stageId) {
-        for (Stage item : stages) {
+    public Stages getStage(String stageId) {
+        for (Stages item : stages) {
             if (item.getStageId().equals(stageId))
                 return item;
         }
@@ -118,7 +133,7 @@ public class Product {
         if (components == null)
             return 0;
         float total = 0;
-        for (InputShare input : components) {
+        for (Input_shares input : components) {
             total += input.getPercentage();
         }
         return total;

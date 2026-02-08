@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import Group4.tracer.model.Claim;
-import Group4.tracer.model.Product;
+import Group4.tracer.model.Claims;
+import Group4.tracer.model.Products;
 
 public class modelApplication {
     public static final String COMMA_DELIMITER = ",";
@@ -20,7 +20,7 @@ public class modelApplication {
 
     public static void main (String[] args) {
         //Example of generating a product class once the record is found
-        Product p1 = new Product("P001", "Prod1", "Luxury", "Nike", "desc1");
+        Products p1 = new Products("P001", "Prod1", "Luxury", "Nike", "desc1");
 
         //Example of adding all claims related to that product, so the ui can display them all
         System.out.println("--Adding claims to product--");
@@ -28,7 +28,7 @@ public class modelApplication {
         
         //Example of adding all the evidence for a specific claim, once that claim card is pressed
         System.out.println("--Adding evidence to the first claim in product--");
-        Claim exampleClaim = p1.getClaimByIndex(0);
+        Claims exampleClaim = p1.getClaimByIndex(0);
         exampleClaim.addEvidenceFromStrings(loadEvidence(exampleClaim.getClaimId()));
         
     }

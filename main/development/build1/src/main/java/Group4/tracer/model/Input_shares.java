@@ -1,11 +1,22 @@
 package Group4.tracer.model;
 
-public class InputShare {
-    private String inputId;
+import jakarta.persistence.Id;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "Input_shares")
+public class Input_shares {
+
+    @Id
+    private String inputId; //primary key for table
     private String inputName;
     private String country;
-    private float percentage;
+    private float percentage; //percentage is stored as int in database, this may need changing
     private String notes;
+
+    public Input_shares() {
+    }
 
     //getters and setters
     public String getInputId() {

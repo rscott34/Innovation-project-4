@@ -1,16 +1,21 @@
 package Group4.tracer.repository;
 
-import Group4.tracer.model.Product;
+import Group4.tracer.model.Products;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import java.util.Optional;
 
-//This interface inherits SQL operations by extending JpaRepository
-//Meaning manual SQL queries do not need to be written
 @Repository
-public interface ProductRepository extends JpaRepository<Product, String> {
-    //Search for the productId
-    //Optional is used to handle null values and avoid errors
-    Optional<Product> findByProductId(String productId);
-}
+public interface ProductRepository extends JpaRepository<Products, String> {
 
+    //Search for the productId
+    //This is the SQL query that is run with each productID search
+    @Query(value = "SELECT * " +
+            "FROM public.\"Products\" " +
+            "WHERE product_id = :productId " +
+            "ORDER BY product_id ASC", nativeQuery = true)
+
+    //findProductArray takes a productId string and returns an array of product information
+    Object[] findProductArray(@Param("productId") String productId);
+}

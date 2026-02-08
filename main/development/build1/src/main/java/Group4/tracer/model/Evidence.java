@@ -2,7 +2,7 @@ package Group4.tracer.model;
 
 public class Evidence {
     private String evidenceId;
-    private Stage stageLinked = null;
+    private Stages stageLinked = null;
     private String issuer;
     private String date;
     private String summary;
@@ -30,13 +30,14 @@ public class Evidence {
     public void setId(String id) {
         evidenceId = id;
     }
-    public Stage getStage() {
+    public Stages getStage() {
         if (stageLinked == null) {
             throw new IllegalStateException("There is not a stage linked with this piece.");
         }
         return stageLinked;
     }
-    public void setStage(Stage stage) {
+    //Setters and getters
+    public void setStage(Stages stage) {
         stageLinked = stage;
     }
     public String getIssuer() {

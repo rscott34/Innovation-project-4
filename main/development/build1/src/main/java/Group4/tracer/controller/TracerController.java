@@ -21,10 +21,18 @@ public class TracerController {
     }
 
     @PostMapping("/submit")
-    public String handleInput(@RequestParam String userInput, Model model) {
-        if (userInput != null){
-            System.out.println(userInput); //need to implement some sort of error handling when we know what product id will be like
-            model.addAttribute("result", userInput);
+    public String handleInput(@RequestParam String userInput, Model model) { //takes input from search box
+        if (userInput != null) {
+            Object[] productData = productRepository.findProductArray(userInput);
+
+            if (productData != null) { //checks if requested data exists
+                String readableData = java.util.Arrays.deepToString((Object[]) productData);
+                System.out.println(readableData);
+                model.addAttribute("result", readableData);
+            }
+            else {
+                model.addAttribute("result", "Product ID " + userInput + " not found.");
+            }
         }
         else {
             model.addAttribute("result", "No input provided.");

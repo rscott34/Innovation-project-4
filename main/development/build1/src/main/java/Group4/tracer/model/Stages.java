@@ -1,8 +1,15 @@
 package Group4.tracer.model;
 
 import Group4.tracer.enums.StageType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
-public class Stage {
+@Entity
+@Table(name = "Stages")
+
+public class Stages {
+    @Id
     private String stageId;
     private StageType stageName;
     private String location;
