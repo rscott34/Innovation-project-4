@@ -6,8 +6,7 @@ public class Evidence {
     private String issuer;
     private String date;
     private String summary;
-    private String fileReference = "This/is/a/file/path";
-    // **TO DO** fileReference attribute
+    private String fileReference;
 
     public Evidence(String id, String stageLinked, String issuer, String date, String summary, String fileReference) {
         evidenceId = id;
@@ -57,10 +56,10 @@ public class Evidence {
     public void setSummary(String summary) {
         this.summary = summary;
     }
-    public void setFilePath(String path) {
+    public void setFileRef(String path) {
         fileReference = path;
     }
-    public String getFilePath() {
+    public String getFileRef() {
         return fileReference;
     }
 }

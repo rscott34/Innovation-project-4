@@ -89,6 +89,22 @@ public class Product {
         return claims.get(index);
     }
 
+    public String[][] getListOfClaimsDetails() {
+        int i = 0;
+        String[][] result = new String[claims.size()][5];
+        for (Claim claim : claims) {
+            String[] current = new String[5];
+            current[0] = claim.getClaimId();
+            current[1] = claim.getClaimType();
+            current[2] = claim.getClaimText();
+            current[3] = claim.getConfidenceLabelText();
+            current[4] = claim.getRationale();
+            result[i] = current;
+            i++;
+        }
+        return result;
+    }
+
     public void addStage(Stage item) {
         if (item == null)
             throw new IllegalArgumentException("Stage cannot be null");
