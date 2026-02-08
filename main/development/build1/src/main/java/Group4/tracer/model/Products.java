@@ -119,7 +119,7 @@ public class Products {
                 result[i] = current;
                 i++;
             }
-            //return result; //void method cant return, maybe print instead idk
+            //return result; //void method cant return, maybe print instead IDK
         }
     }
 
