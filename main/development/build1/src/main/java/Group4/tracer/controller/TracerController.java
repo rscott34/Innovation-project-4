@@ -62,4 +62,5 @@ The array output is stored in the variable productData
 this is in the format       [["P100","T-shirt","CLOTHING","Next","T-shirt from Spain"]]
 I don't know why there are two sets of square brackets, I will fix that in the future
 
+
  */
