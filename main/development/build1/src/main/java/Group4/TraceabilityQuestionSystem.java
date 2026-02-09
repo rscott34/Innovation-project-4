@@ -1,4 +1,4 @@
-package Group4.Tracer;
+package Group4;
 
 import java.util.Random;
 import java.util.Scanner;
