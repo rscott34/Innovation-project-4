@@ -1,3 +1,62 @@
+## TC-SSL-01: Single-Scan Lookup returns correct product page
+
+Status: Ready
+
+Feature: Single-Scan Lookup (FR1)
+
+Test Objective:
+Verify that entering a valid ProductID successfully retrieves and displays the correct product page.
+
+Preconditions:
+- Application is running
+- Dataset contains at least one valid ProductID
+
+Assumptions:
+- ProductID uniquely identifies a product
+- User has access to the lookup interface
+
+Steps:
+1. Navigate to the Single-Scan Lookup screen
+2. Enter a valid ProductID
+3. Submit the lookup request
+
+Expected Result:
+- System retrieves the product successfully
+- User is navigated to the corresponding product page
+- Product details displayed match the ProductID entered
+
+Pass Criteria:
+- Correct product page is displayed
+- No errors are shown
+
+Fail Criteria:
+- Product not found for a valid ProductID
+- Incorrect product page displayed
+- Error message displayed unexpectedly
+
+Actual Result:
+TBD
+
+Evidence:
+To be captured after execution
+
+## TC-SSL-02: Single-Scan Lookup handles invalid ProductID
+
+Status: Planned
+
+Feature: Single-Scan Lookup (FR1)
+
+Test Objective:
+Verify that the system handles invalid ProductIDs gracefully.
+
+Steps:
+1. Enter an invalid or non-existent ProductID
+2. Submit lookup
+
+Expected Result:
+- User receives a clear error or “product not found” message
+- System does not crash
+
 ## TC-TL-01: Traceability timeline shows exactly 5 stages
 
 Status: Planned
