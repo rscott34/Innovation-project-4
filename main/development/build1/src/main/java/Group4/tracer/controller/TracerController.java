@@ -26,7 +26,7 @@ public class TracerController {
             Object[] productData = productRepository.findProductArray(userInput); //stores array data
 
             //I had to use ToString() to output the array or else it would print an memory address instead
-            if (productData != null) { //checks if requested data exists
+            if (productData != null && productData.length > 0) { //checks if requested data exists
                 // String readableData = java.util.Arrays.deepToString((Object[]) productData); //converts array to string to be printed
                 
                 Object[] innerArray = (Object[]) productData[0]; // George - better way of accessing the elements in the list since obj returned is [[]] just get the 0th element which is the list 
@@ -37,6 +37,7 @@ public class TracerController {
                 String brand = innerArray[3].toString();
                 String description = innerArray[4].toString();    
 
+                model.addAttribute("productFound", true); 
                 model.addAttribute("productId", productId);
                 model.addAttribute("name", name);
                 model.addAttribute("category", category);
@@ -46,11 +47,13 @@ public class TracerController {
                 System.out.println("Product found");
             }
             else {
-                model.addAttribute("productId", "Product ID " + userInput + " not found.");
+                model.addAttribute("productFound", false);
+                model.addAttribute("errorMessage", "Product ID " + userInput + " not found.");
             }
         }
         else {
-            model.addAttribute("result", "No input provided.");
+            model.addAttribute("productFound", false);
+            model.addAttribute("errorMessage", "No input provided.");
         }
         return "index";
     }
