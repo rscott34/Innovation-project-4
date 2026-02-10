@@ -16,6 +16,7 @@ https://ele.exeter.ac.uk/pluginfile.php/5542027/mod_resource/content/1/COMM2020%
 
 
 PostgreSQL (with PGadmin) needs to be installed
+https://www.postgresql.org/
 
 Download the .sql file
 
