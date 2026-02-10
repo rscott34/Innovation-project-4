@@ -15,7 +15,10 @@ public class TracerController {
     //allows interaction with database
     @Autowired
     private ProductRepository productRepository; //dependency Injection,
+
+    @Autowired
     private StageRepository stageRepository;
+
     @GetMapping("/")
     public String showForm() {
         return "index"; // loads index.html
@@ -30,6 +33,8 @@ public class TracerController {
 
             if (productData != null && productData.length > 0) { //checks if requested data exists
                 Object[] innerArray = (Object[]) productData[0];
+                System.out.println(traceData);
+
 
                 String productId = innerArray[0].toString();
                 String name = innerArray[1].toString();
