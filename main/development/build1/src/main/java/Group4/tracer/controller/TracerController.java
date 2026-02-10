@@ -28,8 +28,12 @@ public class TracerController {
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             //Object[] traceData = productRepository.
             //I had to use ToString() to output the array or else it would print an memory address instead
+=======
+
+>>>>>>> Stashed changes
 =======
 
 >>>>>>> Stashed changes
