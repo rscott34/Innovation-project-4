@@ -1,6 +1,7 @@
 package Group4.tracer.controller;
 
 import Group4.tracer.repository.ProductRepository;
+import Group4.tracer.repository.StageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +15,7 @@ public class TracerController {
     //allows interaction with database
     @Autowired
     private ProductRepository productRepository; //dependency Injection,
-
+    private StageRepository stageRepository;
     @GetMapping("/")
     public String showForm() {
         return "index"; // loads index.html
@@ -24,8 +25,7 @@ public class TracerController {
     public String handleInput(@RequestParam String userInput, Model model) { //takes input from search box
         if (userInput != null) {
             Object[] productData = productRepository.findProductArray(userInput); //stores array data
-
-            //Object[] traceData = productRepository.
+            Object[] traceData = stageRepository.findStageArray(userInput);
             //I had to use ToString() to output the array or else it would print an memory address instead
 
             if (productData != null && productData.length > 0) { //checks if requested data exists
