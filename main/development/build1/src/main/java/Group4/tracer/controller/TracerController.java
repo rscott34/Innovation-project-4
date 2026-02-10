@@ -24,7 +24,7 @@ public class TracerController {
     public String handleInput(@RequestParam String userInput, Model model) { //takes input from search box
         if (userInput != null) {
             Object[] productData = productRepository.findProductArray(userInput); //stores array data
-
+            //Object[] traceData = productRepository.
             //I had to use ToString() to output the array or else it would print an memory address instead
             if (productData != null && productData.length > 0) { //checks if requested data exists
                 // String readableData = java.util.Arrays.deepToString((Object[]) productData); //converts array to string to be printed

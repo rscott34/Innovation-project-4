@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 public interface ProductRepository extends JpaRepository<Products, String> {
 
     //Search for the productId
-    //This is the SQL query that is run with each productID search
+    //This is the SQL query that is run with each productId search
     @Query(value = "SELECT * " +
             "FROM public.\"Products\" " +
             "WHERE product_id = :productId " +
@@ -18,4 +18,5 @@ public interface ProductRepository extends JpaRepository<Products, String> {
 
     //findProductArray takes a productId string and returns an array of product information
     Object[] findProductArray(@Param("productId") String productId);
+
 }
