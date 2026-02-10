@@ -24,12 +24,14 @@ public class TracerController {
     public String handleInput(@RequestParam String userInput, Model model) { //takes input from search box
         if (userInput != null) {
             Object[] productData = productRepository.findProductArray(userInput); //stores array data
+<<<<<<< Updated upstream
             //Object[] traceData = productRepository.
             //I had to use ToString() to output the array or else it would print an memory address instead
+=======
+
+>>>>>>> Stashed changes
             if (productData != null && productData.length > 0) { //checks if requested data exists
-                // String readableData = java.util.Arrays.deepToString((Object[]) productData); //converts array to string to be printed
-                
-                Object[] innerArray = (Object[]) productData[0]; // George - better way of accessing the elements in the list since obj returned is [[]] just get the 0th element which is the list 
+                Object[] innerArray = (Object[]) productData[0];
 
                 String productId = innerArray[0].toString();
                 String name = innerArray[1].toString();
@@ -63,7 +65,5 @@ public class TracerController {
 
 The array output is stored in the variable productData
 this is in the format       [["P100","T-shirt","CLOTHING","Next","T-shirt from Spain"]]
-I don't know why there are two sets of square brackets, I will fix that in the future
-
 
  */
