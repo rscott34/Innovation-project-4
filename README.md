@@ -11,7 +11,9 @@ Coursework brief:
 https://ele.exeter.ac.uk/pluginfile.php/5542027/mod_resource/content/1/COMM2020%20Team%20project%20Coursework%20brief.pdf
 
 
-** Steps for Setting up DB **
+**Steps for Setting up the Database locally**
+=============================================================
+
 
 PostgreSQL (with PGadmin) needs to be installed
 
