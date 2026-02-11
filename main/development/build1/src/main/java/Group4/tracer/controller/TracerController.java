@@ -13,6 +13,11 @@ import Group4.tracer.repository.ProductRepository;
 import Group4.tracer.repository.StageRepository;
 import Group4.tracer.repository.ClaimRepository;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @Controller
 public class TracerController {
 
@@ -109,7 +114,6 @@ public class TracerController {
 
                 }
                 else {
-                    // ✅ Set hasClaims to false when no claims exist
                     model.addAttribute("hasClaims", false);
                     System.out.println("No claims found for this product");
                 }
