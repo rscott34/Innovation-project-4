@@ -52,8 +52,6 @@ public class TracerController {
                 model.addAttribute("brand", brand);
                 model.addAttribute("description", description);
 
-
-
                 List<Map<String, String>> stagesList = new ArrayList<>();
 
                 for (int i = 0; i < traceData.length; i++) {
