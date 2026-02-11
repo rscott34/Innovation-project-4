@@ -1,6 +1,10 @@
 package Group4.tracer.controller;
 
 import Group4.tracer.repository.ProductRepository;
+import Group4.tracer.repository.StageRepository;
+
+import java.util.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +19,9 @@ public class TracerController {
     @Autowired
     private ProductRepository productRepository; //dependency Injection,
 
+    @Autowired
+    private StageRepository stageRepository;
+
     @GetMapping("/")
     public String showForm() {
         return "index"; // loads index.html
@@ -24,27 +31,45 @@ public class TracerController {
     public String handleInput(@RequestParam String userInput, Model model) { //takes input from search box
         if (userInput != null) {
             Object[] productData = productRepository.findProductArray(userInput); //stores array data
+            Object[] traceData = stageRepository.findStageArray(userInput);
 
-            //I had to use ToString() to output the array or else it would print an memory address instead
-            if (productData != null && productData.length > 0) { //checks if requested data exists
-                // String readableData = java.util.Arrays.deepToString((Object[]) productData); //converts array to string to be printed
-                
-                Object[] innerArray = (Object[]) productData[0]; // George - better way of accessing the elements in the list since obj returned is [[]] just get the 0th element which is the list 
+            if (productData != null && productData.length > 0) { //checks if requested data exists in Products
+                System.out.println("Product found");
 
-                String productId = innerArray[0].toString();
-                String name = innerArray[1].toString();
-                String category = innerArray[2].toString();
-                String brand = innerArray[3].toString();
-                String description = innerArray[4].toString();    
+                Object[] innerProductData = (Object[]) productData[0];
+
+                String productId = innerProductData[0].toString();
+                String name = innerProductData[1].toString();
+                String category = innerProductData[2].toString();
+                String brand = innerProductData[3].toString();
+                String description = innerProductData[4].toString();    
 
                 model.addAttribute("productFound", true); 
+
                 model.addAttribute("productId", productId);
                 model.addAttribute("name", name);
                 model.addAttribute("category", category);
                 model.addAttribute("brand", brand);
                 model.addAttribute("description", description);
 
-                System.out.println("Product found");
+                List<Map<String, String>> stagesList = new ArrayList<>();
+
+                for (int i = 0; i < traceData.length; i++) {
+                    Object[] stage = (Object[]) traceData[i];
+                    
+                    Map<String, String> stageMap = new HashMap<>();
+                    stageMap.put("stageId", stage[0].toString());
+                    stageMap.put("productId", stage[1].toString());
+                    stageMap.put("stageType", stage[2].toString());
+                    stageMap.put("location", stage[3].toString());
+                    stageMap.put("startDate", stage[4].toString());
+                    //stageMap.put("endDate", stage[5].toString()); -- add values for end date in db are NULL this causes an error when trying to display the stage information
+                    stageMap.put("description", stage[6].toString());
+                    stagesList.add(stageMap);
+                }
+
+                model.addAttribute("stages", stagesList);
+             
             }
             else {
                 model.addAttribute("productFound", false);
@@ -63,7 +88,5 @@ public class TracerController {
 
 The array output is stored in the variable productData
 this is in the format       [["P100","T-shirt","CLOTHING","Next","T-shirt from Spain"]]
-I don't know why there are two sets of square brackets, I will fix that in the future
-
 
  */
