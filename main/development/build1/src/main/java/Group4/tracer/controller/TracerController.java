@@ -16,7 +16,9 @@ public class TracerController {
     //allows interaction with database
     @Autowired
     private ProductRepository productRepository; //dependency Injection,
+    @Autowired
     private StageRepository stageRepository;
+    @Autowired
     private ClaimRepository claimRepository;
 
     @GetMapping("/")
@@ -28,8 +30,9 @@ public class TracerController {
     public String handleInput(@RequestParam String userInput, Model model) { //takes input from search box
         if (userInput != null) {
             Object[] productData = productRepository.findProductArray(userInput); //stores array data
-            Object[] traceData = stageRepository.findStageArray(userInput);
+            //Object[] traceData = stageRepository.findStageArray(userInput);
             Object[] claimData = claimRepository.findClaimArray(userInput);
+            
             //I had to use ToString() to output the array or else it would print an memory address instead
 
             if (productData != null && productData.length > 0) { //checks if requested data exists
@@ -49,6 +52,8 @@ public class TracerController {
                 model.addAttribute("description", description);
 
                 System.out.println("Product found");
+
+                System.out.println(claimData);
             }
             else {
                 model.addAttribute("productFound", false);

@@ -17,6 +17,6 @@ public interface ClaimRepository extends JpaRepository<Claims, String> {
             "ORDER BY claim_id ASC", nativeQuery = true)
 
     //findClaimArray takes a productId string and returns an array of product information
-    Object[] findClaimArray(@Param("ProductId") String productId);
+    Object[] findClaimArray(@Param("productId") String productId);
 
 }
