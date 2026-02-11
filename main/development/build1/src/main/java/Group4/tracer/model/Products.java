@@ -4,7 +4,13 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import Group4.tracer.enums.ProductType;
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Products {
@@ -104,26 +110,22 @@ public class Products {
         return claims.get(index);
     }
 
-    public void addStage(Stages item) {
-        //public String[][] getListOfClaimsDetails () { //original code
-        String[][] getListOfClaimsDetails; {
-            int i = 0;
-            String[][] result = new String[claims.size()][5];
-            for (Claims claims : claims) {
-                String[] current = new String[5];
-                current[0] = claims.getClaimId();
-                current[1] = claims.getClaimType();
-                current[2] = claims.getClaimText();
-                current[3] = claims.getConfidenceLabelText();
-                current[4] = claims.getRationale();
-                result[i] = current;
-                i++;
-            }
-            //return result; //void method cant return, maybe print instead IDK
+    String[][] getListOfClaimsDetails () {
+        int i = 0;
+        String[][] result = new String[claims.size()][5];
+        for (Claims claims : claims) {
+            String[] current = new String[5];
+            current[0] = claims.getClaimId();
+            current[1] = claims.getClaimType();
+            current[2] = claims.getClaimText();
+            current[3] = claims.getConfidenceLabelText();
+            current[4] = claims.getRationale();
+            result[i] = current;
+            i++;
         }
+        return result;
     }
 
-/*
     public void addStage(Stages item) {
         if (item == null)
             throw new IllegalArgumentException("Stage cannot be null");
@@ -131,7 +133,6 @@ public class Products {
             stages = new ArrayList<>();
         stages.add(item);
     }
-*/
     public void removeStage(String stageId) {
         for (Stages item : stages) {
             if (item.getStageId().equals(stageId)) {
