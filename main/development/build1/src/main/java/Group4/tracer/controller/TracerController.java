@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import Group4.tracer.repository.ProductRepository;
 import Group4.tracer.repository.StageRepository;
+import Group4.tracer.repository.ClaimRepository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +25,9 @@ public class TracerController {
 
     @Autowired
     private StageRepository stageRepository;
+
+    @Autowired
+    private ClaimRepository claimRepository;
 
     @GetMapping("/")
     public String showForm() {
