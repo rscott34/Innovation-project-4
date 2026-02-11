@@ -17,6 +17,6 @@ public interface StageRepository extends JpaRepository<Stages, String> {
             "ORDER BY stage_id ASC", nativeQuery = true)
 
     //findStageArray takes a productId string and returns an array of product information
-    Object[] findStageArray(@Param("stageId") String stageId);
+    Object[] findStageArray(@Param("productId") String productId);
 
 }
