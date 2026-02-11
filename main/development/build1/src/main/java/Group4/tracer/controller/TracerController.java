@@ -2,6 +2,9 @@ package Group4.tracer.controller;
 
 import Group4.tracer.repository.ProductRepository;
 import Group4.tracer.repository.StageRepository;
+
+import java.util.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,27 +32,46 @@ public class TracerController {
         if (userInput != null) {
             Object[] productData = productRepository.findProductArray(userInput); //stores array data
             Object[] traceData = stageRepository.findStageArray(userInput);
-            //I had to use ToString() to output the array or else it would print an memory address instead
 
-            if (productData != null && productData.length > 0) { //checks if requested data exists
-                Object[] innerArray = (Object[]) productData[0];
-                System.out.println(traceData);
+            if (productData != null && productData.length > 0) { //checks if requested data exists in Products
+                System.out.println("Product found");
 
+                Object[] innerProductData = (Object[]) productData[0];
 
-                String productId = innerArray[0].toString();
-                String name = innerArray[1].toString();
-                String category = innerArray[2].toString();
-                String brand = innerArray[3].toString();
-                String description = innerArray[4].toString();    
+                String productId = innerProductData[0].toString();
+                String name = innerProductData[1].toString();
+                String category = innerProductData[2].toString();
+                String brand = innerProductData[3].toString();
+                String description = innerProductData[4].toString();    
 
                 model.addAttribute("productFound", true); 
+
                 model.addAttribute("productId", productId);
                 model.addAttribute("name", name);
                 model.addAttribute("category", category);
                 model.addAttribute("brand", brand);
                 model.addAttribute("description", description);
 
-                System.out.println("Product found");
+
+
+                List<Map<String, String>> stagesList = new ArrayList<>();
+
+                for (int i = 0; i < traceData.length; i++) {
+                    Object[] stage = (Object[]) traceData[i];
+                    
+                    Map<String, String> stageMap = new HashMap<>();
+                    stageMap.put("stageId", stage[0].toString());
+                    stageMap.put("productId", stage[1].toString());
+                    stageMap.put("stageType", stage[2].toString());
+                    stageMap.put("location", stage[3].toString());
+                    stageMap.put("startDate", stage[4].toString());
+                    //stageMap.put("endDate", stage[5].toString()); -- add values for end date in db are NULL this causes an error when trying to display the stage information
+                    stageMap.put("description", stage[6].toString());
+                    stagesList.add(stageMap);
+                }
+
+                model.addAttribute("stages", stagesList);
+             
             }
             else {
                 model.addAttribute("productFound", false);
