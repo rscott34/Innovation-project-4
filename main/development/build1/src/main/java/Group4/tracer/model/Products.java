@@ -110,16 +110,33 @@ public class Products {
         return claims.get(index);
     }
 
-    String[][] getListOfClaimsDetails () {
+    public String[][] getListOfClaimsDetails () {
         int i = 0;
         String[][] result = new String[claims.size()][5];
-        for (Claims claims : claims) {
+        for (Claims claim : claims) {
             String[] current = new String[5];
-            current[0] = claims.getClaimId();
-            current[1] = claims.getClaimType();
-            current[2] = claims.getClaimText();
-            current[3] = claims.getConfidenceLabelText();
-            current[4] = claims.getRationale();
+            current[0] = claim.getClaimId();
+            current[1] = claim.getClaimType();
+            current[2] = claim.getClaimText();
+            current[3] = claim.getConfidenceLabelText();
+            current[4] = claim.getRationale();
+            result[i] = current;
+            i++;
+        }
+        return result;
+    }
+
+    public String[][] getListOfStagesDetails () {
+        int i = 0;
+        String[][] result = new String[stages.size()][6];
+        for (Stages stage : stages) {
+            String[] current = new String[6];
+            current[0] = stage.getStageId();
+            current[1] = stage.getStageType().name();
+            current[2] = stage.getLocation();
+            current[3] = stage.getStartDate();
+            current[4] = stage.getEndDate();
+            current[5] = stage.getDescription();
             result[i] = current;
             i++;
         }
@@ -176,6 +193,9 @@ public class Products {
     public ProductType getCategory() {
         return category;
     }
+    public String getCategoryString() {
+        return category.name();
+    }
     public void setCategory(ProductType category) {
         this.category = category;
     }
@@ -188,7 +208,6 @@ public class Products {
                 this.category = null;
         }
     }
-    
 
     public String getBrand() {
         return brand;
