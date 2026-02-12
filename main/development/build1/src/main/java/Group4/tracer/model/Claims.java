@@ -5,6 +5,8 @@ import java.util.List;
 
 import Group4.tracer.enums.ConfidenceLevel;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
@@ -15,6 +17,7 @@ public class Claims {
     private String claimId; //primary key of table
     private String claimType;
     private String claimText;
+    @Enumerated(EnumType.STRING)
     private ConfidenceLevel confidenceLabel;
     private String rationale;
     private ArrayList<Evidence> evidence;
@@ -76,6 +79,9 @@ public class Claims {
         return confidenceLabel;
     }
     public String getConfidenceLabelText() {
+        if (confidenceLabel == null) {
+            return "null";
+        }
         return confidenceLabel.name();
     }
     public void setConfidenceLabel(ConfidenceLevel confidenceLabel) {
@@ -84,11 +90,12 @@ public class Claims {
 
     public final void setConfidenceLabelString(String confidenceLabel) {
         for (ConfidenceLevel label : ConfidenceLevel.values()) {
-            if (label.name().equalsIgnoreCase(confidenceLabel))
+            if (label.name().equalsIgnoreCase(confidenceLabel)) {
                 this.confidenceLabel = label;
-            else
-                this.confidenceLabel = null;
+                return;
+            }
         }
+        this.confidenceLabel = null;
     }
 
     public String getRationale() {

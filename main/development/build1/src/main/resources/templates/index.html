@@ -43,23 +43,23 @@
                 <h3>Stage <span th:text="${iterStat.count}">1</span></h3>
                 <div class="stage-info">
                     <span><b>Stage ID:</b></span>
-                    <span th:text="${stage.stageId}">S1-001</span>
+                    <span th:text="${stage[0]}">S1-001</span>
                 </div>
                 <div class="stage-info">
                     <span><b>Stage Type:</b></span>
-                    <span th:text="${stage.stageType}">Manufacturing</span>
+                    <span th:text="${stage[1]}">Manufacturing</span>
                 </div>
                 <div class="stage-info">
                     <span><b>Location:</b></span>
-                    <span th:text="${stage.location}">Italy</span>
+                    <span th:text="${stage[2]}">Italy</span>
                 </div>
                 <div class="stage-info">
                     <span><b>Start Date:</b></span>
-                    <span th:text="${stage.startDate}">2024-01-01</span>
+                    <span th:text="${stage[3]}">2024-01-01</span>
                 </div>
                 <div class="stage-info">
                     <span><b>Description:</b></span>
-                    <span th:text="${stage.description}">Description of the stage</span>
+                    <span th:text="${stage[5]}">Description of the stage</span>
                 </div>
             </div>
         </div>
@@ -68,23 +68,23 @@
                 <h3>Claim <span th:text="${iterStat.count}">1</span></h3>
                 <div class="stage-info">
                     <span><b>Claim ID:</b></span>
-                    <span th:text="${claim.claimId}">C001</span>
+                    <span th:text="${claim[0]}">C001</span>
                 </div>
                 <div class="stage-info">
                     <span><b>Claim Type:</b></span>
-                    <span th:text="${claim.claimType}">Enviromental</span>
+                    <span th:text="${claim[1]}">Enviromental</span>
                 </div>
                 <div class="stage-info">
                     <span><b>Text:</b></span>
-                    <span th:text="${claim.claimText}">xyz</span>
+                    <span th:text="${claim[2]}">xyz</span>
                 </div>
                 <div class="stage-info">
                     <span><b>Confidence Label:</b></span>
-                    <span th:text="${claim.confidence_label}">Verified</span>
+                    <span th:text="${claim[3]}">Verified</span>
                 </div>
                 <div class="stage-info">
                     <span><b>Rationale:</b></span>
-                    <span th:text="${claim.rationale}">xyz</span>
+                    <span th:text="${claim[4]}">xyz</span>
                 </div>
             </div>
         </div>
