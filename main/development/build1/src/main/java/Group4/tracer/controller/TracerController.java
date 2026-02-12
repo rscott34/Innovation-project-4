@@ -1,5 +1,6 @@
 package Group4.tracer.controller;
 
+import Group4.tracer.repository.EvidenceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +13,7 @@ import java.util.*;
 import Group4.tracer.repository.ProductRepository;
 import Group4.tracer.repository.StageRepository;
 import Group4.tracer.repository.ClaimRepository;
+import Group4.tracer.repository.EvidenceRepository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,6 +32,9 @@ public class TracerController {
 
     @Autowired
     private ClaimRepository claimRepository;
+
+    @Autowired
+    private EvidenceRepository  evidenceRepository;
 
     @GetMapping("/")
     public String showForm() {
