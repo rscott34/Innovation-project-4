@@ -12,7 +12,7 @@ public interface ClaimRepository extends JpaRepository<Claims, String> {
     //Search for the claimId
     //This is the SQL query that is run with each productId search
     @Query(value = "SELECT * " +
-            "FROM public.\"Claims\" " +
+            "FROM public.\"claims\" " +
             "WHERE product_id = :productId " +
             "ORDER BY claim_id ASC", nativeQuery = true)
 

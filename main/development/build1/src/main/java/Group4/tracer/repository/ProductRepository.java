@@ -12,7 +12,7 @@ public interface ProductRepository extends JpaRepository<Products, String> {
     //Search for the productId
     //This is the SQL query that is run with each productId search
     @Query(value = "SELECT * " +
-            "FROM public.\"Products\" " +
+            "FROM public.\"products\" " +
             "WHERE product_id = :productId " +
             "ORDER BY product_id ASC", nativeQuery = true)
 

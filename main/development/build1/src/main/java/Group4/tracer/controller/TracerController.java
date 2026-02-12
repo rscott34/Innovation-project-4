@@ -26,13 +26,10 @@ public class TracerController {
     //allows interaction with database
     @Autowired
     private ProductRepository productRepository; //dependency Injection,
-
     @Autowired
     private StageRepository stageRepository;
-
     @Autowired
     private ClaimRepository claimRepository;
-
     @Autowired
     private EvidenceRepository  evidenceRepository;
 

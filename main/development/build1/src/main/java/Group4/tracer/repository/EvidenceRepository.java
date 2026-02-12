@@ -12,7 +12,7 @@ public interface EvidenceRepository extends JpaRepository<Evidence, String> {
     //Search for the evidenceId
     //This is the SQL query that is run with each productId search
     @Query(value = "SELECT * " +
-            "FROM public.\"Evidence\" " +
+            "FROM public.\"evidence\" " +
             "WHERE product_id = :productId " +
             "ORDER BY evidence_id ASC", nativeQuery = true)
 

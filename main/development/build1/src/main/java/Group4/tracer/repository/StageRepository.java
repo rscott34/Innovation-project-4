@@ -12,7 +12,7 @@ public interface StageRepository extends JpaRepository<Stages, String> {
     //Search for the stageId
     //This is the SQL query that is run with each productId search
     @Query(value = "SELECT * " +
-            "FROM public.\"Stages\" " +
+            "FROM public.\"stages\" " +
             "WHERE product_id = :productId " +
             "ORDER BY stage_id ASC", nativeQuery = true)
 
