@@ -9,6 +9,8 @@ body {
     padding: 20px;
 }   
 
+/* Header */
+
 .header{
     text-align: center;
     justify-content: center;
@@ -19,6 +21,8 @@ body {
     margin-bottom: 10px;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
 }
+
+/* Search */
 
 .search {
     display: flex;
@@ -47,23 +51,39 @@ body {
     cursor: pointer;
 }
 
+/* Product Info */
 
-.product-card {
-    display: flex;
-    max-width: 600px;
+.product-section {
+    padding: 20px;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: grey;
     justify-content: center;
-    border: 1px solid #ccc;
-    border-radius: 15px;
-    padding: 30px;
-    margin: 0 auto;
+    margin-bottom: 20px;
 }
 
-.error-card {
-    display: flex;
+.traceability-section{
+    padding: 20px;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: grey;
     justify-content: center;
-    text-align: center;
-    border: 1px solid #ccc;
-    border-radius: 15px;
-    padding: 30px;
-    margin: 0 auto;
+    margin-bottom: 20px;
+}
+
+.stage-card {
+    margin-bottom: 20px;
+}
+
+.claim-section {
+    padding: 20px;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: grey;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.claim-card {
+    margin-bottom: 20px;
 }

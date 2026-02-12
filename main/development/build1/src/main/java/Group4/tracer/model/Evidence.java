@@ -1,7 +1,16 @@
 package Group4.tracer.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+
+@Entity
 public class Evidence {
+    @Id
     private String evidenceId;
+    @ManyToOne
+    @JoinColumn(name = "stage_id") //tells ide that stage_id has a many-to-one relation
     private Stages stageLinked = null;
     private String issuer;
     private String date;
@@ -35,6 +44,10 @@ public class Evidence {
         }
         return stageLinked;
     }
+
+    public Evidence() {
+    }
+
     //Setters and getters
     public void setStage(Stages stage) {
         stageLinked = stage;

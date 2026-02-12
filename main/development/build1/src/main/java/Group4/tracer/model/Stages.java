@@ -17,6 +17,14 @@ public class Stages {
     private String endDate;
     private String description;
 
+    public Stages(String stageId, String stageName, String location, String startDate, String endDate, String description) {
+        this.stageId = stageId;
+        this.stageName = StageType.valueOf(stageName);
+        this.location = location;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.description = description;
+    }
     //getters and setters
     public String getStageId() {
         return stageId;

@@ -3,7 +3,7 @@
 <head>
     <title>Tracer Input</title>
     <link rel="stylesheet" th:href="@{/style.css}">
-</head>
+</head> 
 <body>
     <div class="header">
         <h1>Enter Product ID</h1>
@@ -14,8 +14,8 @@
             <button type="submit">Send</button>
         </form>
     </div>
-    <div class="product-card" th:if="${productFound != null && productFound == true}">
-        <div class="card-body">
+    <main th:if="${productFound != null && productFound == true}"> 
+        <div class="product-section" >
             <div class="info">
                 <span class="label"> <b>Product ID:</b></span>
                 <span class="value" th:text="${productId}">P100</span>
@@ -33,12 +33,62 @@
                 <span class="value" th:text="${brand}">P100</span>
             </div>
             <div class="info">
+
                 <span class="label"><b>Description:</b></span>
                 <span class="value" th:text="${description}">P100</span>
             </div>
-            
         </div>
-    </div>
+        <div class="traceability-section">
+            <div class="stage-card" th:each="stage, iterStat : ${stages}">
+                <h3>Stage <span th:text="${iterStat.count}">1</span></h3>
+                <div class="stage-info">
+                    <span><b>Stage ID:</b></span>
+                    <span th:text="${stage.stageId}">S1-001</span>
+                </div>
+                <div class="stage-info">
+                    <span><b>Stage Type:</b></span>
+                    <span th:text="${stage.stageType}">Manufacturing</span>
+                </div>
+                <div class="stage-info">
+                    <span><b>Location:</b></span>
+                    <span th:text="${stage.location}">Italy</span>
+                </div>
+                <div class="stage-info">
+                    <span><b>Start Date:</b></span>
+                    <span th:text="${stage.startDate}">2024-01-01</span>
+                </div>
+                <div class="stage-info">
+                    <span><b>Description:</b></span>
+                    <span th:text="${stage.description}">Description of the stage</span>
+                </div>
+            </div>
+        </div>
+        <div class="claim-section"> 
+            <div class="claim-card" th:each="claim, iterStat : ${claims}">
+                <h3>Claim <span th:text="${iterStat.count}">1</span></h3>
+                <div class="stage-info">
+                    <span><b>Claim ID:</b></span>
+                    <span th:text="${claim.claimId}">C001</span>
+                </div>
+                <div class="stage-info">
+                    <span><b>Claim Type:</b></span>
+                    <span th:text="${claim.claimType}">Enviromental</span>
+                </div>
+                <div class="stage-info">
+                    <span><b>Text:</b></span>
+                    <span th:text="${claim.claimText}">xyz</span>
+                </div>
+                <div class="stage-info">
+                    <span><b>Confidence Label:</b></span>
+                    <span th:text="${claim.confidence_label}">Verified</span>
+                </div>
+                <div class="stage-info">
+                    <span><b>Rationale:</b></span>
+                    <span th:text="${claim.rationale}">xyz</span>
+                </div>
+            </div>
+        </div>
+    </main>
     <div class="error-card" th:if="${productFound != null && productFound == false}">
         <p th:text="${errorMessage}">Error message</p>
     </div>
