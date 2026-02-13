@@ -38,7 +38,7 @@
                 <span class="value" th:text="${description}">P100</span>
             </div>
         </div>
-        <div class="traceability-section">
+        <div class="traceability-section" th:if="${hasStages != null && hasStages == true}">
             <div class="stage-card" th:each="stage, iterStat : ${stages}">
                 <h3>Stage <span th:text="${iterStat.count}">1</span></h3>
                 <div class="stage-info">
@@ -63,7 +63,7 @@
                 </div>
             </div>
         </div>
-        <div class="claim-section"> 
+        <div class="claim-section" th:if="${hasClaims != null && hasClaims == true}"> 
             <div class="claim-card" th:each="claim, iterStat : ${claims}">
                 <h3>Claim <span th:text="${iterStat.count}">1</span></h3>
                 <div class="stage-info">

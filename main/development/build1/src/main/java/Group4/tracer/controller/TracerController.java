@@ -63,22 +63,29 @@ public class TracerController {
                 model.addAttribute("brand", p.getBrand());
                 model.addAttribute("description", p.getDescription());
 
-                for (int i = 0; i < traceData.length; i++) {
-                    Object[] stage = (Object[]) traceData[i];
-                    p.addStage(new Stages(
-                        stage[0].toString(), 
-                        stage[2].toString(), 
-                        stage[3].toString(), 
-                        stage[4].toString(), 
-                        "", 
-                        stage[6].toString()));
+                if (traceData != null && traceData.length > 0) { //if there are stages 
+                    for (int i = 0; i < traceData.length; i++) {
+                        Object[] stage = (Object[]) traceData[i];
+                        p.addStage(new Stages(
+                            stage[0].toString(), 
+                            stage[2].toString(), 
+                            stage[3].toString(), 
+                            stage[4].toString(), 
+                            "", 
+                            stage[6].toString()));
+                    }
+                    model.addAttribute("hasStages", true);
+                }
+                else {
+                    model.addAttribute("hasStages", false);
+                    System.out.println("No stages found for this product");
                 }
 
                 model.addAttribute("stages", p.getListOfStagesDetails());
                 
                 System.out.println(claimData);
 
-                if (claimData != null && claimData.length > 0) {
+                if (claimData != null && claimData.length > 0) { //if there are claims
                     for (int i = 0; i < claimData.length; i++) { //go through claims
                         Object[] claim = (Object[]) claimData[i]; //store claim 
 
@@ -98,6 +105,8 @@ public class TracerController {
                     model.addAttribute("hasClaims", false);
                     System.out.println("No claims found for this product");
                 }
+
+                System.out.println(evidenceData);
 
             }
             else {
