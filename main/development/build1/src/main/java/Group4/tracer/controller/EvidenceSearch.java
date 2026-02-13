@@ -17,7 +17,7 @@ public class EvidenceSearch {
     private EvidenceRepository evidenceRepository;
 
     @GetMapping("/search")
-    public Object[] searchStage(@RequestParam String id) {
+    public Object[] searchEvidence(@RequestParam String id) {
         //call SQL query from productRepository.java
         Object[] evidenceResult = evidenceRepository.findEvidenceArray(id);
 

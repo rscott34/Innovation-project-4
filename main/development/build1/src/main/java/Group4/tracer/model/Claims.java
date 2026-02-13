@@ -11,7 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Claims")
+@Table(name = "claims")
 public class Claims {
     @Id
     private String claimId; //primary key of table

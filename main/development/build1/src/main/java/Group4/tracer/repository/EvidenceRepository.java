@@ -9,14 +9,13 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface EvidenceRepository extends JpaRepository<Evidence, String> {
 
-    //Search for the evidenceId
-    //This is the SQL query that is run with each productId search
-    @Query(value = "SELECT * " +
-            "FROM public.\"evidence\" " +
-            "WHERE product_id = :productId " +
-            "ORDER BY evidence_id ASC", nativeQuery = true)
+    //SQL query that finds evidence for claims
+    @Query(value = "SELECT evidence.* " +
+            "FROM evidence " +
+            "JOIN Claims ON evidence.linked_to = Claims.claim_id " + //filter only claims that link to each other
+            "WHERE Claims.product_id = :productId " +
+            "ORDER BY evidence.evidence_id ASC", nativeQuery = true)
 
-    //findClaimArray takes a productId string and returns an array of product information
     Object[] findEvidenceArray(@Param("productId") String productId);
 
 }

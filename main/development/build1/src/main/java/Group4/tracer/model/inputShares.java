@@ -5,8 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Input_shares")
-public class Input_shares {
+@Table(name = "inputShares")
+public class inputShares {
 
     @Id
     private String inputId; //primary key for table
@@ -15,7 +15,7 @@ public class Input_shares {
     private float percentage; //percentage is stored as int in database, this may need changing
     private String notes;
 
-    public Input_shares() {
+    public inputShares() {
     }
 
     //getters and setters

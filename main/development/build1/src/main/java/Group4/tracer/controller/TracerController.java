@@ -40,9 +40,12 @@ public class TracerController {
             Object[] productData = productRepository.findProductArray(userInput); //stores array data
             Object[] traceData = stageRepository.findStageArray(userInput);
             Object[] claimData = claimRepository.findClaimArray(userInput);
+            Object[] evidenceData = evidenceRepository.findEvidenceArray(userInput);
+
 
             if (productData != null && productData.length > 0) { //checks if requested data exists in Products
                 System.out.println("Product found");
+                System.out.println(java.util.Arrays.deepToString(evidenceData));
 
                 Object[] innerProductData = (Object[]) productData[0];
                 Products p = new Products(
