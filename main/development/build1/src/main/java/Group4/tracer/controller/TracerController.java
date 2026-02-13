@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import Group4.tracer.model.Claims;
 import Group4.tracer.model.Products;
 import Group4.tracer.model.Stages;
-import Group4.tracer.model.Claims;
 import Group4.tracer.repository.ClaimRepository;
 import Group4.tracer.repository.EvidenceRepository;
 import Group4.tracer.repository.ProductRepository;
@@ -56,7 +56,7 @@ public class TracerController {
 
                 model.addAttribute("productId", p.getProductId());
                 model.addAttribute("name", p.getName());
-                model.addAttribute("category", p.getCategoryString());
+                model.addAttribute("category", p.getCategoryText());
                 model.addAttribute("brand", p.getBrand());
                 model.addAttribute("description", p.getDescription());
 

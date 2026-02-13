@@ -132,7 +132,7 @@ public class Products {
         for (Stages stage : stages) {
             String[] current = new String[6];
             current[0] = stage.getStageId();
-            current[1] = stage.getStageType().name();
+            current[1] = stage.getStageTypeText();
             current[2] = stage.getLocation();
             current[3] = stage.getStartDate();
             current[4] = stage.getEndDate();
@@ -193,7 +193,10 @@ public class Products {
     public ProductType getCategory() {
         return category;
     }
-    public String getCategoryString() {
+    public String getCategoryText() {
+        if (category == null) {
+            return "null";
+        }
         return category.name();
     }
     public void setCategory(ProductType category) {
@@ -202,11 +205,12 @@ public class Products {
 
     public final void setCategoryString(String category) {
         for (ProductType type : ProductType.values()) {
-            if (type.name().equalsIgnoreCase(category))
+            if (type.name().equalsIgnoreCase(category)) {
                 this.category = type;
-            else
-                this.category = null;
+                return;
+            }
         }
+        this.category = null;
     }
 
     public String getBrand() {

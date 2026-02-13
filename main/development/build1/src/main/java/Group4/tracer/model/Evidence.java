@@ -17,6 +17,9 @@ public class Evidence {
     private String summary;
     private String fileReference;
 
+    public Evidence() {
+    }
+
     public Evidence(String id, String stageLinked, String issuer, String date, String summary, String fileReference) {
         evidenceId = id;
         this.issuer = issuer;
@@ -43,9 +46,6 @@ public class Evidence {
             throw new IllegalStateException("There is not a stage linked with this piece.");
         }
         return stageLinked;
-    }
-
-    public Evidence() {
     }
 
     //Setters and getters
