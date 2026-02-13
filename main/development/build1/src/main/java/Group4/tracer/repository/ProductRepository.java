@@ -10,9 +10,9 @@ import org.springframework.stereotype.Repository;
 public interface ProductRepository extends JpaRepository<Products, String> {
 
     //Search for the productId
-    //This is the SQL query that is run with each productID search
+    //This is the SQL query that is run with each productId search
     @Query(value = "SELECT * " +
-            "FROM public.\"Products\" " +
+            "FROM public.\"products\" " +
             "WHERE product_id = :productId " +
             "ORDER BY product_id ASC", nativeQuery = true)
 
@@ -33,3 +33,4 @@ Object[] findTraceabilityArray(@Param("productId") String productId);
 
 
 // To proceed forward I need Wajih or Adam to tell me how to query the dataset since it cannot be hardcoded so that needs to be sorted.
+}
