@@ -27,7 +27,7 @@ public class Products {
     //creates a one-to-many relation between Products table and Input_shares table
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true) //enforces inheritance
     @JoinColumn(name = "product_id") //creates a foreign key in the InputShare table
-    private List<Input_shares> components = new ArrayList<>();
+    private List<inputShares> components = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "product_id")
@@ -55,7 +55,7 @@ public class Products {
         }
     }
 
-    public void addComponent(Input_shares item) {
+    public void addComponent(inputShares item) {
         if (item == null)
             throw new IllegalArgumentException("InputShare cannot be null");
         if (components == null)
@@ -66,15 +66,15 @@ public class Products {
     }
 
     public void removeComponent(String inputId) {
-        for (Input_shares item : components) {
+        for (inputShares item : components) {
             if (item.getInputId().equals(inputId)) {
                 components.remove(item);
                 return;
             }
         }
     }
-    public Input_shares getComponent (String inputId) {
-        for (Input_shares item : components) {
+    public inputShares getComponent (String inputId) {
+        for (inputShares item : components) {
             if (item.getInputId().equals(inputId))
                 return item;
         }
@@ -171,7 +171,7 @@ public class Products {
         if (components == null)
             return 0;
         float total = 0;
-        for (Input_shares input : components) {
+        for (inputShares input : components) {
             total += input.getPercentage();
         }
         return total;
