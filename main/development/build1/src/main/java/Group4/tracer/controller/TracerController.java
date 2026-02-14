@@ -1,5 +1,7 @@
 package Group4.tracer.controller;
 
+import java.util.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,7 +44,6 @@ public class TracerController {
             Object[] claimData = claimRepository.findClaimArray(userInput);
             Object[] evidenceData = evidenceRepository.findEvidenceArray(userInput);
 
-
             if (productData != null && productData.length > 0) { //checks if requested data exists in Products
                 System.out.println("Product found");
                 System.out.println(java.util.Arrays.deepToString(evidenceData));
@@ -82,13 +83,10 @@ public class TracerController {
                 }
 
                 model.addAttribute("stages", p.getListOfStagesDetails());
-                
-                System.out.println(claimData);
 
                 if (claimData != null && claimData.length > 0) { //if there are claims
-                    for (int i = 0; i < claimData.length; i++) { //go through claims
-                        Object[] claim = (Object[]) claimData[i]; //store claim 
-
+                    for (int i = 0; i < claimData.length; i++) {
+                        Object[] claim = (Object[]) claimData[i];
                         p.addClaim(new Claims(
                             claim[0].toString(), 
                             claim[2].toString(), 
@@ -96,17 +94,30 @@ public class TracerController {
                             claim[4].toString(), 
                             claim[5].toString()));
                     }
-
                     model.addAttribute("hasClaims", true);     
                     model.addAttribute("claims", p.getListOfClaimsDetails());
-
                 }
                 else {
                     model.addAttribute("hasClaims", false);
-                    System.out.println("No claims found for this product");
                 }
 
-                System.out.println(evidenceData);
+                List<String[]> evidenceList = new ArrayList<>();
+                if (evidenceData != null && evidenceData.length > 0) {
+                    for (int j = 0; j < evidenceData.length; j++) {
+                        Object[] ev = (Object[]) evidenceData[j];
+                        evidenceList.add(new String[]{ 
+                            ev[0].toString(), 
+                            ev[2].toString(), // skip claim_id 
+                            ev[3].toString(), 
+                            ev[4].toString(), 
+                            ev[5].toString(), 
+                            ev[6].toString() });
+                    }
+                    model.addAttribute("evidence", evidenceList);
+                } else {
+                    model.addAttribute("evidence", null);
+                    System.out.println("No evidence found for this product");
+                }
 
             }
             else {

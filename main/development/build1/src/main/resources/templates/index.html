@@ -16,6 +16,7 @@
     </div>
     <main th:if="${productFound != null && productFound == true}"> 
         <div class="product-section" >
+            <h2 class="section-header">Product Information</h2>
             <div class="info">
                 <span class="label"> <b>Product ID:</b></span>
                 <span class="value" th:text="${productId}">P100</span>
@@ -39,6 +40,7 @@
             </div>
         </div>
         <div class="traceability-section" th:if="${hasStages != null && hasStages == true}">
+            <h2 class="section-header">Traceability Stages</h2>
             <div class="stage-card" th:each="stage, iterStat : ${stages}">
                 <h3>Stage <span th:text="${iterStat.count}">1</span></h3>
                 <div class="stage-info">
@@ -63,8 +65,9 @@
                 </div>
             </div>
         </div>
-        <div class="claim-section" th:if="${hasClaims != null && hasClaims == true}"> 
-            <div class="claim-card" th:each="claim, iterStat : ${claims}">
+        <div class="claim-section" th:if="${hasClaims != null && hasClaims == true}">
+            <h2 class="section-header">Claims and Evidence</h2>
+            <div class="claim-card" th:each="claim, iterStat : ${claims}"> 
                 <h3>Claim <span th:text="${iterStat.count}">1</span></h3>
                 <div class="stage-info">
                     <span><b>Claim ID:</b></span>
@@ -85,6 +88,34 @@
                 <div class="stage-info">
                     <span><b>Rationale:</b></span>
                     <span th:text="${claim[4]}">xyz</span>
+                </div>
+                <div class="evidence-section" th:if="${evidence != null}" th:with="ev=${evidence[iterStat.index]}">
+                    <div class="evidence-card" th:if="${ev != null}">
+                        <div class="evidence-info">
+                            <span><b>Evidence Id:</b></span>
+                            <span th:text="${ev[0]}">E001</span>
+                        </div>
+                        <div class="evidence-info">
+                            <span><b>Evidence Type:</b></span>
+                            <span th:text="${ev[1]}">Certificate</span>
+                        </div>
+                        <div class="evidence-info">
+                            <span><b>Issuer:</b></span>
+                            <span th:text="${ev[2]}">V1</span>
+                        </div>
+                        <div class="evidence-info">
+                            <span><b>Date:</b></span>
+                            <span th:text="${ev[3]}">2025-01-15</span>
+                        </div>
+                        <div class="evidence-info">
+                            <span><b>Summary:</b></span>
+                            <span th:text="${ev[4]}">Summary</span>
+                        </div>
+                        <div class="evidence-info">
+                            <span><b>File Reference:</b></span>
+                            <span th:text="${ev[5]}">E001</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
