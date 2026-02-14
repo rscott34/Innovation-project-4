@@ -11,10 +11,12 @@ import Group4.tracer.model.Claims;
 import Group4.tracer.model.Evidence;
 import Group4.tracer.model.Products;
 import Group4.tracer.model.Stages;
+import Group4.tracer.model.User;
 import Group4.tracer.repository.ClaimRepository;
 import Group4.tracer.repository.EvidenceRepository;
 import Group4.tracer.repository.ProductRepository;
 import Group4.tracer.repository.StageRepository;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class TracerController {
@@ -30,12 +32,23 @@ public class TracerController {
     private EvidenceRepository  evidenceRepository;
 
     @GetMapping("/")
-    public String showForm() {
-        return "index"; // loads index.html
+    public String showForm(HttpSession session) {
+        User currentUser = (User) session.getAttribute("user");
+        if (currentUser == null) {
+            return "redirect:/login";
+        }
+        return "index";
     }
 
+
     @PostMapping("/submit")
-    public String handleInput(@RequestParam String userInput, Model model) { //takes input from search box
+    public String handleInput(@RequestParam String userInput, Model model, HttpSession session) { //takes input from search box
+        User currentUser = (User) session.getAttribute("user");
+        if (currentUser == null) {
+            return "redirect:/login";
+        }
+        model.addAttribute("currentUser", currentUser);
+        
         if (userInput != null) {
 
             Object[] productData = productRepository.findProductArray(userInput); //stores array data
@@ -131,6 +144,45 @@ public class TracerController {
         }
         return "index";
     }
+
+    @GetMapping("/login")
+    public String showLoginForm(HttpSession session) {
+        if (session.getAttribute("user") != null) {
+            return "redirect:/";
+        }
+        return "login";
+    }
+
+    @PostMapping("/login")
+    public String handleLogin(@RequestParam String username, @RequestParam String password, Model model, HttpSession session) {
+        if (username == null || username.trim().isEmpty() || 
+            password == null || password.trim().isEmpty()) {
+            return "login";
+        }
+        //SQL query for determining if user is right goes here!!
+        
+        boolean userFound = false;
+        String userDB = "Test";
+        String passDB = "1234";
+        String userType = "Verifier";
+        //Change next line for better check
+        if (userDB.equals(username) && passDB.equals(password)) {
+            String userId = "U001";
+            User user = new User(
+                userId, 
+                username, 
+                password, 
+                userType);
+            
+            session.setAttribute("user", user);
+            session.setAttribute("userId", user.getUserId());
+            session.setAttribute("userType", user.getUserTypeText());
+
+            return "redirect:/";
+        } else {
+            return "login";
+        }
+    }
 }
 
 /*IMPORTANT NOTES FOR BACKEND: - from Waj ;)
@@ -139,3 +191,4 @@ The array output is stored in the variable productData
 this is in the format       [["P100","T-shirt","CLOTHING","Next","T-shirt from Spain"]]
 
  */
+
