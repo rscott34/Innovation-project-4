@@ -1,5 +1,7 @@
 package Group4.tracer.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import Group4.tracer.enums.UserType;
 import Group4.tracer.model.Claims;
 import Group4.tracer.model.Evidence;
 import Group4.tracer.model.Products;
@@ -37,10 +40,16 @@ public class TracerController {
         if (currentUser == null) {
             return "redirect:/login";
         }
+        if (currentUser.getUserType().equals(UserType.Verifier)) {
+            return "product_edit";
+        }
         return "index";
     }
 
-
+    @GetMapping("/submit")
+    public String handleInput() { //takes input from search box
+        return "redirect:/";
+    }
     @PostMapping("/submit")
     public String handleInput(@RequestParam String userInput, Model model, HttpSession session) { //takes input from search box
         User currentUser = (User) session.getAttribute("user");
@@ -142,6 +151,9 @@ public class TracerController {
             model.addAttribute("productFound", false);
             model.addAttribute("errorMessage", "No input provided.");
         }
+        if (currentUser.getUserType().equals(UserType.Verifier)) {
+            return "product_edit";
+        }
         return "index";
     }
 
@@ -161,7 +173,6 @@ public class TracerController {
         }
         //SQL query for determining if user is right goes here!!
         
-        boolean userFound = false;
         String userDB = "Test";
         String passDB = "1234";
         String userType = "Verifier";
@@ -182,6 +193,22 @@ public class TracerController {
         } else {
             return "login";
         }
+    }
+
+    @PostMapping("/save")
+    public String handleSave(@RequestParam Map<String, String> allParams, 
+                            Model model, 
+                            HttpSession session) {
+        
+        User currentUser = (User) session.getAttribute("user");
+        if (currentUser == null) {
+            return "redirect:/login";
+        }
+        //Process and save all the updated data
+        //Need to extract the parameters and update database
+        System.out.println(allParams.toString());
+    
+        return "redirect:/";
     }
 }
 
