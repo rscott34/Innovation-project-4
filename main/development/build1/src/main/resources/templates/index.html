@@ -89,7 +89,7 @@
                     <span><b>Rationale:</b></span>
                     <span th:text="${claim[4]}">xyz</span>
                 </div>
-                <div class="evidence-section" th:if="${evidence != null}" th:with="ev=${evidence[iterStat.index]}">
+                <div class="evidence-section" th:if="${evidence != null}" th:each="ev, iterStat : ${evidence}">
                     <div class="evidence-card" th:if="${ev != null}">
                         <div class="evidence-info">
                             <span><b>Evidence Id:</b></span>

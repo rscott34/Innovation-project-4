@@ -1,7 +1,5 @@
 package Group4.tracer.controller;
 
-import java.util.*;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import Group4.tracer.model.Claims;
+import Group4.tracer.model.Evidence;
 import Group4.tracer.model.Products;
 import Group4.tracer.model.Stages;
 import Group4.tracer.repository.ClaimRepository;
@@ -100,20 +99,21 @@ public class TracerController {
                 else {
                     model.addAttribute("hasClaims", false);
                 }
-
-                List<String[]> evidenceList = new ArrayList<>();
+                
                 if (evidenceData != null && evidenceData.length > 0) {
+                    Claims claim = p.getClaimByIndex(0);
                     for (int j = 0; j < evidenceData.length; j++) {
                         Object[] ev = (Object[]) evidenceData[j];
-                        evidenceList.add(new String[]{ 
+                        claim.addEvidence(new Evidence(
                             ev[0].toString(), 
                             ev[2].toString(), // skip claim_id 
                             ev[3].toString(), 
                             ev[4].toString(), 
                             ev[5].toString(), 
-                            ev[6].toString() });
+                            ev[6].toString()));
+                        System.out.println(ev[1].toString());
                     }
-                    model.addAttribute("evidence", evidenceList);
+                    model.addAttribute("evidence", claim.getListOfEvidenceDetails());
                 } else {
                     model.addAttribute("evidence", null);
                     System.out.println("No evidence found for this product");

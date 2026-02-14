@@ -12,6 +12,7 @@ public class Evidence {
     @ManyToOne
     @JoinColumn(name = "stage_id") //tells ide that stage_id has a many-to-one relation
     private Stages stageLinked = null;
+    private String evidenceType;
     private String issuer;
     private String date;
     private String summary;
@@ -20,16 +21,18 @@ public class Evidence {
     public Evidence() {
     }
 
-    public Evidence(String id, String stageLinked, String issuer, String date, String summary, String fileReference) {
+    public Evidence(String id, String stageLinked, String evidenceType, String issuer, String date, String summary, String fileReference) {
         evidenceId = id;
+        this.evidenceType = evidenceType;
         this.issuer = issuer;
         this.date = date;
         this.summary = summary;
         this.fileReference = fileReference;
         // **TO DO** - write stageLinked part (later)
     }
-    public Evidence(String id, String issuer, String date, String summary, String fileReference) {
+    public Evidence(String id, String evidenceType, String issuer, String date, String summary, String fileReference) {
         evidenceId = id;
+        this.evidenceType = evidenceType;
         this.issuer = issuer;
         this.date = date;
         this.summary = summary;
@@ -75,5 +78,8 @@ public class Evidence {
     }
     public String getFileRef() {
         return fileReference;
+    }
+    public String getEvidenceType() {
+        return evidenceType;
     }
 }
