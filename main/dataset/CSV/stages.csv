@@ -1,7 +1,7 @@
 stage_id,product_id,stage_type,location,start_date,end_date,description,stage_name
 S0-001,P000,Raw Materials,"Catalonia, Spain",15/3/2025,,Olives harvested from olive tree field by machine shaking tree,
-S0-002,P000,Processing,"Tarragona, Spain",17/3/2025,,"Cured, fermented, flavoured, and packed into jars",
-S0-003,P000,Assembly,"Tarragona, Spain",19/3/2025,,"Jars packed into crates, and wrapped",
+S0-002,P000,Processing,"Tarragona, Spain",17/3/2025,,"Cured, fermented, flavoured, pressed, and collected",
+S0-003,P000,Assembly,"Tarragona, Spain",19/3/2025,,"Oil poured into plastic bottles, packed into crates, and wrapped",
 S0-004,P000,Transport,"London Gateway Port, United Kingdom",22/3/2025,,"Refrigerated lorry, and ferry",
 S0-005,P000,Retail,"Tesco Supermarket, London, United Kingdom",25/3/2025,,Displayed on supermarket shelves,
 S1-001,P001,Raw Materials,"Tuscany, Italy",2/6/2025,,"Precious metals collected from mines, leather stripped from cow, and wool collected from sheep.",
@@ -49,3 +49,4 @@ S9-002,P009,Processing,"Wingham, United Kingdom",2/10/2025,,"Washed, sorted, rip
 S9-003,P009,Assembly,"Kent, United Kingdom",4/10/2025,,Crates palletised and shrink-wrapped,
 S9-004,P009,Transport,"National Road Network, United Kingdom",7/10/2025,,Refrigerated lorry via road,
 S9-005,P009,Retail,"London, United Kingdom",10/10/2025,,Displayed loose or bagged in supermarket,
+
