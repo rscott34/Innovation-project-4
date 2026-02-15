@@ -1,0 +1,201 @@
+name,category,brand,description
+Olives,FOOD,Tesco,Olives from Spain
+Gucci Handbag,FOOD,Tesco,Gucci Handbag from Italy
+Orange,FOOD,Tesco,Orange from Belgium
+Strawberry,FOOD,Tesco,Fresh Strawberries from France
+Blueberry,FOOD,Tesco,A punnet of Blueberries from Italy
+Grapes,FOOD,Tesco,A bunch of Grapes from Spain
+Mango,FOOD,Tesco,Mango from Poland
+Pineapple,FOOD,Tesco,Pineapple from Czech Republic
+Watermelon,FOOD,Tesco,Watermelon from Sweden
+Pear,FOOD,Tesco,Pear from Austria
+Carrot,FOOD,Tesco,Carrot from Denmark
+Broccoli,FOOD,Tesco,Head of Broccoli from Finland
+Spinach,FOOD,Tesco,Bag of Spinach from Hungary
+Kale,FOOD,Tesco,Fresh Kale from Slovakia
+Tomato,FOOD,Tesco,Tomato from Romania
+Cucumber,FOOD,Tesco,Cucumber from Portugal
+Bell Pepper,FOOD,Tesco,Bell Pepper from Norway
+Potato,FOOD,Tesco,Sack of Potatoes from Switzerland
+Onion,FOOD,Tesco,Onion from United Kingdom
+Garlic,FOOD,Tesco,Clove of Garlic from Germany
+Chicken Breast,FOOD,Tesco,Chicken Breast from Netherlands
+Beef Steak,FOOD,Tesco,Beef Steak from Belgium
+Pork Chop,FOOD,Tesco,Pork Chop from France
+Salmon Fillet,FOOD,Tesco,Fillet of Salmon from Italy
+Tuna Fillet,FOOD,Tesco,Tuna from Spain
+Milk,FOOD,Tesco,Carton of Milk from Poland
+Cheddar Cheese,FOOD,Tesco,Block of Cheddar Cheese from Czech Republic
+Yogurt,FOOD,Tesco,Pot of Yogurt from Sweden
+Butter,FOOD,Tesco,Pack of Butter from Austria
+Rice,FOOD,Tesco,Bag of Rice from Denmark
+Pasta,FOOD,Tesco,Box of Pasta from Finland
+Bread,FOOD,Tesco,Loaf of Bread from Hungary
+Eggs,FOOD,Tesco,Dozen eggs from Slovakia
+Oats,FOOD,Tesco,Bag of Oats from Romania
+Quinoa,FOOD,Tesco,Bag of Quinoa from Portugal
+Lentils,FOOD,Tesco,Bag of Lentils from Norway
+Chickpeas,FOOD,Tesco,Can of Chickpeas from Switzerland
+Almonds,FOOD,Tesco,Bag of Almonds from United Kingdom
+Walnuts,FOOD,Tesco,Bag of Walnuts from Germany
+Peanuts,FOOD,Tesco,Bag of Peanuts from Netherlands
+Olive Oil,FOOD,Tesco,Bottle of Olive Oil from Belgium
+Tomato Sauce,FOOD,Tesco,Jar of Tomato Sauce from France
+Honey,FOOD,Tesco,Pot of Honey from Italy
+Sugar,FOOD,Tesco,Bag of Sugar from Spain
+Salt,FOOD,Tesco,Pot of Salt from Poland
+Black Pepper,FOOD,Tesco,Black Pepper from Czech Republic
+Cinnamon,FOOD,Tesco,Cinnamon from Sweden
+Chocolate,FOOD,Tesco,Bar of Chocolate from Austria
+Coffee Beans,FOOD,Tesco,Jar of Coffee from Denmark
+Tea Bags,FOOD,Tesco,Box of Tea from Finland
+Rolex Watch,LUXURY,Rolex,Watch from Hungary
+Patek Philippe Watch,LUXURY,Patek Philippe,Watch from Slovakia
+Cartier Necklace,LUXURY,Cartier,Necklace from Romania
+Tiffany & Co. Ring,LUXURY,Tiffany & Co.,Ring from Portugal
+Panerai Watch,LUXURY,Panerai,Watch from Norway
+Omega Watch,LUXURY,Omega,Watch from Switzerland
+Bvlgari Watch,LUXURY,Bvlgari,Watch from United Kingdom
+Van Cleef & Arpels Jewelry,LUXURY,Van Cleef & Arpels,Jewelry from Germany
+Chopard Jewelry,LUXURY,Chopard,Jewelry from Netherlands
+Audemars Piguet Watch,LUXURY,Audemars Piguet,Watch from Belgium
+Hermès Birkin Bag,LUXURY,Hermès,Birkin Bag from France
+Chanel Handbag,LUXURY,Chanel,Handbag from Italy
+Louis Vuitton Bag,LUXURY,Louis Vuitton,Bag from Spain
+Prada Handbag,LUXURY,Prada,Handbag from Poland
+Gucci Shoes,LUXURY,Gucci,Pair of Shoes from Czech Republic
+Balenciaga Sneakers,LUXURY,Balenciaga,Pair of Sneakers from Sweden
+Fendi Jacket,LUXURY,Fendi,Jacket from Austria
+Burberry Coat,LUXURY,Burberry,Coat from Denmark
+Moncler Jacket,LUXURY,Moncler,Jacket from Finland
+Hermès Scarf,LUXURY,Hermès,Scarf from Hungary
+Ray Ban Sunglasses,LUXURY,Ray Ban,Pair of Sunglasses from Slovakia
+Tom Ford Sunglasses,LUXURY,Tom Ford,Pair of Sunglasses from Romania
+Loro Piana Cashmere Sweater,LUXURY,Loro Piana,Cashmere Sweater from Portugal
+Christian Louboutin Shoes,LUXURY,Christian Louboutin,Pair of Shoes from Norway
+Ralph Lauren Shirt,LUXURY,Ralph Lauren,Shirt from Switzerland
+Ferrari Car,LUXURY,Ferrari,Car from United Kingdom
+Lamborghini Car,LUXURY,Lamborghini,Car from Germany
+Bentley Car,LUXURY,Bentley,Car from Netherlands
+Rolls-Royce Car,LUXURY,Rolls-Royce,Car from Belgium
+Maserati Car,LUXURY,Maserati,Car from France
+Tesla Model S,LUXURY,Tesla,Model S from Italy
+Aston Martin Car,LUXURY,Aston Martin,Car from Spain
+Yacht,LUXURY,Sunseeker,Yacht from Poland
+Private Jet,LUXURY,Boeing,Private Jet from Czech Republic
+Bugatti Car,LUXURY,Bugatti,Car from Sweden
+Moët & Chandon Champagne,LUXURY,Moët & Chandon,Bottle of Champagne from Austria
+Dom Pérignon Champagne,LUXURY,Dom Pérignon,Bottle of Champagne from Denmark
+Krug Champagne,LUXURY,Krug,Bottle of Champagne from Finland
+Louis XIII Cognac,LUXURY,Louis XIII,Bottle of Cognac from Hungary
+Hennessy Cognac,LUXURY,Hennessy,Bottle of Cognac from Slovakia
+Vintage Wine,LUXURY,The Italian Wine Shop,Vintage Wine from Romania
+Bang & Olufsen Speaker,LUXURY,Bang & Olufsen,Speaker from Portugal
+Bose High-End Headphones,LUXURY,Bose,Headphones from Norway
+MacBook Pro,LUXURY,Apple,Laptop from Switzerland
+Sony Master Series TV,LUXURY,Sony,TV from United Kingdom
+iPhone 17,LUXURY,Apple,Smartphone from Germany
+Rimowa Luggage,LUXURY,Rimowa,Luggage from Netherlands
+Steinway & Sons Piano,LUXURY,Steinway & Sons,Piano from Belgium
+Caviar,LUXURY,Harrods,Tin of Caviar from France
+Chocolate Truffle,LUXURY,Harrods,Fresh Truffle from Italy
+T-shirt,CLOTHING,Next,T-shirt from Spain
+Shirt,CLOTHING,Crew Clothing Company,Shirt from Poland
+Blouse,CLOTHING,H&M,Blouse from Czech Republic
+Tank Top,CLOTHING,H&M,Tank Top from Sweden
+Polo Shirt,CLOTHING,Penguin,Polo Shirt from Austria
+Sweater,CLOTHING,Paul Smith,Sweater from Denmark
+Hoodie,CLOTHING,Nicce,Hoodie from Finland
+Cardigan,CLOTHING,Next,Cardigan from Hungary
+Skirt,CLOTHING,Hollister,Skirt from Slovakia
+Pants,CLOTHING,Calvin Klein,Pants from Romania
+Jeans,CLOTHING,Levi,Jeans from Portugal
+Shorts,CLOTHING,Nike,Shorts from Norway
+Leggings,CLOTHING,Adidas,Leggings from Switzerland
+Chinos,CLOTHING,Levi,Chinos from United Kingdom
+Sweatpants,CLOTHING,Nike,Sweatpants from Germany
+Jacket,CLOTHING,Mountain Warehouse,Jacket from Netherlands
+Coat,CLOTHING,Tommy Hilfiger,Coat from Belgium
+Trench Coat,CLOTHING,H&M,Trench Coat from France
+Blazer,CLOTHING,Moss Bros,Blazer from Italy
+Suit Jacket,CLOTHING,Charles Tyrwhitt,Suit Jacket from Spain
+Stockings,CLOTHING,M&S,Stockings from Poland
+Tights,CLOTHING,M&S,Tights from Czech Republic
+Bra,CLOTHING,Victoria Secret,Bra from Sweden
+Boxers,CLOTHING,Calvin Klein,Boxers from Austria
+Briefs,CLOTHING,M&S,Briefs from Denmark
+Swim Shorts,CLOTHING,Quicksilver,Swim Shorts from Finland
+Swimsuit,CLOTHING,Quicksilver,Swimsuit from Hungary
+Bikini,CLOTHING,Victoria Secret,Bikini from Slovakia
+Shoes,CLOTHING,Next,Shoes from Romania
+Sneakers,CLOTHING,Nike,Sneakers from Portugal
+Boots,CLOTHING,Timberland,Boots from Norway
+Sandals,CLOTHING,Next,Sandals from Switzerland
+Loafers,CLOTHING,John Lewis,Loafers from United Kingdom
+Heels,CLOTHING,New Look,Heels from Germany
+Flip Flops,CLOTHING,Havianas,Flip Flops from Netherlands
+Slippers,CLOTHING,M&S,Slippers from Belgium
+Scarf,CLOTHING,Sainsburys,Scarf from France
+Hat,CLOTHING,Nike,Hat from Italy
+Beanie,CLOTHING,Tesco,Beanie from Spain
+Cap,CLOTHING,Adidas,Cap from Poland
+Gloves,CLOTHING,Tesco,Gloves from Czech Republic
+Belt,CLOTHING,Hugo Boss,Belt from Sweden
+Tie,CLOTHING,Moss Bros,Tie from Austria
+Bow Tie,CLOTHING,Moss Bros,Bow Tie from Denmark
+Socks,CLOTHING,Nike,Socks from Finland
+Dress,CLOTHING,John Lewis,Dress from Hungary
+Tracksuit,CLOTHING,Adidas,Tracksuit from Slovakia
+Overalls,CLOTHING,Levi,Overalls from Romania
+Jumpsuit,CLOTHING,Next,Jumpsuit from Portugal
+Pajamas,CLOTHING,M&S,Pajamas from Norway
+Sofa,HOME,John Lewis,Sofa from Switzerland
+Armchair,HOME,DFS,Armchair from United Kingdom
+Dining Table,HOME,John Lewis,Dining Table from Germany
+Dining Chair,HOME,John Lewis,Dining Chair from Netherlands
+Bed Frame,HOME,Fishpools,Bed from Belgium
+Wardrobe,HOME,John Lewis,Wardrobe from France
+Dresser,HOME,John Lewis,Dresser from Italy
+Nightstand,HOME,Ikea,Nightstand from Spain
+Coffee Table,HOME,Ikea,Coffee Table from Poland
+Bookshelf,HOME,John Lewis,Bookshelf from Czech Republic
+TV Stand,HOME,Ikea,TV Stand from Sweden
+Desk,HOME,Ikea,Desk from Austria
+Office Chair,HOME,John Lewis,Office Chair from Denmark
+Refrigerator,HOME,Russel Hobs,Refrigerator from Finland
+Oven,HOME,Bosch,Oven from Hungary
+Microwave,HOME,Bosch,Microwave from Slovakia
+Dishwasher,HOME,Bosch,Dishwasher from Romania
+Cutlery Set,HOME,Dunelm,Cutlery Set from Portugal
+Plates,HOME,Dunelm,Plates from Norway
+Bowls,HOME,Dunelm,Bowls from Switzerland
+Glasses,HOME,Dunelm,Glasses from United Kingdom
+Mugs,HOME,Sainsburys,Mugs from Germany
+Cooking Pots,HOME,Le Creuset,Cooking Pots from Netherlands
+Pans,HOME,Tesco,Pans from Belgium
+Toaster,HOME,Russel Hobs,Toaster from France
+Kettle,HOME,Russel Hobs,Kettle from Italy
+Coffee Machine,HOME,Nescafe,Coffee Machine from Spain
+Towels,HOME,Tesco,Towels from Poland
+Shower Curtain,HOME,Dunelm,Shower Curtain from Czech Republic
+Blankets,HOME,John Lewis,Blankets from Sweden
+Bedding Set,HOME,John Lewis,Bedding Set from Austria
+Pillows,HOME,Dunelm,Pillows from Denmark
+Mattress,HOME,Emma,Mattress from Finland
+Mirror,HOME,Sainsburys,Mirror from Hungary
+Picture Frame,HOME,Sainsburys,Picture Frame from Slovakia
+Vase,HOME,John Lewis,Vase from Romania
+Candle,HOME,Yankee,Candle from Portugal
+Books,HOME,Waterstones,Books from Norway
+Lampshade,HOME,John Lewis,Lampshade from Switzerland
+Floor Lamp,HOME,Tesco,Floor Lamp from United Kingdom
+Wall Clock,HOME,John Lewis,Wall Clock from Germany
+Rug,HOME,Fishpools,Rug from Netherlands
+Curtains,HOME,John Lewis,Curtains from Belgium
+Blinds,HOME,Ikea,Blinds from France
+Plant Pot,HOME,Ikea,Plant Pot from Italy
+Washing Machine,HOME,Bosch,Washing Machine from Spain
+Dryer,HOME,Bosch,Dryer from Poland
+Vacuum Cleaner,HOME,Dyson,Vacuum Cleaner from Czech Republic
+Heater,HOME,Dyson,Heater from Sweden
+Ceiling Fan,HOME,Dyson,Ceiling Fan from Austria
