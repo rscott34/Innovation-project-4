@@ -1,5 +1,5 @@
 product_id,name,category,brand,description
-P000,Olives,FOOD,Tesco,Olives from Spain
+P000,Olive Oil,FOOD,Tesco,Olive oil from Spain
 P001,Gucci Handbag,LUXURY,Gucci,Gucci Handbag from Italy
 P002,Orange,FOOD,Tesco,Orange from Belgium
 P003,Strawberry,FOOD,Tesco,Fresh Strawberries from France
@@ -199,3 +199,4 @@ P196,Dryer,HOME,Bosch,Dryer from Poland
 P197,Vacuum Cleaner,HOME,Dyson,Vacuum Cleaner from Czech Republic
 P198,Heater,HOME,Dyson,Heater from Sweden
 P199,Ceiling Fan,HOME,Dyson,Ceiling Fan from Austria
+
