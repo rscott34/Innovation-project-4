@@ -47,6 +47,12 @@ public class TraceabilityQuestionSystem {
         public String getDescription() { return description; }
         public String getEvidenceLink() { return evidenceLink; }
         
+        public String getRawMaterials() { return rawMaterials; }
+        public String getProcessing() { return processing; }
+        public String getAssembly() { return assembly; }
+        public String getTransport() { return transport; }
+        public String getRetail() { return retail; }
+        
         // Get traceability value by topic
         public String getTraceabilityValue(String topic) {
             switch (topic.toLowerCase()) {
