@@ -1,3 +1,3 @@
 evidence_id,linked_to,type,issuer,date,summary,file_reference
-E1,C001,Certificate,V1,2025-01-15,certificate for eu organic label,main/dataset/eu-organic-logo-600x400_0.png
-E2,C003,Certificate,V2,2025-01-28,Fair Labor Association(FLA) verification,main/dataset/FairLaborAccreditationBadge_ONLYFORAPPROVEDUSE-e1726245330900.png
+E1,C001,Certificate,V1,2025-01-15,certificate for eu organic label,main/dataset/assets/eu-organic-logo-600x400_0.png
+E2,C003,Certificate,V2,2025-01-28,Fair Labor Association(FLA) verification,main/dataset/assets/FairLaborAccreditationBadge_ONLYFORAPPROVEDUSE-e1726245330900.png
