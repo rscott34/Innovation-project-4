@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Edit Stage</title><link rel="stylesheet" th:href="@{/style.css}"></head>
+<body style="padding: 20px;">
+    <h2>Edit Timeline Stage Data</h2>
+    <form action="/update-stage" method="post">
+        <input type="hidden" name="stageId" th:value="${stageId}" />
+        <p><strong>Editing Stage ID:</strong> <span th:text="${stageId}"></span></p>
+
+        <label>Update Location:</label><br/>
+        <input type="text" name="newLocation" placeholder="Enter new location/materials..." required style="width: 300px; padding: 5px;"/>
+        <br/><br/>
+        <button type="submit">Save Changes</button>
+    </form>
+    <br/>
+    <a href="/">Cancel</a>
+</body>
+</html>
