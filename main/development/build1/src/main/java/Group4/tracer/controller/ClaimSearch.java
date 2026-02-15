@@ -13,7 +13,7 @@ public class ClaimSearch {
     private ClaimRepository claimRepository;
 
     @GetMapping("/search")
-    public Object[] searchStage(@RequestParam String id) {
+    public Object[] searchClaim(@RequestParam String id) {
         //call SQL query from productRepository.java
         Object[] claimResult = claimRepository.findClaimArray(id);
 

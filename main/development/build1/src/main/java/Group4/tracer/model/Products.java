@@ -27,7 +27,7 @@ public class Products {
     //creates a one-to-many relation between Products table and Input_shares table
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true) //enforces inheritance
     @JoinColumn(name = "product_id") //creates a foreign key in the InputShare table
-    private List<Input_shares> components = new ArrayList<>();
+    private List<inputShares> components = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "product_id")
@@ -55,7 +55,7 @@ public class Products {
         }
     }
 
-    public void addComponent(Input_shares item) {
+    public void addComponent(inputShares item) {
         if (item == null)
             throw new IllegalArgumentException("InputShare cannot be null");
         if (components == null)
@@ -66,15 +66,15 @@ public class Products {
     }
 
     public void removeComponent(String inputId) {
-        for (Input_shares item : components) {
+        for (inputShares item : components) {
             if (item.getInputId().equals(inputId)) {
                 components.remove(item);
                 return;
             }
         }
     }
-    public Input_shares getComponent (String inputId) {
-        for (Input_shares item : components) {
+    public inputShares getComponent (String inputId) {
+        for (inputShares item : components) {
             if (item.getInputId().equals(inputId))
                 return item;
         }
@@ -110,16 +110,33 @@ public class Products {
         return claims.get(index);
     }
 
-    String[][] getListOfClaimsDetails () {
+    public String[][] getListOfClaimsDetails () {
         int i = 0;
         String[][] result = new String[claims.size()][5];
-        for (Claims claims : claims) {
+        for (Claims claim : claims) {
             String[] current = new String[5];
-            current[0] = claims.getClaimId();
-            current[1] = claims.getClaimType();
-            current[2] = claims.getClaimText();
-            current[3] = claims.getConfidenceLabelText();
-            current[4] = claims.getRationale();
+            current[0] = claim.getClaimId();
+            current[1] = claim.getClaimType();
+            current[2] = claim.getClaimText();
+            current[3] = claim.getConfidenceLabelText();
+            current[4] = claim.getRationale();
+            result[i] = current;
+            i++;
+        }
+        return result;
+    }
+
+    public String[][] getListOfStagesDetails () {
+        int i = 0;
+        String[][] result = new String[stages.size()][6];
+        for (Stages stage : stages) {
+            String[] current = new String[6];
+            current[0] = stage.getStageId();
+            current[1] = stage.getStageTypeText();
+            current[2] = stage.getLocation();
+            current[3] = stage.getStartDate();
+            current[4] = stage.getEndDate();
+            current[5] = stage.getDescription();
             result[i] = current;
             i++;
         }
@@ -154,7 +171,7 @@ public class Products {
         if (components == null)
             return 0;
         float total = 0;
-        for (Input_shares input : components) {
+        for (inputShares input : components) {
             total += input.getPercentage();
         }
         return total;
@@ -176,19 +193,25 @@ public class Products {
     public ProductType getCategory() {
         return category;
     }
+    public String getCategoryText() {
+        if (category == null) {
+            return "null";
+        }
+        return category.name();
+    }
     public void setCategory(ProductType category) {
         this.category = category;
     }
 
     public final void setCategoryString(String category) {
         for (ProductType type : ProductType.values()) {
-            if (type.name().equalsIgnoreCase(category))
+            if (type.name().equalsIgnoreCase(category)) {
                 this.category = type;
-            else
-                this.category = null;
+                return;
+            }
         }
+        this.category = null;
     }
-    
 
     public String getBrand() {
         return brand;

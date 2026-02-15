@@ -1,20 +1,22 @@
 package Group4.tracer.model;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import Group4.tracer.enums.ConfidenceLevel;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Claims")
+@Table(name = "claims")
 public class Claims {
     @Id
     private String claimId; //primary key of table
     private String claimType;
     private String claimText;
+    @Enumerated(EnumType.STRING)
     private ConfidenceLevel confidenceLabel;
     private String rationale;
     private ArrayList<Evidence> evidence;
@@ -32,14 +34,15 @@ public class Claims {
 
     public String[][] getListOfEvidenceDetails() {
         int i = 0;
-        String[][] result = new String[evidence.size()][5];
+        String[][] result = new String[evidence.size()][6];
         for (Evidence e : evidence) {
-            String[] current = new String[5];
+            String[] current = new String[6];
             current[0] = e.getId();
-            current[1] = e.getIssuer();
-            current[2] = e.getDate();
-            current[3] = e.getSummary();
-            current[4] = e.getFileRef();
+            current[1] = e.getEvidenceType();
+            current[2] = e.getIssuer();
+            current[3] = e.getDate();
+            current[4] = e.getSummary();
+            current[5] = e.getFileRef();
             result[i] = current;
             i++;
             // **TO DO** - write stageLinked part (later)
@@ -47,13 +50,14 @@ public class Claims {
         return result;
     }
 
+    /*
     public void addEvidenceFromStrings(List<List<String>> evidenceRecords) {
         for (int i = 0; i < evidenceRecords.size(); i++) {
             List<String> current = evidenceRecords.get(i);
             this.addEvidence(new Evidence(current.get(0), current.get(2), current.get(3), current.get(4), current.get(5)));
         }
     }
-
+    */
     public String getClaimId() {
         return claimId;
     }
@@ -76,6 +80,9 @@ public class Claims {
         return confidenceLabel;
     }
     public String getConfidenceLabelText() {
+        if (confidenceLabel == null) {
+            return "null";
+        }
         return confidenceLabel.name();
     }
     public void setConfidenceLabel(ConfidenceLevel confidenceLabel) {
@@ -84,11 +91,12 @@ public class Claims {
 
     public final void setConfidenceLabelString(String confidenceLabel) {
         for (ConfidenceLevel label : ConfidenceLevel.values()) {
-            if (label.name().equalsIgnoreCase(confidenceLabel))
+            if (label.name().equalsIgnoreCase(confidenceLabel)) {
                 this.confidenceLabel = label;
-            else
-                this.confidenceLabel = null;
+                return;
+            }
         }
+        this.confidenceLabel = null;
     }
 
     public String getRationale() {

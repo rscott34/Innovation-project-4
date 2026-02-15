@@ -1,12 +1,9 @@
 package Group4.tracer.controller;
 
-import Group4.tracer.model.ChangeLog;
-import Group4.tracer.model.Claims;
-import Group4.tracer.model.Evidence;
-import Group4.tracer.model.Stages;
-import Group4.tracer.model.Verifier;
-import Group4.tracer.repository.*;
-import jakarta.servlet.http.HttpSession;
+import java.time.LocalDateTime;
+import java.util.Optional;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,8 +11,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.time.LocalDateTime;
-import java.util.*;
+import Group4.tracer.model.ChangeLog;
+import Group4.tracer.model.Claims;
+import Group4.tracer.model.Evidence;
+import Group4.tracer.model.Products;
+import Group4.tracer.model.Stages;
+import Group4.tracer.model.Verifier;
+import Group4.tracer.repository.ChangeLogRepository;
+import Group4.tracer.repository.ClaimRepository;
+import Group4.tracer.repository.EvidenceRepository;
+import Group4.tracer.repository.ProductRepository;
+import Group4.tracer.repository.StageRepository;
+import Group4.tracer.repository.VerifierRepository;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class TracerController {
@@ -157,83 +165,82 @@ public class TracerController {
             Object[] productData = productRepository.findProductArray(userInput); 
             Object[] traceData = stageRepository.findStageArray(userInput);
             Object[] claimData = claimRepository.findClaimArray(userInput);
+            Object[] evidenceData = evidenceRepository.findEvidenceArray(userInput);
 
             if (productData != null && productData.length > 0) { 
                 System.out.println("Product found");
+                System.out.println(java.util.Arrays.deepToString(evidenceData));
 
                 Object[] innerProductData = (Object[]) productData[0];
+                Products p = new Products(
+                    innerProductData[0].toString(), 
+                    innerProductData[1].toString(), 
+                    innerProductData[2].toString(), 
+                    innerProductData[3].toString(), 
+                    innerProductData[4].toString()); 
 
-                String productId = innerProductData[0].toString();
-                String name = innerProductData[1].toString();
-                String category = innerProductData[2].toString();
-                String brand = innerProductData[3].toString();
-                String description = innerProductData[4].toString();    
+                model.addAttribute("productFound", true);
 
-                model.addAttribute("productFound", true); 
+                model.addAttribute("productId", p.getProductId());
+                model.addAttribute("name", p.getName());
+                model.addAttribute("category", p.getCategoryText());
+                model.addAttribute("brand", p.getBrand());
+                model.addAttribute("description", p.getDescription());
 
-                model.addAttribute("productId", productId);
-                model.addAttribute("name", name);
-                model.addAttribute("category", category);
-                model.addAttribute("brand", brand);
-                model.addAttribute("description", description);
-
-                List<Map<String, String>> stagesList = new ArrayList<>();
-                //iterates through all stages 
-                for (int i = 0; i < traceData.length; i++) {
-                    //crates new stage objects per iteration
-                    Object[] stage = (Object[]) traceData[i];
-                    //assigns stage attribute info
-                    Map<String, String> stageMap = new HashMap<>();
-                    stageMap.put("stageId", stage[0].toString());
-                    stageMap.put("productId", stage[1].toString());
-                    stageMap.put("stageType", stage[2].toString());
-                    stageMap.put("location", stage[3].toString());
-                    stageMap.put("startDate", stage[4].toString());
-                    //stageMap.put("endDate", stage[5].toString()); 
-                    stageMap.put("description", stage[6].toString());
-                    stagesList.add(stageMap);
+                if (traceData != null && traceData.length > 0) { //if there are stages 
+                    for (int i = 0; i < traceData.length; i++) {
+                        Object[] stage = (Object[]) traceData[i];
+                        p.addStage(new Stages(
+                            stage[0].toString(), 
+                            stage[2].toString(), 
+                            stage[3].toString(), 
+                            stage[4].toString(), 
+                            "", 
+                            stage[6].toString()));
+                    }
+                    model.addAttribute("hasStages", true);
+                }
+                else {
+                    model.addAttribute("hasStages", false);
+                    System.out.println("No stages found for this product");
                 }
 
+                model.addAttribute("stages", p.getListOfStagesDetails());
 
-                model.addAttribute("stages", stagesList);
-             
-                System.out.println(claimData);
-
-
-                if (claimData != null && claimData.length > 0) {
-                    List<Map<String, String>> claimsList = new ArrayList<>();
-                    //iterate through all claims
-                    for (int i = 0; i < claimData.length; i++) { 
-                        //store all claims under new claim object
-                        Object[] claim = (Object[]) claimData[i]; 
-
-                        String claimId = claim[0].toString();
-                        String claimProductId = claim[1].toString();
-                        String claimType = claim[2].toString();
-                        String claimText = claim[3].toString();
-                        String confidenceLabel = claim[4].toString();
-                        String rationale = claim[5].toString();
-
-                        //cstore claim info using a map
-                        Map<String, String> claimMap = new HashMap<>(); 
-
-                        claimMap.put("claimId", claimId);
-                        claimMap.put("productId", claimProductId);
-                        claimMap.put("claimType", claimType);
-                        claimMap.put("claimText", claimText);         
-                        claimMap.put("confidence_label", confidenceLabel);  
-                        claimMap.put("rationale", rationale);
-                        
-                        claimsList.add(claimMap);
+                if (claimData != null && claimData.length > 0) { //if there are claims
+                    for (int i = 0; i < claimData.length; i++) {
+                        Object[] claim = (Object[]) claimData[i];
+                        p.addClaim(new Claims(
+                            claim[0].toString(), 
+                            claim[2].toString(), 
+                            claim[3].toString(), 
+                            claim[4].toString(), 
+                            claim[5].toString()));
                     }
-                    //handle missing data
                     model.addAttribute("hasClaims", true);     
-                    model.addAttribute("claims", claimsList);
-
+                    model.addAttribute("claims", p.getListOfClaimsDetails());
                 }
                 else {
                     model.addAttribute("hasClaims", false);
-                    System.out.println("No claims found for this product");
+                }
+                
+                if (evidenceData != null && evidenceData.length > 0) {
+                    Claims claim = p.getClaimByIndex(0);
+                    for (int j = 0; j < evidenceData.length; j++) {
+                        Object[] ev = (Object[]) evidenceData[j];
+                        claim.addEvidence(new Evidence(
+                            ev[0].toString(), 
+                            ev[2].toString(), // skip claim_id 
+                            ev[3].toString(), 
+                            ev[4].toString(), 
+                            ev[5].toString(), 
+                            ev[6].toString()));
+                        System.out.println(ev[1].toString());
+                    }
+                    model.addAttribute("evidence", claim.getListOfEvidenceDetails());
+                } else {
+                    model.addAttribute("evidence", null);
+                    System.out.println("No evidence found for this product");
                 }
 
             }
