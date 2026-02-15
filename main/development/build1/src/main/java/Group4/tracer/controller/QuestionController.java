@@ -1,6 +1,7 @@
 package Group4.tracer.controller;
 
 import Group4.tracer.repository.ProductRepository;
+import Group4.tracer.repository.StageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +18,10 @@ public class QuestionController {
     @Autowired
     private ProductRepository productRepository;
     
-    private final String[] TOPICS = {"raw materials", "processing", "assembly", "transport", "retail"};
+    @Autowired  // Here I have added StageRepository-> StageRepository for traceability data
+    private StageRepository stageRepository;
+    
+    private final String[] STAGES = {"raw materials", "processing", "assembly", "transport", "retail"};
     private final Random random = new Random();
 
     @GetMapping("/generate")
@@ -26,7 +30,7 @@ public class QuestionController {
             // The random product ID
             String randomProductId = productRepository.getRandomProductId();
             
-            // Get product details using  method
+            // Get product details using method
             Object[] productData = productRepository.findProductArray(randomProductId);
             
             if (productData != null && productData.length > 0) {
@@ -35,23 +39,37 @@ public class QuestionController {
                 String productId = product[0].toString();
                 String name = product[1].toString();
                 
-                // 3. Randomly select topic
-                String topic = TOPICS[random.nextInt(TOPICS.length)];
+                //  Randomly select stage 
+                String stage = STAGES[random.nextInt(STAGES.length)];
                 
-                // 4. Get traceability data - To do: Adam/Wajih need to implement the actual query I assume?
-                // For now, I'll use a temp placeholder until traceability table is ready
-                String correctAnswer = "Information available soon";
-                String evidenceLink = "https://traceability.example.com/" + productId;
+                //  Get traceability data - Adam/Wajih implemented the actual query ideally.
+                Object[] stageData = stageRepository.findStageEvidence(productId, stage);
+                
+                String correctAnswer = "Information not available";
+                String evidenceLink = "#";
+                
+                if (stageData != null && stageData.length > 0) {
+                    // stageData[0] = stage_value, stageData[1] = evidence_link
+                    correctAnswer = stageData[0].toString();
+                    evidenceLink = stageData[1].toString();
+                    
+                    // Use this for debuggging , del later
+                    System.out.println("Found stage data - Value: " + correctAnswer + ", Link: " + evidenceLink);
+                } else {
+                    // Likewise here , after debugging just del.
+                    System.out.println("No stage data found for product: " + productId + ", stage: " + stage);
+                    //IMPORTANT:T.D: Adam/Wajih need to check why there is no data for this product/stage combination
+                }
                 
                 // Generated the question text
-                String questionText = "What is the traceability timeline value for '" + topic + 
+                String questionText = "What is the traceability timeline value for '" + stage + 
                                     "' in the product: " + name + " (Product ID: " + productId + ")?";
                 
-                
+                // IMPORTANT: Add to model for George's UI
                 model.addAttribute("questionGenerated", true);
                 model.addAttribute("productId", productId);
                 model.addAttribute("productName", name);
-                model.addAttribute("topic", topic);
+                model.addAttribute("stage", stage);  // Renamed from topic to stage
                 model.addAttribute("questionText", questionText);
                 model.addAttribute("correctAnswer", correctAnswer);
                 model.addAttribute("evidenceLink", evidenceLink);
@@ -59,15 +77,16 @@ public class QuestionController {
         } catch (Exception e) {
             model.addAttribute("questionGenerated", false);
             model.addAttribute("errorMessage", "Failed to generate question: " + e.getMessage());
+            e.printStackTrace(); // For debugging
         }
         
-        return "index"; //
+        return "index"; // Connoted for George's UI template
     }
 
     @PostMapping("/verify")
     public String verifyAnswer(
             @RequestParam String productId,
-            @RequestParam String topic,
+            @RequestParam String stage,  // This has been renamed from topic to stage
             @RequestParam String userAnswer,
             @RequestParam String correctAnswer,
             @RequestParam String evidenceLink,
@@ -75,12 +94,14 @@ public class QuestionController {
         
         boolean isCorrect = userAnswer.trim().equalsIgnoreCase(correctAnswer.trim());
         
-        // I've added the verification results to model for the UI
+        // I've added the verification results to model for George's UI
         model.addAttribute("answerSubmitted", true);
         model.addAttribute("isCorrect", isCorrect);
         model.addAttribute("userAnswer", userAnswer);
         model.addAttribute("correctAnswer", correctAnswer);
-        model.addAttribute("evidenceLink", evidenceLink);
+        model.addAttribute("evidenceLink", evidenceLink);  // IMPORTANT : This is for George's UI link - Rowan said to show this when the answer is wrong
+        model.addAttribute("productId", productId);
+        model.addAttribute("stage", stage);
         
         if (isCorrect) {
             model.addAttribute("resultMessage", "✓ Correct!");
@@ -88,6 +109,9 @@ public class QuestionController {
         } else {
             model.addAttribute("resultMessage", "✗ Incorrect");
             model.addAttribute("feedback", "The correct traceability value is shown below.");
+            // evidenceLink is already in model - George can use this to create a clickable link as Rowan requested.
+            // George I don't know if you already know so I am mentioning it anyways: <a th:href="@{${evidenceLink}}">View evidence for this stage</a>
+            // This takes the user to the page with the correct answer information
         }
         
         return "index"; // I've structured it so that what George told me so it can be fed to the UI.

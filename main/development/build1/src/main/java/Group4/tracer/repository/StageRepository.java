@@ -9,14 +9,20 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface StageRepository extends JpaRepository<Stages, String> {
 
-    //Search for the stageId
-    //This is the SQL query that is run with each productId search
+    //Searching for all stages by product ID
     @Query(value = "SELECT * " +
             "FROM public.\"stages\" " +
             "WHERE product_id = :productId " +
             "ORDER BY stage_id ASC", nativeQuery = true)
-
-    //findStageArray takes a productId string and returns an array of product information
     Object[] findStageArray(@Param("productId") String productId);
 
+    // Get specific stage value and evidence link for a product and stage name
+    @Query(value = "SELECT stage_value, evidence_link " +
+            "FROM public.\"stages\" " +
+            "WHERE product_id = :productId AND stage_name = :stageName", nativeQuery = true)
+    Object[] findStageEvidence(@Param("productId") String productId, @Param("stageName") String stageName);
+    
+    // Get all stage names for a product . This is to verify which stages exist.
+    @Query(value = "SELECT stage_name FROM public.\"stages\" WHERE product_id = :productId", nativeQuery = true)
+    String[] findStageNamesByProduct(@Param("productId") String productId);
 }
