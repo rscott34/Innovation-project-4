@@ -1,12 +1,9 @@
 package Group4.tracer.controller;
 
-import Group4.tracer.model.ChangeLog;
-import Group4.tracer.model.Claims;
-import Group4.tracer.model.Evidence;
-import Group4.tracer.model.Stages;
-import Group4.tracer.model.Verifier;
-import Group4.tracer.repository.*;
-import jakarta.servlet.http.HttpSession;
+import java.time.LocalDateTime;
+import java.util.Optional;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,8 +11,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.time.LocalDateTime;
-import java.util.*;
+import Group4.tracer.model.ChangeLog;
+import Group4.tracer.model.Claims;
+import Group4.tracer.model.Evidence;
+import Group4.tracer.model.Products;
+import Group4.tracer.model.Stages;
+import Group4.tracer.model.Verifier;
+import Group4.tracer.repository.ChangeLogRepository;
+import Group4.tracer.repository.ClaimRepository;
+import Group4.tracer.repository.EvidenceRepository;
+import Group4.tracer.repository.ProductRepository;
+import Group4.tracer.repository.StageRepository;
+import Group4.tracer.repository.VerifierRepository;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class TracerController {

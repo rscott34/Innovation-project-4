@@ -53,7 +53,7 @@
             <h2 class="section-header">Traceability Stages</h2>
             <div class="stage-card" th:each="stage, iterStat : ${stages}">
                 <div th:if="${role == 'verifier'}" style="margin-top: 10px;">
-                    <a th:href="@{/edit-stage(stageId=${stage.stageId})}"><button>Edit Product Stage</button></a>
+                    <a th:href="@{/edit-stage(stageId=${stage[0]})}"><button>Edit Product Stage</button></a>
                 </div>
                 <h3>Stage <span th:text="${iterStat.count}">1</span></h3>
                 <div class="stage-info">
@@ -83,7 +83,7 @@
             <div class="claim-card" th:each="claim, iterStat : ${claims}"> 
                 <h3>Claim <span th:text="${iterStat.count}">1</span></h3>
                 <div th:if="${role == 'verifier'}" style="margin-top: 10px;">
-                    <a th:href="@{/verify-claim(claimId=${claim.claimId})}"><button>Verify Claim</button></a>
+                    <a th:href="@{/verify-claim(claimId=${claim[0]})}"><button>Verify Claim</button></a>
                 </div>
                 <div class="stage-info">
                     <span><b>Claim ID:</b></span>
