@@ -45,7 +45,7 @@ public class Stages {
         if (stageName == null) {
             return "null";
         }
-        return stageName.name();
+        return this.stageName.getText();
     }
     public final void setStageTypeString(String stageType) {
         for (StageType label : StageType.values()) {

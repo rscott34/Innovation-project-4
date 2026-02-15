@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import Group4.tracer.enums.StageType;
 import Group4.tracer.model.ChangeLog;
 import Group4.tracer.model.Claims;
 import Group4.tracer.model.Evidence;
@@ -169,7 +170,7 @@ public class TracerController {
 
             if (productData != null && productData.length > 0) { 
                 System.out.println("Product found");
-                System.out.println(java.util.Arrays.deepToString(evidenceData));
+                System.out.println(java.util.Arrays.deepToString(traceData));
 
                 Object[] innerProductData = (Object[]) productData[0];
                 Products p = new Products(
@@ -191,12 +192,14 @@ public class TracerController {
                     for (int i = 0; i < traceData.length; i++) {
                         Object[] stage = (Object[]) traceData[i];
                         p.addStage(new Stages(
-                            stage[0].toString(), 
-                            stage[2].toString(), 
-                            stage[3].toString(), 
-                            stage[4].toString(), 
-                            "", 
-                            stage[6].toString()));
+                            stage[0].toString(), // stageId
+                            StageType.fromString(stage[2].toString()).name(), // stageType
+                            stage[3].toString(), // stageName
+                            stage[4].toString(),  // location
+                            //stage[4].toString(), // startDate
+                            "", // endDate is not currently used in the database so set to empty string
+                            stage[6].toString() // description
+                        ));
                     }
                     model.addAttribute("hasStages", true);
                 }
