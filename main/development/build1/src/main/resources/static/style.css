@@ -89,8 +89,7 @@ body {
     padding: 20px;
     border: 1px solid black;
     border-radius: 10px;
-    background-color: grey;
-    justify-content: center;
+    justify-content: left;
     margin-bottom: 20px;
 }
 
@@ -98,7 +97,6 @@ body {
     padding: 20px;
     border: 1px solid black;
     border-radius: 10px;
-    background-color: grey;
     justify-content: center;
     margin-bottom: 20px;
 }
@@ -111,7 +109,6 @@ body {
     padding: 20px;
     border: 1px solid black;
     border-radius: 10px;
-    background-color: grey;
     justify-content: center;
     margin-bottom: 20px;
 }
