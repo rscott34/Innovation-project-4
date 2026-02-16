@@ -172,7 +172,8 @@ public class TracerController {
         HttpSession session, Model model) { 
         String role = (String) session.getAttribute("role");
         model.addAttribute("role", role != null ? role : "guest");
-
+        
+        System.out.println(questionText);
         if (userInput != null) {
 
             Object[] productData = productRepository.findProductArray(userInput); 

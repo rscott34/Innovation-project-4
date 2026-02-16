@@ -40,13 +40,13 @@
     <div class="search">
         <form action="/submit" method="post">
             <input type="hidden" name="questionGenerated" th:value="${questionGenerated}">
-            <main th:if="${questionGenerated == true}"></main>
+            <main th:if="${questionGenerated == true}">
                 <input type="hidden" name="questionText" th:value="${questionText}">
                 <input type="hidden" name="userAnswer" th:value="${userAnswer}">
                 <input type="hidden" name="correctAnswer" th:value="${correctAnswer}">
                 <input type="hidden" name="evidenceLink" th:value="${evidenceLink}">
             </main>
-            <main th:if="${questionGenerated == false}"></main>
+            <main th:if="${questionGenerated == false}">
                 <input type="hidden" name="questionText">
                 <input type="hidden" name="userAnswer">
                 <input type="hidden" name="correctAnswer">
