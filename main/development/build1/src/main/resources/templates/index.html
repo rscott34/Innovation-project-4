@@ -79,7 +79,7 @@
             </div>
         </div>
         <div class="claim-section" th:if="${hasClaims != null && hasClaims == true}">
-            <h2 class="section-header">Claims and Evidence</h2>
+            <h2 class="section-header">Claims</h2>
             <div class="claim-card" th:each="claim, iterStat : ${claims}"> 
                 <h3>Claim <span th:text="${iterStat.count}">1</span></h3>
                 <div th:if="${role == 'verifier'}" style="margin-top: 10px;">
@@ -105,8 +105,9 @@
                     <span><b>Rationale:</b></span>
                     <span th:text="${claim[4]}">xyz</span>
                 </div>
-                <div class="evidence-section" th:if="${evidence != null}" th:each="ev, iterStat : ${evidence}">
-                    <div class="evidence-card" th:if="${ev != null}">
+                <details class="evidence-section" th:if="${evidence != null}" th:each="ev, iterStat : ${evidence}">
+                    <summary><b>View Evidence</b></summary>
+                    <div class="evidence-card" th:if="${ev != null}" >
                         <div class="evidence-info">
                             <span><b>Evidence Id:</b></span>
                             <span th:text="${ev[0]}">E001</span>
@@ -128,11 +129,12 @@
                             <span th:text="${ev[4]}">Summary</span>
                         </div>
                         <div class="evidence-info">
-                            <span><b>File Reference:</b></span>
-                            <span th:text="${ev[5]}">E001</span>
+                            <!-- <span><b>File Reference:</b></span> -->
+                            <!-- <img th:src="${ev[5]}" alt="Evidence Image" > -->
+                            <img src="/assets/eu-organic-logo-600x400_0.png" alt="Evidence">
                         </div>
                     </div>
-                </div>
+                </details>
             </div>
         </div>
     </main>
