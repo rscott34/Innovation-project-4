@@ -68,6 +68,7 @@ public class TracerController {
     @GetMapping("/")
     public String showForm(HttpSession session, Model model) {
     //get the role and username of the user
+        model.addAttribute("questionGenerated", false);
         String role = (String) session.getAttribute("role");
         //sets user to guest if not loggied in as verifier
         model.addAttribute("role", role != null ? role : "guest");
@@ -161,8 +162,14 @@ public class TracerController {
 
     // add submit button for
     @PostMapping("/submit")
-    public String handleInput(@RequestParam String userInput, HttpSession session, Model model) { 
-        
+    public String handleInput(
+        @RequestParam boolean questionGenerated, 
+        @RequestParam String questionText, 
+        @RequestParam String userAnswer, 
+        @RequestParam String correctAnswer, 
+        @RequestParam String evidenceLink, 
+        @RequestParam String userInput, 
+        HttpSession session, Model model) { 
         String role = (String) session.getAttribute("role");
         model.addAttribute("role", role != null ? role : "guest");
 
@@ -261,6 +268,13 @@ public class TracerController {
             model.addAttribute("productFound", false);
             model.addAttribute("errorMessage", "No input provided.");
         }
+
+        model.addAttribute("questionGenerated", questionGenerated);
+        model.addAttribute("questionText", questionText);
+        model.addAttribute("userAnswer", userAnswer);
+        model.addAttribute("correctAnswer", correctAnswer);
+        model.addAttribute("evidenceLink", evidenceLink);
+        
         return "index";
     }
 }

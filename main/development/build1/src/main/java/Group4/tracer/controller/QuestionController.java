@@ -62,7 +62,7 @@ public class QuestionController {
         model.addAttribute("correctAnswer", correctAnswer);
         model.addAttribute("evidenceLink", evidenceLink);
 
-        return "mission";
+        return "index";
     }
 
     @PostMapping("/verify")

@@ -15,14 +15,43 @@
             <a href="/logout"><button>Logout</button></a>
         </span>
     </div>
-    <div>
-        <a href="/mission"><button>Question</button></a>
-    </div>
+    <main th:if="${questionGenerated == true}">
+        <div class="header">
+            <h1 th:text="${questionText}">Question Text</h1>
+        </div>
+        <div class="search">
+            <form action="/questions/verify" method="post">
+                
+                <input type="text" name="userAnswer" placeholder="Enter answer here" required/>
+                <input type="hidden" name="correctAnswer" th:value="${correctAnswer}">
+                <input type="hidden" name="evidenceLink" th:value="${evidenceLink}">
+                <button type="submit">Attempt</button>
+            </form>
+        </div>
+    </main>
+    <main th:if="${questionGenerated == false}">
+        <div>
+            <a href="/questions/generate"><button>Question</button></a>
+        </div>
+    </main>
     <div class="header">
         <h1>Enter Product ID</h1>
     </div>
     <div class="search">
         <form action="/submit" method="post">
+            <input type="hidden" name="questionGenerated" th:value="${questionGenerated}">
+            <main th:if="${questionGenerated == true}"></main>
+                <input type="hidden" name="questionText" th:value="${questionText}">
+                <input type="hidden" name="userAnswer" th:value="${userAnswer}">
+                <input type="hidden" name="correctAnswer" th:value="${correctAnswer}">
+                <input type="hidden" name="evidenceLink" th:value="${evidenceLink}">
+            </main>
+            <main th:if="${questionGenerated == false}"></main>
+                <input type="hidden" name="questionText">
+                <input type="hidden" name="userAnswer">
+                <input type="hidden" name="correctAnswer">
+                <input type="hidden" name="evidenceLink">
+            </main>
             <input type="text" name="userInput" placeholder="e.g. P100" required/>
             <button type="submit">Send</button>
         </form>
@@ -142,6 +171,5 @@
     <div class="error-card" th:if="${productFound != null && productFound == false}">
         <p th:text="${errorMessage}">Error message</p>
     </div>
-
 </body>
 </html>

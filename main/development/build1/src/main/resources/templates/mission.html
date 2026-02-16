@@ -5,21 +5,6 @@
     <link rel="stylesheet" th:href="@{/style.css}">
 </head> 
 <body>
-    <div class="header">
-        <h1>Mission</h1>
-    </div>
-    <div class="header">
-        <h1 th:text="${questionText}">Question Text</h1>
-    </div>
-    <main th:if="${questionGenerated == true}">
-        <div class="search">
-            <form action="/questions/verify" method="post">
-                <input type="text" name="userAnswer" placeholder="Enter answer here" required/>
-                <input type="hidden" name="correctAnswer" th:value="${correctAnswer}">
-                <input type="hidden" name="evidenceLink" th:value="${evidenceLink}">
-                <button type="submit">Attempt</button>
-            </form>
-        </div>
-    </main>
+    
 </body>
 </html>
