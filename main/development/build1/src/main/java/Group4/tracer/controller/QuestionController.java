@@ -55,8 +55,6 @@ public class QuestionController {
         } else {
             model.addAttribute("questionGenerated", false);
         }
-
-        System.out.println(correctAnswer +  " " + evidenceLink + " " + questionText);
         
         // IMPORTANT: Add to model for George's UI
         
@@ -75,25 +73,19 @@ public class QuestionController {
             Model model) {
         
         boolean isCorrect = userAnswer.trim().equalsIgnoreCase(correctAnswer.trim());
-        
-        // I've added the verification results to model for George's UI
-        model.addAttribute("answerSubmitted", true);
         model.addAttribute("isCorrect", isCorrect);
         model.addAttribute("userAnswer", userAnswer);
         model.addAttribute("correctAnswer", correctAnswer);
-        model.addAttribute("evidenceLink", evidenceLink);  // IMPORTANT : This is for George's UI link - Rowan said to show this when the answer is wrong
+        model.addAttribute("evidenceLink", evidenceLink);
         
         if (isCorrect) {
-            model.addAttribute("resultMessage", "✓ Correct!");
+            model.addAttribute("resultMessage", "Correct!");
             model.addAttribute("feedback", "Your answer matches our traceability records.");
         } else {
-            model.addAttribute("resultMessage", "✗ Incorrect");
+            model.addAttribute("resultMessage", "Incorrect");
             model.addAttribute("feedback", "The correct traceability value is shown below.");
-            // evidenceLink is already in model - George can use this to create a clickable link as Rowan requested.
-            // George I don't know if you already know so I am mentioning it anyways: <a th:href="@{${evidenceLink}}">View evidence for this stage</a>
-            // This takes the user to the page with the correct answer information
         }
         
-        return "index"; // I've structured it so that what George told me so it can be fed to the UI.
+        return "answer";
     }
 }

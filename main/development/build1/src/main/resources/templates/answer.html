@@ -6,12 +6,8 @@
 </head> 
 <body>
     <div class="header">
-        <h1>Mission</h1>
+        <h1 th:text="${resultMessage}">Answer result</h1>
     </div>
-    <div class="header">
-        <h1 th:text="${questionText}">Question Text</h1>
-    </div>
-    <main th:if="${questionGenerated == true}">
         <div class="search">
             <form action="/questions/verify" method="post">
                 <input type="text" name="userAnswer" placeholder="Enter answer here" required/>
