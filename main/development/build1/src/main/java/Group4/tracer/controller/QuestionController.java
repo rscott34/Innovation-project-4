@@ -47,9 +47,17 @@ public class QuestionController {
                 questionData[5].toString(),
                 questionData[6].toString()
             );
-            correctAnswer = mission.getAnswer();
-            evidenceLink = mission.getExplanation();
-            questionText = mission.getQuestion();
+            //IMPORTANT - write example question here
+            questionText = "";
+            //mission.getQuestion();
+
+            //IMPORTANT - write example answer here
+            correctAnswer = "";
+            //mission.getAnswer();
+            //IMPORTANT - write the link below for evidence
+            evidenceLink = "";
+            //mission.getExplanation();
+            
 
             model.addAttribute("questionGenerated", true);
         } else {

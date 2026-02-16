@@ -16,6 +16,9 @@
         </span>
     </div>
     <main th:if="${questionGenerated == true}">
+        <div>
+            <a href="/"><button>Home</button></a>
+        </div>
         <div class="header">
             <h1 th:text="${questionText}">Question Text</h1>
         </div>
