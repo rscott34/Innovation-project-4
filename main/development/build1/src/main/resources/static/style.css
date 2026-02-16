@@ -83,12 +83,42 @@ main{
     cursor: pointer;
 }
 
+<<<<<<< HEAD
 .section{
     width: 50%;
     margin: 0 auto;
 }
 
 
+=======
+/* Login Info */
+
+.login-section {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    padding: 30px;
+    border-radius: 15px;
+}
+.login-section input {
+    width: 300px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+.login-section button {
+    padding: 10px 20px;
+    margin-left: 10px;
+    border: none;
+    background-color: #007BFF;
+    color: white;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+>>>>>>> FR5---Verifier-admin-interface
 /* Product Info */
 
 .product-section {

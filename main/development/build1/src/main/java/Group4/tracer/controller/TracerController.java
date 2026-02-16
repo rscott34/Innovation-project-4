@@ -1,8 +1,12 @@
 package Group4.tracer.controller;
 
+<<<<<<< HEAD
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
+=======
+import java.util.Map;
+>>>>>>> FR5---Verifier-admin-interface
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,19 +15,30 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+<<<<<<< HEAD
 import Group4.tracer.enums.StageType;
 import Group4.tracer.model.ChangeLog;
+=======
+import Group4.tracer.enums.UserType;
+>>>>>>> FR5---Verifier-admin-interface
 import Group4.tracer.model.Claims;
 import Group4.tracer.model.Evidence;
 import Group4.tracer.model.Products;
 import Group4.tracer.model.Stages;
+<<<<<<< HEAD
 import Group4.tracer.model.Verifier;
 import Group4.tracer.repository.ChangeLogRepository;
+=======
+import Group4.tracer.model.User;
+>>>>>>> FR5---Verifier-admin-interface
 import Group4.tracer.repository.ClaimRepository;
 import Group4.tracer.repository.EvidenceRepository;
 import Group4.tracer.repository.ProductRepository;
 import Group4.tracer.repository.StageRepository;
+<<<<<<< HEAD
 import Group4.tracer.repository.VerifierRepository;
+=======
+>>>>>>> FR5---Verifier-admin-interface
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -37,6 +52,7 @@ public class TracerController {
     @Autowired private ChangeLogRepository changeLogRepository;
     @Autowired private VerifierRepository verifierRepository; // Added Verifier Repository
 
+<<<<<<< HEAD
     //get mappijg for login page 
     @GetMapping("/login")
     public String loginPage() { return "login"; }
@@ -164,6 +180,32 @@ public class TracerController {
         String role = (String) session.getAttribute("role");
         model.addAttribute("role", role != null ? role : "guest");
 
+=======
+    @GetMapping("/")
+    public String showForm(HttpSession session) {
+        User currentUser = (User) session.getAttribute("user");
+        if (currentUser == null) {
+            return "redirect:/login";
+        }
+        if (currentUser.getUserType().equals(UserType.Verifier)) {
+            return "product_edit";
+        }
+        return "index";
+    }
+
+    @GetMapping("/submit")
+    public String handleInput() { //takes input from search box
+        return "redirect:/";
+    }
+    @PostMapping("/submit")
+    public String handleInput(@RequestParam String userInput, Model model, HttpSession session) { //takes input from search box
+        User currentUser = (User) session.getAttribute("user");
+        if (currentUser == null) {
+            return "redirect:/login";
+        }
+        model.addAttribute("currentUser", currentUser);
+        
+>>>>>>> FR5---Verifier-admin-interface
         if (userInput != null) {
 
             Object[] productData = productRepository.findProductArray(userInput); 
@@ -258,6 +300,81 @@ public class TracerController {
                 System.out.println("No product found with ID: " + userInput);
             }
         }
+<<<<<<< HEAD
         return "index"; 
     }
 }
+=======
+        else {
+            model.addAttribute("productFound", false);
+            model.addAttribute("errorMessage", "No input provided.");
+        }
+        if (currentUser.getUserType().equals(UserType.Verifier)) {
+            return "product_edit";
+        }
+        return "index";
+    }
+
+    @GetMapping("/login")
+    public String showLoginForm(HttpSession session) {
+        if (session.getAttribute("user") != null) {
+            return "redirect:/";
+        }
+        return "login";
+    }
+
+    @PostMapping("/login")
+    public String handleLogin(@RequestParam String username, @RequestParam String password, Model model, HttpSession session) {
+        if (username == null || username.trim().isEmpty() || 
+            password == null || password.trim().isEmpty()) {
+            return "login";
+        }
+        //SQL query for determining if user is right goes here!!
+        
+        String userDB = "Test";
+        String passDB = "1234";
+        String userType = "Verifier";
+        //Change next line for better check
+        if (userDB.equals(username) && passDB.equals(password)) {
+            String userId = "U001";
+            User user = new User(
+                userId, 
+                username, 
+                password, 
+                userType);
+            
+            session.setAttribute("user", user);
+            session.setAttribute("userId", user.getUserId());
+            session.setAttribute("userType", user.getUserTypeText());
+
+            return "redirect:/";
+        } else {
+            return "login";
+        }
+    }
+
+    @PostMapping("/save")
+    public String handleSave(@RequestParam Map<String, String> allParams, 
+                            Model model, 
+                            HttpSession session) {
+        
+        User currentUser = (User) session.getAttribute("user");
+        if (currentUser == null) {
+            return "redirect:/login";
+        }
+        //Process and save all the updated data
+        //Need to extract the parameters and update database
+        System.out.println(allParams.toString());
+    
+        return "redirect:/";
+    }
+}
+
+/*IMPORTANT NOTES FOR BACKEND: - from Waj ;)
+
+The array output is stored in the variable productData
+this is in the format       [["P100","T-shirt","CLOTHING","Next","T-shirt from Spain"]]
+
+ */
+
+>>>>>>> FR5---Verifier-admin-interface
