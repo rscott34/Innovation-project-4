@@ -68,6 +68,7 @@ public class TracerController {
     @GetMapping("/")
     public String showForm(HttpSession session, Model model) {
     //get the role and username of the user
+        model.addAttribute("questionGenerated", false);
         String role = (String) session.getAttribute("role");
         //sets user to guest if not loggied in as verifier
         model.addAttribute("role", role != null ? role : "guest");
@@ -157,13 +158,25 @@ public class TracerController {
         return "history";
     }
 
+    @GetMapping("/mission")
+    public String missionPage(Model model) {
+        return "mission";
+    }
+
     // add submit button for
     @PostMapping("/submit")
-    public String handleInput(@RequestParam String userInput, HttpSession session, Model model) { 
-        
+    public String handleInput(
+        @RequestParam boolean questionGenerated, 
+        @RequestParam String questionText, 
+        @RequestParam String userAnswer, 
+        @RequestParam String correctAnswer, 
+        @RequestParam String evidenceLink, 
+        @RequestParam String userInput, 
+        HttpSession session, Model model) { 
         String role = (String) session.getAttribute("role");
         model.addAttribute("role", role != null ? role : "guest");
-
+        
+        System.out.println(questionText);
         if (userInput != null) {
 
             Object[] productData = productRepository.findProductArray(userInput); 
@@ -259,6 +272,17 @@ public class TracerController {
                 System.out.println("No product found with ID: " + userInput);
             }
         }
-        return "index"; 
+        else {
+            model.addAttribute("productFound", false);
+            model.addAttribute("errorMessage", "No input provided.");
+        }
+
+        model.addAttribute("questionGenerated", questionGenerated);
+        model.addAttribute("questionText", questionText);
+        model.addAttribute("userAnswer", userAnswer);
+        model.addAttribute("correctAnswer", correctAnswer);
+        model.addAttribute("evidenceLink", evidenceLink);
+        
+        return "index";
     }
 }
