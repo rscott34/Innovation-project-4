@@ -48,14 +48,14 @@ public class QuestionController {
                 questionData[6].toString()
             );
             //IMPORTANT - write example question here
-            questionText = "";
+            questionText = "Which country does the Gucci bag come from?";
             //mission.getQuestion();
 
             //IMPORTANT - write example answer here
-            correctAnswer = "";
+            correctAnswer = "Italy";
             //mission.getAnswer();
             //IMPORTANT - write the link below for evidence
-            evidenceLink = "";
+            evidenceLink = "ThisIsTheLink.com";
             //mission.getExplanation();
             
 

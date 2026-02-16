@@ -6,6 +6,12 @@
 </head> 
 <body>
     <div style="background-color: #f1f1f1; padding: 10px; text-align: right;">
+        <div th:if="${questionGenerated == true}">
+            <a href="/"><button>Home</button></a>
+        </div>
+        <div th:if="${questionGenerated == false}">
+            <a href="/questions/generate"><button>Question</button></a>
+        </div>
         <span th:if="${role == 'guest'}">
             <a href="/login"><button>Login as Verifier</button></a>
         </span>
@@ -16,9 +22,6 @@
         </span>
     </div>
     <main th:if="${questionGenerated == true}">
-        <div>
-            <a href="/"><button>Home</button></a>
-        </div>
         <div class="header">
             <h1 th:text="${questionText}">Question Text</h1>
         </div>
@@ -30,11 +33,6 @@
                 <input type="hidden" name="evidenceLink" th:value="${evidenceLink}">
                 <button type="submit">Attempt</button>
             </form>
-        </div>
-    </main>
-    <main th:if="${questionGenerated == false}">
-        <div>
-            <a href="/questions/generate"><button>Question</button></a>
         </div>
     </main>
     <div class="header">
