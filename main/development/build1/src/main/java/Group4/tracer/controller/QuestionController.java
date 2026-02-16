@@ -55,7 +55,7 @@ public class QuestionController {
             correctAnswer = "Italy";
             //mission.getAnswer();
             //IMPORTANT - write the link below for evidence
-            evidenceLink = "ThisIsTheLink.com";
+            evidenceLink = "P001";
             //mission.getExplanation();
             
 
@@ -88,10 +88,10 @@ public class QuestionController {
         
         if (isCorrect) {
             model.addAttribute("resultMessage", "Correct!");
-            model.addAttribute("feedback", "Your answer matches our traceability records.");
+            model.addAttribute("feedback", "Well done! The information for this question can be found in the P001 passport, click the button below to view.");
         } else {
             model.addAttribute("resultMessage", "Incorrect");
-            model.addAttribute("feedback", "The correct traceability value is shown below.");
+            model.addAttribute("feedback", "The information for this question can be found in the P001 passport, click the button below to view.");
         }
         
         return "answer";

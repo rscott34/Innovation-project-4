@@ -12,20 +12,29 @@
     <div class="header">
         <h1 th:text="${resultMessage}">Answer result</h1>
     </div>
+    <div class="info">
+        <span class="value" th:text="${feedback}">Feedback</span>
         <div class="info">
-            <span class="value" th:text="${feedback}">Feedback</span>
-            <div class="info">
-                <span class="label"> <b>Your Answer:</b></span>
-                <span class="value" th:text="${userAnswer}">Your answer</span>
-            </div>
-            <main th:if="${isCorrect == false}">
-                <div class="info">
-                    <span class="label"> <b>Correct Answer:</b></span>
-                    <span class="value" th:text="${correctAnswer}">P100</span>
-                </div>
-            </main>
-            <span class="value" th:text="${evidenceLink}">Evidence</span>
+            <span class="label"> <b>Your Answer:</b></span>
+            <span class="value" th:text="${userAnswer}">Your answer</span>
         </div>
-    </main>
+        <main th:if="${isCorrect == false}">
+            <div class="info">
+                <span class="label"> <b>Correct Answer:</b></span>
+                <span class="value" th:text="${correctAnswer}">P100</span>
+            </div>
+        </main>
+        <div>
+            <form action="/submit" method="post">
+                <input type="hidden" name="questionGenerated" value = false>
+                <input type="hidden" name="questionText">
+                <input type="hidden" name="userAnswer">
+                <input type="hidden" name="correctAnswer">
+                <input type="hidden" name="evidenceLink">
+                <input type="hidden" name="userInput" th:value="${evidenceLink}"/>
+                <button type="submit">View passport</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
