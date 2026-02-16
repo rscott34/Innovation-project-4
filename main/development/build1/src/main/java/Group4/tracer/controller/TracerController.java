@@ -116,11 +116,14 @@ public class TracerController {
         // Pass the database records to the HTML page
         model.addAttribute("evidenceList", evidenceFromDb);
         
+
+
         return "verify-claim";
     }
 
     @PostMapping("/submit-verification")
     public String submitVerification(@RequestParam String claimId, @RequestParam String evidenceFile, @RequestParam String explanation, HttpSession session) {
+        System.out.println(evidenceFile);
         Claims claim = claimRepository.findById(claimId).orElse(null);
         if (claim != null) {
             

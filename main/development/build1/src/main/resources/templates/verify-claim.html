@@ -1,9 +1,44 @@
-<label><strong>Attach Evidence File:</strong></label><br/>
-        <select name="evidenceFile" style="width: 300px; padding: 5px;">
-            <option value="none">None (No evidence attached)</option>
-            
-            <option th:each="evidence : ${evidenceList}" 
-                    th:value="${evidence.fileRef}" 
-                    th:text="${evidence.fileRef}">
-            </option>
-        </select>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Verify Claim</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+
+    <div class="header">
+        <h1>Verify Claim</h1>
+    </div>
+
+    <div class="product-section">
+
+        <p><b>Claim ID:</b> <span th:text="${claimId}">C001</span></p>
+
+        <form action="/submit-verification" method="post">
+
+            <!-- Hidden field to pass claimId to controller -->
+            <input type="hidden" name="claimId" th:value="${claimId}"/>
+
+            <br/>
+            <label><strong>Attach Evidence File:</strong></label><br/>
+            <select name="evidenceFile" style="width: 300px; padding: 5px;">
+                <option value="none">None (No evidence attached)</option>
+                <option th:each="evidence : ${evidenceList}"
+                        th:value="${evidence.fileRef}"
+                        th:text="${evidence.fileRef}">
+                </option>
+            </select>
+
+            <br/><br/>
+            <label><strong>Explanation:</strong></label><br/>
+            <textarea name="explanation" rows="4" style="width: 300px; padding: 5px;" placeholder="Provide a reason for your decision..."></textarea>
+
+            <br/><br/>
+            <button type="submit">Submit Verification</button>
+
+        </form>
+
+    </div>
+
+</body>
+</html>
