@@ -1,29 +1,5 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<<<<<<< HEAD
-<head><title>Verifier Login</title><link rel="stylesheet" th:href="@{/style.css}"></head>
-<body style="padding: 20px;">
-    <h2>Verifier Admin Login</h2>
-    
-    <div th:if="${error != null}" style="color: red; margin-bottom: 10px;">
-        <strong th:text="${error}"></strong>
-    </div>
-
-    <form action="/login" method="post">
-        <label><strong>Username:</strong></label><br/>
-        <input type="text" name="username" required style="margin-bottom: 15px; padding: 5px; width: 200px;"/><br/>
-
-        <label><strong>Password:</strong></label><br/>
-        <input type="password" name="password" required style="margin-bottom: 15px; padding: 5px; width: 200px;"/><br/>
-
-        <button type="submit">Login</button>
-    </form>
-    
-    <br/>
-    <a href="/">Continue as Guest (Back to Search)</a>
-</body>
-</html>
-=======
 <head>
     <title>Login</title>
     <link rel="stylesheet" th:href="@{/style.css}">
@@ -47,4 +23,3 @@
 
 </body>
 </html>
->>>>>>> FR5---Verifier-admin-interface

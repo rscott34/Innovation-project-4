@@ -1,7 +1,6 @@
 package Group4.tracer.controller;
 
 import java.time.LocalDateTime;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -13,13 +12,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import Group4.tracer.enums.StageType;
-import Group4.tracer.enums.UserType;
 import Group4.tracer.model.ChangeLog;
 import Group4.tracer.model.Claims;
 import Group4.tracer.model.Evidence;
 import Group4.tracer.model.Products;
 import Group4.tracer.model.Stages;
-import Group4.tracer.model.User;
 import Group4.tracer.model.Verifier;
 import Group4.tracer.repository.ChangeLogRepository;
 import Group4.tracer.repository.ClaimRepository;
@@ -76,17 +73,6 @@ public class TracerController {
         model.addAttribute("role", role != null ? role : "guest");
         return "index";
     }
-
-    // public String showForm(HttpSession session) {
-    //     User currentUser = (User) session.getAttribute("user");
-    //     if (currentUser == null) {
-    //         return "redirect:/login";
-    //     }
-    //     if (currentUser.getUserType().equals(UserType.Verifier)) {
-    //         return "product_edit";
-    //     }
-    //     return "index";
-    // }
 
     // traceability editing
     @GetMapping("/edit-stage")
@@ -171,28 +157,13 @@ public class TracerController {
         return "history";
     }
 
-    @GetMapping("/submit")
-    public String handleInput() { //takes input from search box
-        return "redirect:/";
-    }
-    
     // add submit button for
-    // @PostMapping("/submit")
-    // public String handleInput(@RequestParam String userInput, HttpSession session, Model model) { 
-        
-    //     String role = (String) session.getAttribute("role");
-    //     model.addAttribute("role", role != null ? role : "guest");
-    
-
-
     @PostMapping("/submit")
-    public String handleInput(@RequestParam String userInput, Model model, HttpSession session) { //takes input from search box
-        User currentUser = (User) session.getAttribute("user");
-        if (currentUser == null) {
-            return "redirect:/login";
-        }
-     model.addAttribute("currentUser", currentUser);
+    public String handleInput(@RequestParam String userInput, HttpSession session, Model model) { 
         
+        String role = (String) session.getAttribute("role");
+        model.addAttribute("role", role != null ? role : "guest");
+
         if (userInput != null) {
 
             Object[] productData = productRepository.findProductArray(userInput); 
@@ -264,6 +235,7 @@ public class TracerController {
                                 String claimIdFromEvidence = evRow[0].toString();
 
                                 if (claimIdFromEvidence.equals(currentClaimId)) {
+                                    System.out.println("MATCH: Adding Evidence " + evRow[1] + " to Claim " + currentClaimId);
                                     c.addEvidence(new Evidence(
                                         evRow[1].toString(), // id
                                         evRow[2].toString(), // type
@@ -287,75 +259,6 @@ public class TracerController {
                 System.out.println("No product found with ID: " + userInput);
             }
         }
-        else {
-            model.addAttribute("productFound", false);
-            model.addAttribute("errorMessage", "No input provided.");
-        }
-        if (currentUser.getUserType().equals(UserType.Verifier)) {
-            return "product_edit";
-        }
-        return "index";
-    }
-
-    @GetMapping("/login")
-    public String showLoginForm(HttpSession session) {
-        if (session.getAttribute("user") != null) {
-            return "redirect:/";
-        }
-        return "login";
-    }
-
-    @PostMapping("/login")
-    public String handleLogin(@RequestParam String username, @RequestParam String password, Model model, HttpSession session) {
-        if (username == null || username.trim().isEmpty() || 
-            password == null || password.trim().isEmpty()) {
-            return "login";
-        }
-        //SQL query for determining if user is right goes here!!
-        
-        String userDB = "Test";
-        String passDB = "1234";
-        String userType = "Verifier";
-        //Change next line for better check
-        if (userDB.equals(username) && passDB.equals(password)) {
-            String userId = "U001";
-            User user = new User(
-                userId, 
-                username, 
-                password, 
-                userType);
-            
-            session.setAttribute("user", user);
-            session.setAttribute("userId", user.getUserId());
-            session.setAttribute("userType", user.getUserTypeText());
-
-            return "redirect:/";
-        } else {
-            return "login";
-        }
-    }
-
-    @PostMapping("/save")
-    public String handleSave(@RequestParam Map<String, String> allParams, 
-                            Model model, 
-                            HttpSession session) {
-        
-        User currentUser = (User) session.getAttribute("user");
-        if (currentUser == null) {
-            return "redirect:/login";
-        }
-        //Process and save all the updated data
-        //Need to extract the parameters and update database
-        System.out.println(allParams.toString());
-    
-        return "redirect:/";
+        return "index"; 
     }
 }
-
-/*IMPORTANT NOTES FOR BACKEND: - from Waj ;)
-
-The array output is stored in the variable productData
-this is in the format       [["P100","T-shirt","CLOTHING","Next","T-shirt from Spain"]]
-
- */
-
