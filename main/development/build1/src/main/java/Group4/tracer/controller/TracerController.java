@@ -1,12 +1,9 @@
 package Group4.tracer.controller;
 
-<<<<<<< HEAD
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-=======
-import java.util.Map;
->>>>>>> FR5---Verifier-admin-interface
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,30 +12,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-<<<<<<< HEAD
 import Group4.tracer.enums.StageType;
-import Group4.tracer.model.ChangeLog;
-=======
 import Group4.tracer.enums.UserType;
->>>>>>> FR5---Verifier-admin-interface
+import Group4.tracer.model.ChangeLog;
 import Group4.tracer.model.Claims;
 import Group4.tracer.model.Evidence;
 import Group4.tracer.model.Products;
 import Group4.tracer.model.Stages;
-<<<<<<< HEAD
+import Group4.tracer.model.User;
 import Group4.tracer.model.Verifier;
 import Group4.tracer.repository.ChangeLogRepository;
-=======
-import Group4.tracer.model.User;
->>>>>>> FR5---Verifier-admin-interface
 import Group4.tracer.repository.ClaimRepository;
 import Group4.tracer.repository.EvidenceRepository;
 import Group4.tracer.repository.ProductRepository;
 import Group4.tracer.repository.StageRepository;
-<<<<<<< HEAD
 import Group4.tracer.repository.VerifierRepository;
-=======
->>>>>>> FR5---Verifier-admin-interface
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -52,7 +40,6 @@ public class TracerController {
     @Autowired private ChangeLogRepository changeLogRepository;
     @Autowired private VerifierRepository verifierRepository; // Added Verifier Repository
 
-<<<<<<< HEAD
     //get mappijg for login page 
     @GetMapping("/login")
     public String loginPage() { return "login"; }
@@ -89,6 +76,17 @@ public class TracerController {
         model.addAttribute("role", role != null ? role : "guest");
         return "index";
     }
+
+    // public String showForm(HttpSession session) {
+    //     User currentUser = (User) session.getAttribute("user");
+    //     if (currentUser == null) {
+    //         return "redirect:/login";
+    //     }
+    //     if (currentUser.getUserType().equals(UserType.Verifier)) {
+    //         return "product_edit";
+    //     }
+    //     return "index";
+    // }
 
     // traceability editing
     @GetMapping("/edit-stage")
@@ -173,39 +171,28 @@ public class TracerController {
         return "history";
     }
 
-    // add submit button for
-    @PostMapping("/submit")
-    public String handleInput(@RequestParam String userInput, HttpSession session, Model model) { 
-        
-        String role = (String) session.getAttribute("role");
-        model.addAttribute("role", role != null ? role : "guest");
-
-=======
-    @GetMapping("/")
-    public String showForm(HttpSession session) {
-        User currentUser = (User) session.getAttribute("user");
-        if (currentUser == null) {
-            return "redirect:/login";
-        }
-        if (currentUser.getUserType().equals(UserType.Verifier)) {
-            return "product_edit";
-        }
-        return "index";
-    }
-
     @GetMapping("/submit")
     public String handleInput() { //takes input from search box
         return "redirect:/";
     }
+    
+    // add submit button for
+    // @PostMapping("/submit")
+    // public String handleInput(@RequestParam String userInput, HttpSession session, Model model) { 
+        
+    //     String role = (String) session.getAttribute("role");
+    //     model.addAttribute("role", role != null ? role : "guest");
+    
+
+
     @PostMapping("/submit")
     public String handleInput(@RequestParam String userInput, Model model, HttpSession session) { //takes input from search box
         User currentUser = (User) session.getAttribute("user");
         if (currentUser == null) {
             return "redirect:/login";
         }
-        model.addAttribute("currentUser", currentUser);
+     model.addAttribute("currentUser", currentUser);
         
->>>>>>> FR5---Verifier-admin-interface
         if (userInput != null) {
 
             Object[] productData = productRepository.findProductArray(userInput); 
@@ -300,11 +287,6 @@ public class TracerController {
                 System.out.println("No product found with ID: " + userInput);
             }
         }
-<<<<<<< HEAD
-        return "index"; 
-    }
-}
-=======
         else {
             model.addAttribute("productFound", false);
             model.addAttribute("errorMessage", "No input provided.");
@@ -377,4 +359,3 @@ this is in the format       [["P100","T-shirt","CLOTHING","Next","T-shirt from S
 
  */
 
->>>>>>> FR5---Verifier-admin-interface
