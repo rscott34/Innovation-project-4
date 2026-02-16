@@ -168,9 +168,11 @@ public class TracerController {
             Object[] claimData = claimRepository.findClaimArray(userInput);
             Object[] evidenceData = evidenceRepository.findEvidenceArray(userInput);
 
+
+            
             if (productData != null && productData.length > 0) { 
                 System.out.println("Product found");
-                System.out.println(java.util.Arrays.deepToString(traceData));
+                //System.out.println(java.util.Arrays.deepToString(traceData));
 
                 Object[] innerProductData = (Object[]) productData[0];
                 Products p = new Products(
@@ -181,7 +183,6 @@ public class TracerController {
                     innerProductData[4].toString()); 
 
                 model.addAttribute("productFound", true);
-
                 model.addAttribute("productId", p.getProductId());
                 model.addAttribute("name", p.getName());
                 model.addAttribute("category", p.getCategoryText());
@@ -210,52 +211,51 @@ public class TracerController {
 
                 model.addAttribute("stages", p.getListOfStagesDetails());
 
-                if (claimData != null && claimData.length > 0) { //if there are claims
+                if (claimData != null && claimData.length > 0) { // if there are claims
                     for (int i = 0; i < claimData.length; i++) {
-                        Object[] claim = (Object[]) claimData[i];
-                        p.addClaim(new Claims(
-                            claim[0].toString(), 
-                            claim[2].toString(), 
-                            claim[3].toString(), 
-                            claim[4].toString(), 
-                            claim[5].toString()));
+                        Object[] claimRow = (Object[]) claimData[i];
+                        
+                        String currentClaimId = claimRow[0].toString();
+                        
+                        Claims c = new Claims(
+                            claimRow[0].toString(), // claimId
+                            claimRow[3].toString(), // type
+                            claimRow[4].toString(), // text
+                            claimRow[5].toString(), // confidence
+                            claimRow[6].toString()  // rationale
+                        );
+
+                        if (evidenceData != null) {
+                            for (int j = 0; j < evidenceData.length; j++) {
+                                Object[] evRow = (Object[]) evidenceData[j];
+                                
+                                String claimIdFromEvidence = evRow[0].toString();
+
+                                if (claimIdFromEvidence.equals(currentClaimId)) {
+                                    System.out.println("MATCH: Adding Evidence " + evRow[1] + " to Claim " + currentClaimId);
+                                    c.addEvidence(new Evidence(
+                                        evRow[1].toString(), // id
+                                        evRow[2].toString(), // type
+                                        evRow[3].toString(), // issuer
+                                        evRow[4].toString(), // date/data
+                                        evRow[5].toString(), // summary
+                                        evRow[6].toString()  // fileReference
+                                    ));
+                                }
+                            }
+                        }
+                        p.addClaim(c);
                     }
                     model.addAttribute("hasClaims", true);     
-                    model.addAttribute("claims", p.getListOfClaimsDetails());
-                }
+                    model.addAttribute("claimsList", p.getClaims());                }
                 else {
                     model.addAttribute("hasClaims", false);
                 }
-                
-                if (evidenceData != null && evidenceData.length > 0) {
-                    Claims claim = p.getClaimByIndex(0);
-                    for (int j = 0; j < evidenceData.length; j++) {
-                        Object[] ev = (Object[]) evidenceData[j];
-                        claim.addEvidence(new Evidence(
-                            ev[0].toString(), 
-                            ev[2].toString(), // skip claim_id 
-                            ev[3].toString(), 
-                            ev[4].toString(), 
-                            ev[5].toString(), 
-                            ev[6].toString()));
-                        System.out.println(ev[1].toString());
-                    }
-                    model.addAttribute("evidence", claim.getListOfEvidenceDetails());
-                } else {
-                    model.addAttribute("evidence", null);
-                    System.out.println("No evidence found for this product");
-                }
-
-            }
-            else {
+            } else {
                 model.addAttribute("productFound", false);
-                model.addAttribute("errorMessage", "Product ID " + userInput + " not found.");
+                System.out.println("No product found with ID: " + userInput);
             }
         }
-        else {
-            model.addAttribute("productFound", false);
-            model.addAttribute("errorMessage", "No input provided.");
-        }
-        return "index";
+        return "index"; 
     }
 }
