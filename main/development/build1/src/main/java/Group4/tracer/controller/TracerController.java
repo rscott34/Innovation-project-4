@@ -154,6 +154,11 @@ public class TracerController {
         return "history";
     }
 
+    @GetMapping("/mission")
+    public String missionPage(Model model) {
+        return "mission";
+    }
+
     // add submit button for
     @PostMapping("/submit")
     public String handleInput(@RequestParam String userInput, HttpSession session, Model model) { 
