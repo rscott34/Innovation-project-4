@@ -3,9 +3,12 @@
 <head>
     <title>Tracer Input</title>
     <link rel="stylesheet" th:href="@{/style.css}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
 </head> 
 <body>
-    <div style="background-color: #f1f1f1; padding: 10px; text-align: right;">
+    <div class="login">
         <span th:if="${role == 'guest'}">
             <a href="/login"><button>Login as Verifier</button></a>
         </span>
@@ -25,7 +28,7 @@
         </form>
     </div>
     <main th:if="${productFound != null && productFound == true}"> 
-        <div class="product-section" >
+        <div class="product-section section" >
             <h2 class="section-header">Product Information</h2>
             <div class="info">
                 <span class="label"> <b>Product ID:</b></span>
@@ -49,7 +52,7 @@
                 <span class="value" th:text="${description}">P100</span>
             </div>
         </div>
-        <div class="traceability-section" th:if="${hasStages != null && hasStages == true}">
+        <div class="traceability-section section" th:if="${hasStages != null && hasStages == true}">
             <h2 class="section-header">Traceability Stages</h2>
             <div class="stage-card" th:each="stage, iterStat : ${stages}">
                 <div th:if="${role == 'verifier'}" style="margin-top: 10px;">
@@ -78,11 +81,13 @@
                 </div>
             </div>
         </div>
-            <div class="claim-section" th:if="${hasClaims != null && hasClaims == true}">
-                <h2 class="section-header">Claims and Evidence</h2>
-                <div class="claim-card" th:each="claim : ${claimsList}"> 
-                <h3>Claim <span th:text="${claimStat.count}">1</span></h3>
-                
+        <div class="claim-section section" th:if="${hasClaims != null && hasClaims == true}">
+            <h2 class="section-header">Claims and Evidence</h2>
+            <div class="claim-card" th:each="claim, iterStat : ${claims}"> 
+                <h3>Claim <span th:text="${iterStat.count}">1</span></h3>
+                <div th:if="${role == 'verifier'}" style="margin-top: 10px;">
+                    <a th:href="@{/verify-claim(claimId=${claim[0]})}"><button>Verify Claim</button></a>
+                </div>
                 <div class="stage-info">
                     <span><b>Claim ID:</b></span>
                     <span th:text="${claim.claimId}"></span>
