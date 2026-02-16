@@ -1,6 +1,9 @@
 package Group4.tracer.controller;
 
-import Group4.tracer.repository.EvidenceRepository;
+import java.time.LocalDateTime;
+import java.util.Optional;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,116 +11,239 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.*;
-
-import Group4.tracer.repository.ProductRepository;
-import Group4.tracer.repository.StageRepository;
+import Group4.tracer.enums.StageType;
+import Group4.tracer.model.ChangeLog;
+import Group4.tracer.model.Claims;
+import Group4.tracer.model.Evidence;
+import Group4.tracer.model.Products;
+import Group4.tracer.model.Stages;
+import Group4.tracer.model.Verifier;
+import Group4.tracer.repository.ChangeLogRepository;
 import Group4.tracer.repository.ClaimRepository;
 import Group4.tracer.repository.EvidenceRepository;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import Group4.tracer.repository.ProductRepository;
+import Group4.tracer.repository.StageRepository;
+import Group4.tracer.repository.VerifierRepository;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class TracerController {
 
     //allows interaction with database
-    @Autowired
-    private ProductRepository productRepository; //dependency Injection,
-    @Autowired
-    private StageRepository stageRepository;
-    @Autowired
-    private ClaimRepository claimRepository;
-    @Autowired
-    private EvidenceRepository  evidenceRepository;
+    @Autowired private ProductRepository productRepository; 
+    @Autowired private StageRepository stageRepository;
+    @Autowired private ClaimRepository claimRepository;
+    @Autowired private EvidenceRepository evidenceRepository;
+    @Autowired private ChangeLogRepository changeLogRepository;
+    @Autowired private VerifierRepository verifierRepository; // Added Verifier Repository
 
-    @GetMapping("/")
-    public String showForm() {
-        return "index"; // loads index.html
+    //get mappijg for login page 
+    @GetMapping("/login")
+    public String loginPage() { return "login"; }
+    //post mapping for login page
+
+    @PostMapping("/login")
+    public String doLogin(@RequestParam String username, @RequestParam String password, HttpSession session, Model model) {
+        // Find the user account in the database by username
+        Optional<Verifier> verifierOpt = verifierRepository.findByUsername(username);
+        
+        // Verify that user exists and if password matches.
+        if (verifierOpt.isPresent() && verifierOpt.get().getPassword().equals(password)) {
+            session.setAttribute("role", "verifier");
+            session.setAttribute("username", username); 
+            return "redirect:/"; // successful login so user must be redirected to product search page.
+        } else {
+            model.addAttribute("error", "Invalid username or password.");
+            return "login"; // Login failed so display error error.
+        }
+    }
+    //When user presses logout - redirect user to product search page and logout of accoiunt
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
     }
 
+    
+    @GetMapping("/")
+    public String showForm(HttpSession session, Model model) {
+    //get the role and username of the user
+        String role = (String) session.getAttribute("role");
+        //sets user to guest if not loggied in as verifier
+        model.addAttribute("role", role != null ? role : "guest");
+        return "index";
+    }
+
+    // traceability editing
+    @GetMapping("/edit-stage")
+    public String editStageForm(@RequestParam String stageId, Model model) {
+    //sets stage id
+        model.addAttribute("stageId", stageId);
+        return "edit-stage";
+    }
+    //sets stage data ready for UI
+    @PostMapping("/update-stage")
+    public String updateStage(@RequestParam String stageId, @RequestParam String newLocation, HttpSession session) {
+        //finds stageID
+        Stages stage = stageRepository.findById(stageId).orElse(null);
+        if (stage != null) {
+        //gets new stage loctaion and sets this for the stage
+            String oldLoc = stage.getLocation();
+            stage.setLocation(newLocation);
+            stageRepository.save(stage);
+
+            // adds log of change to the change log table
+            ChangeLog log = new ChangeLog();
+            log.setLogId(UUID.randomUUID().toString());
+            log.setEntityType("Stage");
+            log.setEntityId(stageId);
+            log.setChangedBy((String) session.getAttribute("username"));
+            log.setTimestamp(LocalDateTime.now().toString());
+            log.setChangeSummary("Updated location from " + oldLoc + " to " + newLocation);
+            changeLogRepository.save(log);
+        }
+        return "redirect:/";
+    }
+
+    // attaching evidence to claims
+    @GetMapping("/verify-claim")
+    public String verifyClaimForm(@RequestParam String claimId, Model model) {
+        model.addAttribute("claimId", claimId);
+        
+        // Fetch all actual evidence records from the PostgreSQL database
+        Iterable<Evidence> evidenceFromDb = evidenceRepository.findAll();
+        
+        // Pass the database records to the HTML page
+        model.addAttribute("evidenceList", evidenceFromDb);
+        
+        return "verify-claim";
+    }
+
+    @PostMapping("/submit-verification")
+    public String submitVerification(@RequestParam String claimId, @RequestParam String evidenceFile, @RequestParam String explanation, HttpSession session) {
+        Claims claim = claimRepository.findById(claimId).orElse(null);
+        if (claim != null) {
+            
+            // Enforce Validation Rule
+            if (evidenceFile == null || evidenceFile.equals("none") || evidenceFile.isEmpty()) {
+                claim.setConfidenceLabelString("Unverified");
+                claim.setRationale("No evidence attached. Explanation: " + explanation);
+            } else {
+                claim.setConfidenceLabelString("Verified");
+                claim.setRationale("Evidence attached: " + evidenceFile + " | Explanation: " + explanation);
+            }
+            claimRepository.save(claim);
+
+            // add setails to to ChangeLog
+            ChangeLog log = new ChangeLog();
+            log.setLogId(UUID.randomUUID().toString());
+            log.setEntityType("Claim");
+            log.setEntityId(claimId);
+            log.setChangedBy((String) session.getAttribute("username"));
+            log.setTimestamp(LocalDateTime.now().toString());
+            log.setChangeSummary("Verified claim using file: " + evidenceFile);
+            changeLogRepository.save(log);
+        }
+        return "redirect:/";
+    }
+
+    //get changelog data to display 
+    @GetMapping("/history")
+    public String viewHistory(Model model) {
+        model.addAttribute("logs", changeLogRepository.findAll());
+        return "history";
+    }
+
+    // add submit button for
     @PostMapping("/submit")
-    public String handleInput(@RequestParam String userInput, Model model) { //takes input from search box
+    public String handleInput(@RequestParam String userInput, HttpSession session, Model model) { 
+        
+        String role = (String) session.getAttribute("role");
+        model.addAttribute("role", role != null ? role : "guest");
+
         if (userInput != null) {
 
-            Object[] productData = productRepository.findProductArray(userInput); //stores array data
+            Object[] productData = productRepository.findProductArray(userInput); 
             Object[] traceData = stageRepository.findStageArray(userInput);
             Object[] claimData = claimRepository.findClaimArray(userInput);
+            Object[] evidenceData = evidenceRepository.findEvidenceArray(userInput);
 
-            if (productData != null && productData.length > 0) { //checks if requested data exists in Products
+            if (productData != null && productData.length > 0) { 
                 System.out.println("Product found");
+                System.out.println(java.util.Arrays.deepToString(traceData));
 
                 Object[] innerProductData = (Object[]) productData[0];
+                Products p = new Products(
+                    innerProductData[0].toString(), 
+                    innerProductData[1].toString(), 
+                    innerProductData[2].toString(), 
+                    innerProductData[3].toString(), 
+                    innerProductData[4].toString()); 
 
-                String productId = innerProductData[0].toString();
-                String name = innerProductData[1].toString();
-                String category = innerProductData[2].toString();
-                String brand = innerProductData[3].toString();
-                String description = innerProductData[4].toString();    
+                model.addAttribute("productFound", true);
 
-                model.addAttribute("productFound", true); 
+                model.addAttribute("productId", p.getProductId());
+                model.addAttribute("name", p.getName());
+                model.addAttribute("category", p.getCategoryText());
+                model.addAttribute("brand", p.getBrand());
+                model.addAttribute("description", p.getDescription());
 
-                model.addAttribute("productId", productId);
-                model.addAttribute("name", name);
-                model.addAttribute("category", category);
-                model.addAttribute("brand", brand);
-                model.addAttribute("description", description);
-
-                List<Map<String, String>> stagesList = new ArrayList<>();
-
-                for (int i = 0; i < traceData.length; i++) {
-                    Object[] stage = (Object[]) traceData[i];
-
-                    Map<String, String> stageMap = new HashMap<>();
-                    stageMap.put("stageId", stage[0].toString());
-                    stageMap.put("productId", stage[1].toString());
-                    stageMap.put("stageType", stage[2].toString());
-                    stageMap.put("location", stage[3].toString());
-                    stageMap.put("startDate", stage[4].toString());
-                    //stageMap.put("endDate", stage[5].toString()); -- add values for end date in db are NULL this causes an error when trying to display the stage information
-                    stageMap.put("description", stage[6].toString());
-                    stagesList.add(stageMap);
+                if (traceData != null && traceData.length > 0) { //if there are stages 
+                    for (int i = 0; i < traceData.length; i++) {
+                        Object[] stage = (Object[]) traceData[i];
+                        p.addStage(new Stages(
+                            stage[0].toString(), // stageId
+                            StageType.fromString(stage[2].toString()).name(), // stageType
+                            stage[3].toString(), // stageName
+                            stage[4].toString(),  // location
+                            //stage[4].toString(), // startDate
+                            "", // endDate is not currently used in the database so set to empty string
+                            stage[6].toString() // description
+                        ));
+                    }
+                    model.addAttribute("hasStages", true);
+                }
+                else {
+                    model.addAttribute("hasStages", false);
+                    System.out.println("No stages found for this product");
                 }
 
+                model.addAttribute("stages", p.getListOfStagesDetails());
 
-                model.addAttribute("stages", stagesList);
-             
-                System.out.println(claimData);
-
-
-                if (claimData != null && claimData.length > 0) {
-                    List<Map<String, String>> claimsList = new ArrayList<>();
-                    
-                    for (int i = 0; i < claimData.length; i++) { //go through claims
-                        Object[] claim = (Object[]) claimData[i]; //store claim 
-
-                        String claimId = claim[0].toString();
-                        String claimProductId = claim[1].toString();
-                        String claimType = claim[2].toString();
-                        String claimText = claim[3].toString();
-                        String confidenceLabel = claim[4].toString();
-                        String rationale = claim[5].toString();
-
-                        Map<String, String> claimMap = new HashMap<>(); //create map to store claim information
-                        claimMap.put("claimId", claimId);
-                        claimMap.put("productId", claimProductId);
-                        claimMap.put("claimType", claimType);
-                        claimMap.put("claimText", claimText);         
-                        claimMap.put("confidence_label", confidenceLabel);  
-                        claimMap.put("rationale", rationale);
-                        
-                        claimsList.add(claimMap);
+                if (claimData != null && claimData.length > 0) { //if there are claims
+                    for (int i = 0; i < claimData.length; i++) {
+                        Object[] claim = (Object[]) claimData[i];
+                        p.addClaim(new Claims(
+                            claim[0].toString(), 
+                            claim[2].toString(), 
+                            claim[3].toString(), 
+                            claim[4].toString(), 
+                            claim[5].toString()));
                     }
-
                     model.addAttribute("hasClaims", true);     
-                    model.addAttribute("claims", claimsList);
-
+                    model.addAttribute("claims", p.getListOfClaimsDetails());
                 }
                 else {
                     model.addAttribute("hasClaims", false);
-                    System.out.println("No claims found for this product");
+                }
+                
+                if (evidenceData != null && evidenceData.length > 0) {
+                    Claims claim = p.getClaimByIndex(0);
+                    for (int j = 0; j < evidenceData.length; j++) {
+                        Object[] ev = (Object[]) evidenceData[j];
+                        claim.addEvidence(new Evidence(
+                            ev[0].toString(), 
+                            ev[2].toString(), // skip claim_id 
+                            ev[3].toString(), 
+                            ev[4].toString(), 
+                            ev[5].toString(), 
+                            ev[6].toString()));
+                        System.out.println(ev[1].toString());
+                    }
+                    model.addAttribute("evidence", claim.getListOfEvidenceDetails());
+                } else {
+                    model.addAttribute("evidence", null);
+                    System.out.println("No evidence found for this product");
                 }
 
             }
@@ -133,10 +259,3 @@ public class TracerController {
         return "index";
     }
 }
-
-/*IMPORTANT NOTES FOR BACKEND: - from Waj ;)
-
-The array output is stored in the variable productData
-this is in the format       [["P100","T-shirt","CLOTHING","Next","T-shirt from Spain"]]
-
- */

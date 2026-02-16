@@ -1,0 +1,9 @@
+<label><strong>Attach Evidence File:</strong></label><br/>
+        <select name="evidenceFile" style="width: 300px; padding: 5px;">
+            <option value="none">None (No evidence attached)</option>
+            
+            <option th:each="evidence : ${evidenceList}" 
+                    th:value="${evidence.fileRef}" 
+                    th:text="${evidence.fileRef}">
+            </option>
+        </select>

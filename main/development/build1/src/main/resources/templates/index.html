@@ -5,6 +5,16 @@
     <link rel="stylesheet" th:href="@{/style.css}">
 </head> 
 <body>
+    <div style="background-color: #f1f1f1; padding: 10px; text-align: right;">
+        <span th:if="${role == 'guest'}">
+            <a href="/login"><button>Login as Verifier</button></a>
+        </span>
+        <span th:if="${role == 'verifier'}">
+            Logged in as Verifier | 
+            <a href="/history"><button>View History</button></a> | 
+            <a href="/logout"><button>Logout</button></a>
+        </span>
+    </div>
     <div class="header">
         <h1>Enter Product ID</h1>
     </div>
@@ -16,6 +26,7 @@
     </div>
     <main th:if="${productFound != null && productFound == true}"> 
         <div class="product-section" >
+            <h2 class="section-header">Product Information</h2>
             <div class="info">
                 <span class="label"> <b>Product ID:</b></span>
                 <span class="value" th:text="${productId}">P100</span>
@@ -38,53 +49,89 @@
                 <span class="value" th:text="${description}">P100</span>
             </div>
         </div>
-        <div class="traceability-section">
+        <div class="traceability-section" th:if="${hasStages != null && hasStages == true}">
+            <h2 class="section-header">Traceability Stages</h2>
             <div class="stage-card" th:each="stage, iterStat : ${stages}">
+                <div th:if="${role == 'verifier'}" style="margin-top: 10px;">
+                    <a th:href="@{/edit-stage(stageId=${stage[0]})}"><button>Edit Product Stage</button></a>
+                </div>
                 <h3>Stage <span th:text="${iterStat.count}">1</span></h3>
                 <div class="stage-info">
                     <span><b>Stage ID:</b></span>
-                    <span th:text="${stage.stageId}">S1-001</span>
+                    <span th:text="${stage[0]}">S1-001</span>
                 </div>
                 <div class="stage-info">
                     <span><b>Stage Type:</b></span>
-                    <span th:text="${stage.stageType}">Manufacturing</span>
+                    <span th:text="${stage[1]}">Manufacturing</span>
                 </div>
                 <div class="stage-info">
                     <span><b>Location:</b></span>
-                    <span th:text="${stage.location}">Italy</span>
+                    <span th:text="${stage[2]}">Italy</span>
                 </div>
                 <div class="stage-info">
                     <span><b>Start Date:</b></span>
-                    <span th:text="${stage.startDate}">2024-01-01</span>
+                    <span th:text="${stage[3]}">2024-01-01</span>
                 </div>
                 <div class="stage-info">
                     <span><b>Description:</b></span>
-                    <span th:text="${stage.description}">Description of the stage</span>
+                    <span th:text="${stage[5]}">Description of the stage</span>
                 </div>
             </div>
         </div>
-        <div class="claim-section"> 
-            <div class="claim-card" th:each="claim, iterStat : ${claims}">
+        <div class="claim-section" th:if="${hasClaims != null && hasClaims == true}">
+            <h2 class="section-header">Claims and Evidence</h2>
+            <div class="claim-card" th:each="claim, iterStat : ${claims}"> 
                 <h3>Claim <span th:text="${iterStat.count}">1</span></h3>
+                <div th:if="${role == 'verifier'}" style="margin-top: 10px;">
+                    <a th:href="@{/verify-claim(claimId=${claim[0]})}"><button>Verify Claim</button></a>
+                </div>
                 <div class="stage-info">
                     <span><b>Claim ID:</b></span>
-                    <span th:text="${claim.claimId}">C001</span>
+                    <span th:text="${claim[0]}">C001</span>
                 </div>
                 <div class="stage-info">
                     <span><b>Claim Type:</b></span>
-                    <span th:text="${claim.claimType}">Enviromental</span>
+                    <span th:text="${claim[1]}">Enviromental</span>
                 </div>
                 <div class="stage-info">
                     <span><b>Text:</b></span>
-                    <span th:text="${claim.claimText}">xyz</span>
+                    <span th:text="${claim[2]}">xyz</span>
                 </div>
                 <div class="stage-info">
                     <span><b>Confidence Label:</b></span>
-                    <span th:text="${claim.confidence_label}">Verified</span>
+                    <span th:text="${claim[3]}">Verified</span>
                 </div>
                 <div class="stage-info">
                     <span><b>Rationale:</b></span>
-                    <span th:text="${claim.rationale}">xyz</span>
+                    <span th:text="${claim[4]}">xyz</span>
+                </div>
+                <div class="evidence-section" th:if="${evidence != null}" th:each="ev, iterStat : ${evidence}">
+                    <div class="evidence-card" th:if="${ev != null}">
+                        <div class="evidence-info">
+                            <span><b>Evidence Id:</b></span>
+                            <span th:text="${ev[0]}">E001</span>
+                        </div>
+                        <div class="evidence-info">
+                            <span><b>Evidence Type:</b></span>
+                            <span th:text="${ev[1]}">Certificate</span>
+                        </div>
+                        <div class="evidence-info">
+                            <span><b>Issuer:</b></span>
+                            <span th:text="${ev[2]}">V1</span>
+                        </div>
+                        <div class="evidence-info">
+                            <span><b>Date:</b></span>
+                            <span th:text="${ev[3]}">2025-01-15</span>
+                        </div>
+                        <div class="evidence-info">
+                            <span><b>Summary:</b></span>
+                            <span th:text="${ev[4]}">Summary</span>
+                        </div>
+                        <div class="evidence-info">
+                            <span><b>File Reference:</b></span>
+                            <span th:text="${ev[5]}">E001</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -1,7 +1,7 @@
 package Group4.tracer.controller;
 
-import Group4.tracer.repository.ProductRepository;
-import Group4.tracer.repository.StageRepository;
+import java.util.Random;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import java.util.Random;
+
+import Group4.tracer.repository.ProductRepository;
+import Group4.tracer.repository.StageRepository;
 
 @Controller
 @RequestMapping("/questions")
@@ -43,7 +45,9 @@ public class QuestionController {
                 String stage = STAGES[random.nextInt(STAGES.length)];
                 
                 //  Get traceability data - Adam/Wajih implemented the actual query ideally.
+                System.out.printf("Getting product %s evidence for stage %s\n", name, stage);
                 Object[] stageData = stageRepository.findStageEvidence(productId, stage);
+                System.out.println("Found");
                 
                 String correctAnswer = "Information not available";
                 String evidenceLink = "#";
@@ -52,6 +56,7 @@ public class QuestionController {
                     // stageData[0] = stage_value, stageData[1] = evidence_link
                     correctAnswer = stageData[0].toString();
                     evidenceLink = stageData[1].toString();
+                    System.out.println(correctAnswer +  " " + evidenceLink);
                     
                     // Use this for debuggging , del later
                     System.out.println("Found stage data - Value: " + correctAnswer + ", Link: " + evidenceLink);
@@ -77,16 +82,14 @@ public class QuestionController {
         } catch (Exception e) {
             model.addAttribute("questionGenerated", false);
             model.addAttribute("errorMessage", "Failed to generate question: " + e.getMessage());
-            e.printStackTrace(); // For debugging
+            e.printStackTrace(); //For debugging
         }
         
-        return "index"; // Connoted for George's UI template
+        return "mission"; // Connoted for George's UI template
     }
 
     @PostMapping("/verify")
     public String verifyAnswer(
-            @RequestParam String productId,
-            @RequestParam String stage,  // This has been renamed from topic to stage
             @RequestParam String userAnswer,
             @RequestParam String correctAnswer,
             @RequestParam String evidenceLink,
