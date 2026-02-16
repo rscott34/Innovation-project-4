@@ -83,7 +83,7 @@
         </div>
         <div class="claim-section section" th:if="${hasClaims != null && hasClaims == true}">
             <h2 class="section-header">Claims and Evidence</h2>
-            <div class="claim-card" th:each="claim, iterStat : ${claims}"> 
+            <div class="claim-card" th:each="claim, iterStat : ${claimsList}"> 
                 <h3>Claim <span th:text="${iterStat.count}">1</span></h3>
                 <div th:if="${role == 'verifier'}" style="margin-top: 10px;">
                     <a th:href="@{/verify-claim(claimId=${claim[0]})}"><button>Verify Claim</button></a>

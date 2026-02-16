@@ -235,7 +235,6 @@ public class TracerController {
                                 String claimIdFromEvidence = evRow[0].toString();
 
                                 if (claimIdFromEvidence.equals(currentClaimId)) {
-                                    System.out.println("MATCH: Adding Evidence " + evRow[1] + " to Claim " + currentClaimId);
                                     c.addEvidence(new Evidence(
                                         evRow[1].toString(), // id
                                         evRow[2].toString(), // type
