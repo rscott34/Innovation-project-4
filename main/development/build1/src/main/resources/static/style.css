@@ -2,12 +2,22 @@
     margin: 0px;
     padding: 0px;
     box-sizing: border-box;
+    font-family: 'DM Sans', sans-serif;
 }
+
 
 body {
     font-family: Arial, Helvetica, sans-serif;
     padding: 20px;
+
 }   
+
+main{
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
 /* Header */
 
@@ -25,6 +35,23 @@ body {
 .section-header{
     margin-bottom: 15px;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.login {
+    display: flex;
+    padding: 10px; 
+    text-align: right;
+
+}
+
+.login button{
+    border: none;
+    padding: 5px;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #007BFF;
+    color: white;
 }
 
 /* Search */
@@ -56,13 +83,18 @@ body {
     cursor: pointer;
 }
 
+.section{
+    width: 50%;
+    margin: 0 auto;
+}
+
+
 /* Product Info */
 
 .product-section {
     padding: 20px;
     border: 1px solid black;
     border-radius: 10px;
-    background-color: grey;
     justify-content: center;
     margin-bottom: 20px;
 }
@@ -71,7 +103,6 @@ body {
     padding: 20px;
     border: 1px solid black;
     border-radius: 10px;
-    background-color: grey;
     justify-content: center;
     margin-bottom: 20px;
 }
@@ -84,7 +115,6 @@ body {
     padding: 20px;
     border: 1px solid black;
     border-radius: 10px;
-    background-color: grey;
     justify-content: center;
     margin-bottom: 20px;
 }
