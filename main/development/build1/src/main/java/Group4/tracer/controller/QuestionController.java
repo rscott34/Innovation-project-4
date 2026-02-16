@@ -10,79 +10,61 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import Group4.tracer.repository.ProductRepository;
-import Group4.tracer.repository.StageRepository;
+import Group4.tracer.model.Mission;
+import Group4.tracer.repository.MissionRepository;
 
 @Controller
 @RequestMapping("/questions")
 public class QuestionController {
-
+    
     @Autowired
-    private ProductRepository productRepository;
+    private MissionRepository missionRepository;
     
-    @Autowired  // Here I have added StageRepository-> StageRepository for traceability data
-    private StageRepository stageRepository;
-    
-    private final String[] STAGES = {"raw materials", "processing", "assembly", "transport", "retail"};
+    //private final String[] STAGES = {"raw materials", "processing", "assembly", "transport", "retail"};
     private final Random random = new Random();
 
     @GetMapping("/generate")
     public String generateQuestion(Model model) {
-        try {
-            // The random product ID
-            String randomProductId = productRepository.getRandomProductId();
-            
-            // Get product details using method
-            Object[] productData = productRepository.findProductArray(randomProductId);
-            
-            if (productData != null && productData.length > 0) {
-                Object[] product = (Object[]) productData[0];
-                
-                String productId = product[0].toString();
-                String name = product[1].toString();
-                
-                //  Randomly select stage 
-                String stage = STAGES[random.nextInt(STAGES.length)];
-                
-                //  Get traceability data - Adam/Wajih implemented the actual query ideally.
-                System.out.printf("Getting product %s evidence for stage %s\n", name, stage);
-                Object[] stageData = stageRepository.findStageEvidence(productId, stage);
-                System.out.println("Found");
-                
-                String correctAnswer = "Information not available";
-                String evidenceLink = "#";
-                
-                if (stageData != null && stageData.length > 0) {
-                    // stageData[0] = stage_value, stageData[1] = evidence_link
-                    correctAnswer = stageData[0].toString();
-                    evidenceLink = stageData[1].toString();
-                    System.out.println(correctAnswer +  " " + evidenceLink);
-                    
-                    // Use this for debuggging , del later
-                    System.out.println("Found stage data - Value: " + correctAnswer + ", Link: " + evidenceLink);
-                } else {
-                    // Likewise here , after debugging just del.
-                    System.out.println("No stage data found for product: " + productId + ", stage: " + stage);
-                    //IMPORTANT:T.D: Adam/Wajih need to check why there is no data for this product/stage combination
-                }
-                
-                // Generated the question text
-                String questionText = "What is the traceability timeline value for '" + stage + 
-                                    "' in the product: " + name + " (Product ID: " + productId + ")?";
-                
-                // IMPORTANT: Add to model for George's UI
-                model.addAttribute("questionGenerated", true);
-                model.addAttribute("questionText", questionText);
-                model.addAttribute("correctAnswer", correctAnswer);
-                model.addAttribute("evidenceLink", evidenceLink);
-            }
-        } catch (Exception e) {
-            model.addAttribute("questionGenerated", false);
-            model.addAttribute("errorMessage", "Failed to generate question: " + e.getMessage());
-            e.printStackTrace(); //For debugging
-        }
+        Object[] questionRecords = missionRepository.findMissionArray();
+        Object[] questionData = (Object[]) questionRecords[0];
+        System.out.println(questionData);
+        //random.nextInt(questionRecords.length-1)
+        System.out.println("Found");
         
-        return "mission"; // Connoted for George's UI template
+        String correctAnswer = "Information not available";
+        String evidenceLink = "#";
+        String questionText = "None found";
+        
+        if (questionData != null && questionData.length > 0) {
+            // stageData[0] = stage_value, stageData[1] = evidence_link
+
+            Mission mission = new Mission(
+                questionData[0].toString(),
+                questionData[1].toString(),
+                questionData[2].toString(),
+                questionData[3].toString(),
+                questionData[4].toString(),
+                questionData[5].toString(),
+                questionData[6].toString()
+            );
+            correctAnswer = mission.getAnswer();
+            evidenceLink = mission.getExplanation();
+            questionText = mission.getQuestion();
+
+            model.addAttribute("questionGenerated", true);
+        } else {
+            model.addAttribute("questionGenerated", false);
+        }
+
+        System.out.println(correctAnswer +  " " + evidenceLink + " " + questionText);
+        
+        // IMPORTANT: Add to model for George's UI
+        
+        model.addAttribute("questionText", questionText);
+        model.addAttribute("correctAnswer", correctAnswer);
+        model.addAttribute("evidenceLink", evidenceLink);
+
+        return "mission";
     }
 
     @PostMapping("/verify")
