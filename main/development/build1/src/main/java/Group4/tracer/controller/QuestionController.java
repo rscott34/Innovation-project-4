@@ -72,9 +72,6 @@ public class QuestionController {
                 
                 // IMPORTANT: Add to model for George's UI
                 model.addAttribute("questionGenerated", true);
-                model.addAttribute("productId", productId);
-                model.addAttribute("productName", name);
-                model.addAttribute("stage", stage);  // Renamed from topic to stage
                 model.addAttribute("questionText", questionText);
                 model.addAttribute("correctAnswer", correctAnswer);
                 model.addAttribute("evidenceLink", evidenceLink);
@@ -103,8 +100,6 @@ public class QuestionController {
         model.addAttribute("userAnswer", userAnswer);
         model.addAttribute("correctAnswer", correctAnswer);
         model.addAttribute("evidenceLink", evidenceLink);  // IMPORTANT : This is for George's UI link - Rowan said to show this when the answer is wrong
-        model.addAttribute("productId", productId);
-        model.addAttribute("stage", stage);
         
         if (isCorrect) {
             model.addAttribute("resultMessage", "✓ Correct!");

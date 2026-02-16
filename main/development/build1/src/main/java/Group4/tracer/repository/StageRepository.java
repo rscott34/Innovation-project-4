@@ -1,10 +1,11 @@
 package Group4.tracer.repository;
 
-import Group4.tracer.model.Stages;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import Group4.tracer.model.Stages;
 
 @Repository
 public interface StageRepository extends JpaRepository<Stages, String> {
@@ -17,7 +18,7 @@ public interface StageRepository extends JpaRepository<Stages, String> {
     Object[] findStageArray(@Param("productId") String productId);
 
     // Get specific stage value and evidence link for a product and stage name
-    @Query(value = "SELECT stage_value, evidence_link " +
+    @Query(value = "SELECT stage_Id, evidence_link " +
             "FROM public.\"stages\" " +
             "WHERE product_id = :productId AND stage_name = :stageName", nativeQuery = true)
     Object[] findStageEvidence(@Param("productId") String productId, @Param("stageName") String stageName);

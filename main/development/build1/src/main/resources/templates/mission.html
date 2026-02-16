@@ -8,11 +8,18 @@
     <div class="header">
         <h1>Mission</h1>
     </div>
-    <div class="search">
-        <form action="/verify" method="post">
-            <input type="text" name="userAnswer" placeholder="Enter answer here" required />
-            <button type="submit">Send</button>
-        </form>
-    </div>
+    <main th:if="${questionGenerated == true}">
+        <div class="header">
+            <h1>${questionText}</h1>
+        </div>
+        <div class="search">
+            <form action="/verify" method="post">
+                <input type="text" name="userAnswer" placeholder="Enter answer here" required/>
+                <input type="hidden" name="correctAnswer" value="${correctAnswer}">
+                <input type="hidden" name="evidenceLink" value="${evidenceLink}">
+                <button type="submit">Send</button>
+            </form>
+        </div>
+    </main>
 </body>
 </html>
