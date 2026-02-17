@@ -131,8 +131,7 @@ details.evidence-section summary {
     padding: 8px 12px;
     border-radius: 5px;
     cursor: pointer;
-    list-style: none;
-    display: inline-block;
+    padding-left: 0px;
 }
 
 .evidence-info img {
