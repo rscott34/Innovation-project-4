@@ -166,8 +166,10 @@
                             <span th:text="${ev[4]}"></span>
                         </div>
                         <div class="evidence-info">
-                            <span><b>File Reference:</b></span>
-                            <span th:text="${ev[5]}"></span>
+                            <span><b>Certification Image:</b></span>
+                            <div class="evidence-image">
+                                <img th:src="${ev[5]}" alt="Evidence Image">
+                            </div>
                         </div>
                     </div>
                 </details>

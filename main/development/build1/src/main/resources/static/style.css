@@ -140,6 +140,13 @@ details.evidence-section summary {
     margin-top: 10px;
 }
 
+.evidence-image img {
+    max-width: 200px;
+    display: block;
+    margin-left: 0px;
+}
+
+
 .info {
     justify-content: center;
     display: flex;
@@ -151,6 +158,3 @@ details.evidence-section summary {
     margin: 20px auto;
 }
 
-.home-button {
-    
-}
