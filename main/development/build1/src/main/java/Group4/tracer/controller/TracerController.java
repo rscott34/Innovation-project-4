@@ -123,8 +123,11 @@ public class TracerController {
     }
 
     @PostMapping("/submit-verification")
-    public String submitVerification(@RequestParam String claimId, @RequestParam String evidenceFile, @RequestParam String explanation, HttpSession session) {
-        System.out.println(evidenceFile);
+    public String submitVerification(@RequestParam String claimId, @RequestParam String evidenceId, @RequestParam String evidenceFile, @RequestParam String explanation, HttpSession session) {
+       
+        int updatedRows = evidenceRepository.updateEvidencePath(evidenceFile, evidenceId);
+
+        //System.out.println(evidenceFile);
         Claims claim = claimRepository.findById(claimId).orElse(null);
         if (claim != null) {
             
@@ -185,7 +188,6 @@ public class TracerController {
             Object[] evidenceData = evidenceRepository.findEvidenceArray(userInput);
 
 
-            
             if (productData != null && productData.length > 0) { 
                 System.out.println("Product found");
                 //System.out.println(java.util.Arrays.deepToString(traceData));
@@ -248,7 +250,6 @@ public class TracerController {
                                 String claimIdFromEvidence = evRow[0].toString();
 
                                 if (claimIdFromEvidence.equals(currentClaimId)) {
-                                    System.out.println("MATCH: Adding Evidence " + evRow[1] + " to Claim " + currentClaimId);
                                     c.addEvidence(new Evidence(
                                         evRow[1].toString(), // id
                                         evRow[2].toString(), // type
