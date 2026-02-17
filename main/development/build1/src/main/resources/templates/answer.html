@@ -1,38 +1,42 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Tracer Input</title>
+    <title>Answer Result</title>
     <link rel="stylesheet" th:href="@{/style.css}">
 </head>
-
-<div class="home-button">
-    <a href="/"><button>Home</button></a>
-</div>
 <body>
-    <div class="header">
-        <h1 th:text="${resultMessage}">Answer result</h1>
+    <div class="home-button">
+        <a href="/"><button>Home</button></a>
     </div>
-    <div class="info">
-        <span class="value" th:text="${feedback}">Feedback</span>
+
+    <div class="header">
+        <h1 th:text="${resultMessage}">Answer Result</h1>
+    </div>
+
+    <div class="result-section">
+        <div class="feedback-message">
+            <span th:text="${feedback}">Feedback</span>
+        </div>
+
         <div class="info">
-            <span class="label"> <b>Your Answer:</b></span>
+            <span class="label"><b>Your Answer:</b></span>
             <span class="value" th:text="${userAnswer}">Your answer</span>
         </div>
-        <main th:if="${isCorrect == false}">
-            <div class="info">
-                <span class="label"> <b>Correct Answer:</b></span>
-                <span class="value" th:text="${correctAnswer}">P100</span>
-            </div>
-        </main>
-        <div>
+
+        <div th:if="${isCorrect == false}" class="info">
+            <span class="label"><b>Correct Answer:</b></span>
+            <span class="value" th:text="${correctAnswer}">Correct answer</span>
+        </div>
+
+        <div class="passport-link">
             <form action="/submit" method="post">
-                <input type="hidden" name="questionGenerated" value = false>
+                <input type="hidden" name="questionGenerated" value="false">
                 <input type="hidden" name="questionText">
                 <input type="hidden" name="userAnswer">
                 <input type="hidden" name="correctAnswer">
                 <input type="hidden" name="evidenceLink">
                 <input type="hidden" name="userInput" th:value="${evidenceLink}"/>
-                <button type="submit">View passport</button>
+                <button type="submit">View Passport</button>
             </form>
         </div>
     </div>

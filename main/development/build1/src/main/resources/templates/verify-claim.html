@@ -1,23 +1,36 @@
-<form th:action="@{/submit-verification}" method="post" style="padding: 20px;">
-    
-    <input type="hidden" name="claimId" th:value="${claimId}">
-    <input type="hidden" name="evidenceId" th:value="${evidenceId}">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Verify Claim</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+    <div class="header">
+        <h1>Verify Claim</h1>
+    </div>
+    <div class="form-section">
+        <p>
+            <b>Claim ID:</b> <span class="highlight" th:text="${claimId}">C001</span>
+        </p>
+        <form th:action="@{/submit-verification}" method="post">
+            <input type="hidden" name="claimId" th:value="${claimId}">
+            <input type="hidden" name="evidenceId" th:value="${evidenceId}">
+            <label><strong>Select Evidence File:</strong></label>
+            <select name="evidenceFile">
+                <option value="none">None (No evidence attached)</option>
+                <option th:each="ev : ${evidenceList}"
+                        th:value="${ev.fileRef}"
+                        th:text="${ev.fileRef}">
+                </option>
+            </select>
+            <label><strong>Explanation:</strong></label>
+            <textarea name="explanation" rows="4" placeholder="Provide a reason for your verification decision..."></textarea>
 
-    <label><strong>Select New Evidence File:</strong></label><br/>
-    <select name="evidenceFile" style="width: 300px; padding: 5px; margin-bottom: 15px;">
-        <option value="none">None (No evidence attached)</option>
-        <option th:each="ev : ${evidenceList}" 
-                th:value="${ev.fileRef}" 
-                th:text="${ev.fileRef}">
-        </option>
-    </select>
-
-    <br/>
-    <input type="hidden" name="explanation" value="Updated via file selection">
-
-    <button type="submit" style="background-color: #2c3e50; color: white; padding: 10px 20px; border: none; cursor: pointer;">
-        Update File Path
-    </button>
-    
-    <a href="/" style="margin-left: 10px;">Cancel</a>
-</form>
+            <div class="form-actions">
+                <button type="submit">Update Verification</button>
+                <a href="/" class="cancel-link">Cancel</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

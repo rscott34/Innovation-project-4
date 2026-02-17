@@ -263,6 +263,7 @@ public String submitVerification(
             } else {
                 model.addAttribute("productFound", false);
                 System.out.println("No product found with ID: " + userInput);
+                model.addAttribute("errorMessage", "Invalid Product ID. Please try again with a valid ID.");
             }
         }
         else {
