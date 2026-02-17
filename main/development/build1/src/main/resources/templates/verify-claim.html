@@ -1,10 +1,9 @@
 <form th:action="@{/submit-verification}" method="post" style="padding: 20px;">
     
     <input type="hidden" name="claimId" th:value="${claimId}">
-    
     <input type="hidden" name="evidenceId" th:value="${evidenceId}">
 
-    <label><strong>Attach Evidence File:</strong></label><br/>
+    <label><strong>Select New Evidence File:</strong></label><br/>
     <select name="evidenceFile" style="width: 300px; padding: 5px; margin-bottom: 15px;">
         <option value="none">None (No evidence attached)</option>
         <option th:each="ev : ${evidenceList}" 
@@ -14,14 +13,10 @@
     </select>
 
     <br/>
-    <label><strong>Rationale:</strong></label><br/>
-    <textarea name="explanation" required 
-              style="width: 300px; height: 80px; margin-bottom: 15px;" 
-              placeholder="Enter rationale for verification"></textarea>
+    <input type="hidden" name="explanation" value="Updated via file selection">
 
-    <br/>
     <button type="submit" style="background-color: #2c3e50; color: white; padding: 10px 20px; border: none; cursor: pointer;">
-        Submit Verification
+        Update File Path
     </button>
     
     <a href="/" style="margin-left: 10px;">Cancel</a>

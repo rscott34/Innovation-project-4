@@ -122,37 +122,29 @@ public class TracerController {
         return "verify-claim";
     }
 
-    @PostMapping("/submit-verification")
-    public String submitVerification(@RequestParam String claimId, @RequestParam String evidenceId, @RequestParam String evidenceFile, @RequestParam String explanation, HttpSession session) {
-       
-        int updatedRows = evidenceRepository.updateEvidencePath(evidenceFile, evidenceId);
-
-        //System.out.println(evidenceFile);
-        Claims claim = claimRepository.findById(claimId).orElse(null);
-        if (claim != null) {
-            
-            // Enforce Validation Rule
-            if (evidenceFile == null || evidenceFile.equals("none") || evidenceFile.isEmpty()) {
-                claim.setConfidenceLabelString("Unverified");
-                claim.setRationale("No evidence attached. Explanation: " + explanation);
-            } else {
-                claim.setConfidenceLabelString("Verified");
-                claim.setRationale("Evidence attached: " + evidenceFile + " | Explanation: " + explanation);
-            }
-            claimRepository.save(claim);
-
-            // add setails to to ChangeLog
-            ChangeLog log = new ChangeLog();
-            log.setLogId(UUID.randomUUID().toString());
-            log.setEntityType("Claim");
-            log.setEntityId(claimId);
-            log.setChangedBy((String) session.getAttribute("username"));
-            log.setTimestamp(LocalDateTime.now().toString());
-            log.setChangeSummary("Verified claim using file: " + evidenceFile);
-            changeLogRepository.save(log);
+@PostMapping("/submit-verification")
+public String submitVerification(
+    @RequestParam String claimId, 
+    @RequestParam String evidenceId, 
+    @RequestParam String evidenceFile, 
+    HttpSession session) {
+    
+        System.out.println("Evidence ID: " + evidenceId);
+        System.out.println("New Filepath: " + evidenceFile);
+    // Pass an empty string or a default value for the summary in the repository call
+    evidenceRepository.updateEvidencePath(evidenceFile, evidenceId);
+    
+    Claims claim = claimRepository.findById(claimId).orElse(null);
+    if (claim != null) {
+        if (evidenceFile.equals("none")) {
+            claim.setConfidenceLabelString("Unverified");
+        } else {
+            claim.setConfidenceLabelString("Verified");
         }
-        return "redirect:/";
+        claimRepository.save(claim);
     }
+    return "redirect:/";
+}
 
     //get changelog data to display 
     @GetMapping("/history")
