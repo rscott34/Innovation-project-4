@@ -122,8 +122,21 @@ body {
     font-size: larger;
 }
 
-.evidence-section {
-    margin-bottom: 20px;
+
+details.evidence-section {
+    margin-top: 10px;
+}
+
+details.evidence-section summary {
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    list-style: none;
+    display: inline-block;
+}
+
+.evidence-info img {
+    max-width: 100px;
     margin-top: 10px;
 }
 
