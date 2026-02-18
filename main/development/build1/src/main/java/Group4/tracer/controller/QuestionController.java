@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import Group4.tracer.model.Mission;
 import Group4.tracer.repository.MissionRepository;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/questions")
@@ -21,19 +22,13 @@ public class QuestionController {
     private MissionRepository missionRepository;
     
     //private final String[] STAGES = {"raw materials", "processing", "assembly", "transport", "retail"};
-    private final Random random = new Random();
+    private final Random rand = new Random();
 
     @GetMapping("/generate")
-    public String generateQuestion(Model model) {
+    public String generateQuestion(Model model, HttpSession session) {
         Object[] questionRecords = missionRepository.findMissionArray();
-        Object[] questionData = (Object[]) questionRecords[0];
-        System.out.println(questionData);
-        //random.nextInt(questionRecords.length-1)
-        System.out.println("Found");
-        
-        String correctAnswer = "Information not available";
-        String evidenceLink = "#";
-        String questionText = "None found";
+        Object[] questionData = (Object[]) questionRecords[rand.nextInt(questionRecords.length)];
+        System.out.println(questionData.toString());
         
         if (questionData != null && questionData.length > 0) {
             // stageData[0] = stage_value, stageData[1] = evidence_link
@@ -47,28 +42,18 @@ public class QuestionController {
                 questionData[5].toString(),
                 questionData[6].toString()
             );
-            //IMPORTANT - write example question here
-            questionText = "Which country does the Gucci bag come from?";
-            //mission.getQuestion();
-
-            //IMPORTANT - write example answer here
-            correctAnswer = "Italy";
-            //mission.getAnswer();
-            //IMPORTANT - write the link below for evidence
-            evidenceLink = "P001";
-            //mission.getExplanation();
-            
+            session.setAttribute("mission", mission);
 
             model.addAttribute("questionGenerated", true);
+            model.addAttribute("mission", mission);
         } else {
             model.addAttribute("questionGenerated", false);
+            model.addAttribute("mission", null);
         }
         
         // IMPORTANT: Add to model for George's UI
         
-        model.addAttribute("questionText", questionText);
-        model.addAttribute("correctAnswer", correctAnswer);
-        model.addAttribute("evidenceLink", evidenceLink);
+        
 
         return "index";
     }
@@ -76,22 +61,33 @@ public class QuestionController {
     @PostMapping("/verify")
     public String verifyAnswer(
             @RequestParam String userAnswer,
-            @RequestParam String correctAnswer,
-            @RequestParam String evidenceLink,
+            HttpSession session,
             Model model) {
         
-        boolean isCorrect = userAnswer.trim().equalsIgnoreCase(correctAnswer.trim());
+        Mission mission = (Mission) session.getAttribute("mission");
+        boolean isCorrect = userAnswer.trim().toLowerCase().equalsIgnoreCase(mission.getAnswer().toLowerCase());
         model.addAttribute("isCorrect", isCorrect);
         model.addAttribute("userAnswer", userAnswer);
-        model.addAttribute("correctAnswer", correctAnswer);
-        model.addAttribute("evidenceLink", evidenceLink);
+        model.addAttribute("correctAnswer", mission.getAnswer());
+        model.addAttribute("passport", mission.getPassport());
         
+        
+
         if (isCorrect) {
+            int points = 0;
+
+            points = switch (mission.getDifficulty()) {
+                case Easy -> 5;
+                case Medium -> 10;
+                case Hard -> 20;
+            };
+            session.setAttribute("points", (int) session.getAttribute("points") + points);
             model.addAttribute("resultMessage", "Correct!");
-            model.addAttribute("feedback", "Well done! The information for this question can be found in the P001 passport, click the button below to view.");
+            model.addAttribute("feedback", String.format("Well done! You scored %d points for this question!", points));
+            System.out.println("User now has " + session.getAttribute("points"));
         } else {
             model.addAttribute("resultMessage", "Incorrect");
-            model.addAttribute("feedback", "The information for this question can be found in the P001 passport, click the button below to view.");
+            model.addAttribute("feedback", mission.getExplanation());
         }
         
         return "answer";

@@ -15,6 +15,7 @@ import Group4.tracer.enums.StageType;
 import Group4.tracer.model.ChangeLog;
 import Group4.tracer.model.Claims;
 import Group4.tracer.model.Evidence;
+import Group4.tracer.model.Mission;
 import Group4.tracer.model.Products;
 import Group4.tracer.model.Stages;
 import Group4.tracer.model.Verifier;
@@ -160,18 +161,16 @@ public String submitVerification(
 
     // add submit button for
     @PostMapping("/submit")
-    public String handleInput(
-        @RequestParam boolean questionGenerated, 
-        @RequestParam String questionText, 
+    public String handleInput(@RequestParam boolean questionGenerated, 
         @RequestParam String userAnswer, 
-        @RequestParam String correctAnswer, 
-        @RequestParam String evidenceLink, 
         @RequestParam String userInput, 
-        HttpSession session, Model model) { 
+        HttpSession session, 
+        Model model) {
+        
+        Mission mission = (Mission) session.getAttribute("mission");
         String role = (String) session.getAttribute("role");
         model.addAttribute("role", role != null ? role : "guest");
         
-        System.out.println(questionText);
         if (userInput != null) {
 
             Object[] productData = productRepository.findProductArray(userInput); 
@@ -272,10 +271,8 @@ public String submitVerification(
         }
 
         model.addAttribute("questionGenerated", questionGenerated);
-        model.addAttribute("questionText", questionText);
         model.addAttribute("userAnswer", userAnswer);
-        model.addAttribute("correctAnswer", correctAnswer);
-        model.addAttribute("evidenceLink", evidenceLink);
+        model.addAttribute("mission", mission);
         
         return "index";
     }

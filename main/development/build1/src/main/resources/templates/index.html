@@ -26,14 +26,12 @@
     </div>
     <div th:if="${questionGenerated == true}">
         <div class="header">
-            <h1 th:text="${questionText}">Question Text</h1>
+            <h1 th:text="${mission.getQuestion()}">Question Text</h1>
         </div>
         <div class="search">
             <form action="/questions/verify" method="post">
                 
                 <input type="text" name="userAnswer" placeholder="Enter answer here" required/>
-                <input type="hidden" name="correctAnswer" th:value="${correctAnswer}">
-                <input type="hidden" name="evidenceLink" th:value="${evidenceLink}">
                 <button type="submit">Attempt</button>
             </form>
         </div>
@@ -46,16 +44,10 @@
         <form action="/submit" method="post">
             <input type="hidden" name="questionGenerated" th:value="${questionGenerated}">
             <main th:if="${questionGenerated == true}">
-                <input type="hidden" name="questionText" th:value="${questionText}">
                 <input type="hidden" name="userAnswer" th:value="${userAnswer}">
-                <input type="hidden" name="correctAnswer" th:value="${correctAnswer}">
-                <input type="hidden" name="evidenceLink" th:value="${evidenceLink}">
             </main>
             <main th:if="${questionGenerated == false}">
-                <input type="hidden" name="questionText">
                 <input type="hidden" name="userAnswer">
-                <input type="hidden" name="correctAnswer">
-                <input type="hidden" name="evidenceLink">
             </main>
             <input type="text" name="userInput" placeholder="e.g. P100" required/>
             <button type="submit">Send</button>

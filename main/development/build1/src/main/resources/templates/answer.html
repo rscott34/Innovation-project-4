@@ -34,11 +34,8 @@
         <div class="passport-link">
             <form action="/submit" method="post">
                 <input type="hidden" name="questionGenerated" value="false">
-                <input type="hidden" name="questionText">
                 <input type="hidden" name="userAnswer">
-                <input type="hidden" name="correctAnswer">
-                <input type="hidden" name="evidenceLink">
-                <input type="hidden" name="userInput" th:value="${evidenceLink}"/>
+                <input type="hidden" name="userInput" th:value="${passport}"/>
                 <button type="submit">View Passport</button>
             </form>
         </div>
