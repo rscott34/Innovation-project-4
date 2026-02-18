@@ -1,4 +1,2 @@
-mission_id,product_id,tier,question,answer_key,grading_type,explanation_link
-M_01,P001,Basic,"What raw materials where used for olive oil(P001)?",raw olives,exact_answer,URL to raw materials section of the website
-M_02,P001,Intermediate,"What claims are there for the olive oil(P001)?",Organic certified,exact_answer,URL to organic claim
-M_03,P002,Advanced,"What proof is there that the olive oil is organic(P001)?",image of certificate,exact answer,URL to evidence of claim
+mission_id,product_id,tier,question,answer,grading_type,explanation
+M001,P001,Easy,"Which country does the Gucci handbag come from?","Italy",exact_answer,"P001 product information shows that the handbag comes from Italy"
