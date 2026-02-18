@@ -52,6 +52,22 @@ body {
     box-shadow: var(--shadow-sm);
 }
 
+.score-display {
+    background-color: var(--primary-color);
+    color: var(--bg-white);
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.navbar-left, 
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
 .navbar button {
     background-color: var(--primary-color);
     color: var(--bg-white);
@@ -503,24 +519,6 @@ a.cancel-link {
 
 a.cancel-link:hover {
     background: var(--bg-hover);
-}
-
-/* Home Button */
-.home-button {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-}
-
-.home-button button {
-    background: var(--bg-white);
-    color: var(--primary-color);
-    border: 2px solid var(--primary-color);
-}
-
-.home-button button:hover {
-    background: var(--primary-color);
-    color: var(--bg-hover);
 }
 
 /* Result Section */

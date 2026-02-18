@@ -8,10 +8,17 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="home-button">
-        <a href="/"><button>Home</button></a>
+    <div class="navbar">
+        <div class="navbar-left">
+                <a href="/"><button>Home</button></a>
+                <a href="/questions/generate"><button>Question</button></a>
+        </div>
+        <div class="navbar-right">
+            <span th:if="${session.points != null}" class="score-display">
+                Score: <span th:text="${session.points}">0</span>
+            </span>
+        </div>
     </div>
-
     <div class="header">
         <h1 th:text="${resultMessage}">Answer Result</h1>
     </div>

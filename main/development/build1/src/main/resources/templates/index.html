@@ -9,20 +9,27 @@
 </head> 
 <body>
     <div class="navbar">
-        <div th:if="${questionGenerated == true}">
-            <a href="/"><button>Home</button></a>
+        <div class="navbar-left">
+            <div th:if="${questionGenerated == true}">
+                <a href="/"><button>Home</button></a>
+            </div>
+            <div th:if="${questionGenerated == false}">
+                <a href="/questions/generate"><button>Question</button></a>
+            </div>
         </div>
-        <div th:if="${questionGenerated == false}">
-            <a href="/questions/generate"><button>Question</button></a>
+        <div class="navbar-right">
+            <span th:if="${questionGenerated == true}" class="score-display">
+                Score: <span th:text="${session.points}">0</span>
+            </span>
+            <span th:if="${role == 'guest'}">
+                <a href="/login"><button>Login as Verifier</button></a>
+            </span>
+            <span th:if="${role == 'verifier'}">
+                Logged in as Verifier 
+                <a href="/history"><button>View History</button></a>
+                <a href="/logout"><button>Logout</button></a>
+            </span>
         </div>
-        <span th:if="${role == 'guest'}">
-            <a href="/login"><button>Login as Verifier</button></a>
-        </span>
-        <span th:if="${role == 'verifier'}">
-            Logged in as Verifier 
-            <a href="/history"><button>View History</button></a>
-            <a href="/logout"><button>Logout</button></a>
-        </span>
     </div>
     <div th:if="${questionGenerated == true}">
         <div class="header">
@@ -153,6 +160,7 @@
                         <div class="evidence-info">
                             <span><b>Date:</b></span>
                             <span th:text="${ev[3]}"></span>
+                        </div>
                         <div class="evidence-info">
                             <span><b>Summary:</b></span>
                             <span th:text="${ev[4]}"></span>
