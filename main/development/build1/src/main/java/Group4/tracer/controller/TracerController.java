@@ -22,6 +22,7 @@ import Group4.tracer.model.Verifier;
 import Group4.tracer.repository.ChangeLogRepository;
 import Group4.tracer.repository.ClaimRepository;
 import Group4.tracer.repository.EvidenceRepository;
+import Group4.tracer.repository.InputSharesRepository;
 import Group4.tracer.repository.ProductRepository;
 import Group4.tracer.repository.StageRepository;
 import Group4.tracer.repository.VerifierRepository;
@@ -40,7 +41,7 @@ public class TracerController {
     @Autowired private InputSharesRepository inputSharesRepository;
 
 
-    //get mappijg for login page 
+    //get mappijg for login page  
     @GetMapping("/login")
     public String loginPage() { return "login"; }
     //post mapping for login page

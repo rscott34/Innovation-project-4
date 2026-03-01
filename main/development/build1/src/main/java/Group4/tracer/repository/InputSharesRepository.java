@@ -13,7 +13,7 @@ public interface InputSharesRepository extends JpaRepository<inputShares, String
     //Search for the inputSharesId
     //This is the SQL query that is run with each inputSharesId search
     @Query(value = "SELECT * " +
-            "FROM public.\"input_shares\" " +
+            "FROM public.\"inputShares\" " +
             "WHERE input_shares_id = :inputSharesId " +
             "ORDER BY input_shares_id ASC", nativeQuery = true)
 

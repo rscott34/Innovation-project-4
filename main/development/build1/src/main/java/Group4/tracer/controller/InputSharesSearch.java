@@ -1,27 +1,32 @@
 package Group4.tracer.controller;
 
-import Group4.tracer.repository.ClaimRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 import java.util.Arrays;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import Group4.tracer.repository.InputSharesRepository;
+
 @RestController
-@RequestMapping("/claims")
-public class ClaimSearch {
+@RequestMapping("/input-shares")
+public class InputSharesSearch {
 
     @Autowired //spring boot uses this to find the productRepository
-    private ClaimRepository claimRepository;
+    private InputSharesRepository inputSharesRepository;
 
     @GetMapping("/search")
-    public Object[] searchClaim(@RequestParam String id) {
+    public Object[] searchInputShares(@RequestParam String id) {
         //call SQL query from productRepository.java
-        Object[] claimResult = claimRepository.findClaimArray(id);
+        Object[] inputSharesResult = inputSharesRepository.findInputSharesArray(id);
 
-        if (claimResult != null && claimResult.length > 0) {
-            System.out.println("productId: " + id);
-            System.out.println(Arrays.toString(claimResult));
+        if (inputSharesResult != null && inputSharesResult.length > 0) {
+            System.out.println("inputSharesId: " + id);
+            System.out.println(Arrays.toString(inputSharesResult));
 
-            return claimResult;
+            return inputSharesResult;
         } else {
             System.out.println("productId " + id + " not found in database.");
             return new Object[] {"Error: Product not found"};
