@@ -1,21 +1,22 @@
-,input_id,product_id,input_name,country,percentage
-0,IN-001,P001,Spanish Origin Materials,Spain,60
-1,IN-002,P001,Portugese Origin Materials,Portugal,40
-2,IN-003,P002,Italian Origin Materials,Italy,70
-3,IN-004,P002,French Origin Materials,France,30
-4,IN-005,P003,American Origin Materials,USA,50
-5,IN-006,P003,Italian Origin Materials,Italy,50
-6,IN-007,P004,French Origin Materials,France,80
-7,IN-008,P004,British Origin Materials,United Kingdom,20
-8,IN-009,P005,Spanish Origin Materials,Spain,60
-9,IN-010,P005,Polish Origin Materials,Poland,40
-10,IN-011,P006,Spanish Origin Materials,Spain,90
-11,IN-012,P006,Italian Origin Materials,Italy,10
-12,IN-013,P007,Bangladeshi Origin Materials,Bangladesh,80
-13,IN-014,P007,Thai Origin Materials,Thailand,20
-14,IN-015,P008,Indonesian Origin Materials,Indonesia,80
-15,IN-016,P008,Indian Origin Materials,India,20
-16,IN-017,P009,Egyptian Origin Materials,Egypt,60
-17,IN-018,P009,Lybian Origin Materials,Lybia,40
-18,IN-019,P010,Italian Origin Materials,Italy,50
-19,IN-020,P010,Belgium Origin Materials,Belgium,50
+input_id,product_id,input_name,country,percentage
+IN-001,P001,Spanish Origin Materials,Spain,60
+IN-002,P001,Portugese Origin Materials,Portugal,40
+IN-003,P002,Italian Origin Materials,Italy,70
+IN-004,P002,French Origin Materials,France,30
+IN-005,P003,American Origin Materials,USA,50
+IN-006,P003,Italian Origin Materials,Italy,50
+IN-007,P004,French Origin Materials,France,80
+IN-008,P004,British Origin Materials,United Kingdom,20
+IN-009,P005,Spanish Origin Materials,Spain,60
+IN-010,P005,Polish Origin Materials,Poland,40
+IN-011,P006,Spanish Origin Materials,Spain,90
+IN-012,P006,Italian Origin Materials,Italy,10
+IN-013,P007,Bangladeshi Origin Materials,Bangladesh,80
+IN-014,P007,Thai Origin Materials,Thailand,20
+1N-015,P008,Indonesian Origin Materials,Indonesia,80
+IN-016,P008,Indian Origin Materials,India,20
+IN-017,P009,Egyptian Origin Materials,Egypt,60
+IN-018,P009,Lybian Origin Materials,Lybia,40
+IN-019,P010,Italian Origin Materials,Italy,50
+IN-020,P010,Belgium Origin Materials,Belgium,50
+
