@@ -1,5 +1,7 @@
 package Group4.tracer.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,10 +16,10 @@ public interface InputSharesRepository extends JpaRepository<inputShares, String
     //This is the SQL query that is run with each inputSharesId search
     @Query(value = "SELECT * " +
             "FROM public.\"inputShares\" " +
-            "WHERE input_shares_id = :inputSharesId " +
-            "ORDER BY input_shares_id ASC", nativeQuery = true)
+            "WHERE product_id = :productId " +            
+            "ORDER BY input_id ASC", nativeQuery = true)
 
     //findInputSharesArray takes an inputSharesId string and returns an array of input shares information
-    Object[] findInputSharesArray(@Param("productId") String inputSharesId);
+    List<Object[]> findInputSharesArray(@Param("productId") String productId);
 
 }

@@ -1,6 +1,7 @@
 package Group4.tracer.controller;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -110,6 +111,8 @@ public class TracerController {
         return "redirect:/";
     }
 
+
+    
     // attaching evidence to claims
     @GetMapping("/verify-claim")
     public String verifyClaimForm(@RequestParam String claimId, Model model) {
@@ -155,6 +158,19 @@ public String submitVerification(
     public String viewHistory(Model model) {
         model.addAttribute("logs", changeLogRepository.findAll());
         return "history";
+    }
+
+    //FR2 product origin
+    @GetMapping("/origin-breakdown")
+    public String showOriginBreakdown(@RequestParam String productId, Model model, HttpSession session) {
+        List<Object[]> shares = inputSharesRepository.findInputSharesArray(productId);
+        model.addAttribute("shares", inputSharesRepository.findInputSharesArray(productId));
+        model.addAttribute("productId", productId);
+        
+        //maintain role
+        String role = (String) session.getAttribute("role");
+        model.addAttribute("role", role != null ? role : "guest"); //makes unlogged in users become guests
+        return "breakdown"; 
     }
 
     @GetMapping("/mission")

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Product Breakdown</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="navbar">
+        <div class="navbar-left">
+            <a href="/"><button>Home</button></a>
+            <a href="/questions/generate"><button>Question</button></a>
+        </div>
+        <div class="navbar-right">
+            <span th:if="${session.points != null}" class="score-display">
+                Score: <span th:text="${session.points}">0</span>
+            </span>
+            <span th:if="${role == 'verifier'}" style="margin-left: 10px; color: white;">
+                [Verifier Mode]
+            </span>
+        </div>
+    </div>
+
+    <div class="header">
+        <h1>Ingredient Breakdown</h1>
+        <p style="color: white; opacity: 0.9;">Product ID: <span th:text="${productId}">P100</span></p>
+    </div>
+
+    <div class="result-section">
+        <div class="feedback-message">
+            <span>Visualizing component percentages from the database.</span>
+        </div>
+
+        <div th:each="share : ${shares}" style="margin-bottom: 25px; border-bottom: 1px solid #eee; padding-bottom: 15px;">
+            <div class="info">
+                <span class="label"><b th:text="${share[2]}">Component</b></span>
+                <span class="value" th:text="${share[4] + '%'}">0%</span>
+            </div>
+
+            <div style="background: #e0e0e0; border-radius: 20px; height: 12px; width: 100%; margin-top: 8px; overflow: hidden;">
+                <div th:style="'background: #2c3e50; height: 100%; width: ' + ${share[4]} + '%; transition: width 1s ease;' "></div>
+            </div>
+
+            <div class="info" style="margin-top: 10px; font-size: 0.9em; opacity: 0.8;">
+                <span>Origin: <span th:text="${share[1]}">Unknown</span></span>
+                <span style="margin-left: 15px;">Country: <span th:text="${share[3]}">N/A</span></span>
+            </div>
+        </div>
+
+        <div th:if="${#lists.isEmpty(shares)}" class="info">
+            <span class="label"><b>Notice:</b></span>
+            <span class="value">No ingredient data available for this product.</span>
+        </div>
+
+        <div class="passport-link">
+             <a href="/"><button type="button">Back to Search</button></a>
+        </div>
+    </div>
+
+    <footer>
+        <p>This is an educational prototype, do not trust the official certifications for synthetic data</p>
+    </footer>
+</body>
+</html>

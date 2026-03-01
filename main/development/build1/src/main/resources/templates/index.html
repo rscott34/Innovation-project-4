@@ -80,9 +80,15 @@
                 <span class="value" th:text="${brand}">P100</span>
             </div>
             <div class="info">
+                    <span class="label"><b>Description:</b></span>
+                    <span class="value" th:text="${description}">P100</span>
+                </div>
 
-                <span class="label"><b>Description:</b></span>
-                <span class="value" th:text="${description}">P100</span>
+                <div style="margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 20px;">
+                    <a th:href="@{/origin-breakdown(productId=${productId})}">
+                        <button type="button" style="background-color: var(--primary-dark);">View Ingredient Breakdown</button>
+                    </a>
+                </div>
             </div>
         </div>
         <div class="traceability-section" th:if="${hasStages != null && hasStages == true}">

@@ -1,6 +1,6 @@
 package Group4.tracer.controller;
 
-import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,19 +17,17 @@ public class InputSharesSearch {
     @Autowired //spring boot uses this to find the productRepository
     private InputSharesRepository inputSharesRepository;
 
-    @GetMapping("/search")
-    public Object[] searchInputShares(@RequestParam String id) {
-        //call SQL query from productRepository.java
-        Object[] inputSharesResult = inputSharesRepository.findInputSharesArray(id);
+@GetMapping("/search")
+    public List<Object[]> searchInputShares(@RequestParam String id) {
+        // This now returns a list of all ingredient rows for that product
+        List<Object[]> inputSharesResult = inputSharesRepository.findInputSharesArray(id);
 
-        if (inputSharesResult != null && inputSharesResult.length > 0) {
-            System.out.println("inputSharesId: " + id);
-            System.out.println(Arrays.toString(inputSharesResult));
-
+        if (inputSharesResult != null && !inputSharesResult.isEmpty()) {
+            System.out.println("Product ID: " + id + " found. Rows: " + inputSharesResult.size());
             return inputSharesResult;
         } else {
-            System.out.println("productId " + id + " not found in database.");
-            return new Object[] {"Error: Product not found"};
+            System.out.println("Product ID " + id + " not found.");
+            return null; 
         }
     }
 }
