@@ -36,7 +36,9 @@ public class TracerController {
     @Autowired private ClaimRepository claimRepository;
     @Autowired private EvidenceRepository evidenceRepository;
     @Autowired private ChangeLogRepository changeLogRepository;
-    @Autowired private VerifierRepository verifierRepository; // Added Verifier Repository
+    @Autowired private VerifierRepository verifierRepository;
+    @Autowired private InputSharesRepository inputSharesRepository;
+
 
     //get mappijg for login page 
     @GetMapping("/login")
