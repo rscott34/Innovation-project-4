@@ -111,6 +111,21 @@ body {
     padding-bottom: 10px;
 }
 
+/* Split Layout */
+.split {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    max-width: 2000px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.split-column {
+    flex: 1;
+    min-width: 0; /* Prevents overflow issues */
+}
+
 /* Search Box */
 .search {
     display: flex;

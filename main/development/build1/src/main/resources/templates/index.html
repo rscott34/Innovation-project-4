@@ -43,7 +43,7 @@
             </form>
         </div>
     </div>
-    
+
     <form action="/compare/submit" method="post" th:if="${productFound != null && productFound == true}">
             <input type="hidden" name="questionGenerated" th:value="${questionGenerated}">
             <main th:if="${questionGenerated == true}">
@@ -96,6 +96,7 @@
                 <span class="value" th:text="${brand}">P100</span>
             </div>
             <div class="info">
+                <div>
                     <span class="label"><b>Description:</b></span>
                     <span class="value" th:text="${description}">P100</span>
                 </div>
