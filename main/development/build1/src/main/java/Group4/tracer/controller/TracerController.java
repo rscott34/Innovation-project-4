@@ -190,7 +190,7 @@ public String submitVerification(
         String role = (String) session.getAttribute("role");
         model.addAttribute("role", role != null ? role : "guest");
         
-        if (userInput != null) {
+        if (userInput != null && !userInput.isEmpty()) {
 
             Object[] productData = productRepository.findProductArray(userInput); 
             Object[] traceData = stageRepository.findStageArray(userInput);
@@ -211,11 +211,7 @@ public String submitVerification(
                     innerProductData[4].toString()); 
 
                 model.addAttribute("productFound", true);
-                model.addAttribute("productId", p.getProductId());
-                model.addAttribute("name", p.getName());
-                model.addAttribute("category", p.getCategoryText());
-                model.addAttribute("brand", p.getBrand());
-                model.addAttribute("description", p.getDescription());
+                model.addAttribute("p", p);
 
                 if (traceData != null && traceData.length > 0) { //if there are stages 
                     for (int i = 0; i < traceData.length; i++) {
@@ -301,26 +297,23 @@ public String submitVerification(
     @GetMapping("/compare")
     public String compareView(HttpSession session, Model model) {
         //get the role and username of the user
-        model.addAttribute("questionGenerated", false);
         String role = (String) session.getAttribute("role");
         //sets user to guest if not loggied in as verifier
         model.addAttribute("role", role != null ? role : "guest");
-        model.addAttribute("input1", false);
         return "compare";
     }
 
     @PostMapping("/compare/submit")
-    public String compareViewInput (@RequestParam boolean questionGenerated, 
-        @RequestParam String userAnswer, 
-        @RequestParam String userInput, 
-        HttpSession session, 
+    public String compareViewInput (@RequestParam String userInput,
+        @RequestParam String userInput2,
+        HttpSession session,
         Model model) {
         
         Mission mission = (Mission) session.getAttribute("mission");
         String role = (String) session.getAttribute("role");
         model.addAttribute("role", role != null ? role : "guest");
-        
-        if (userInput != null) {
+                
+        if (userInput != null && !userInput.isEmpty()) {
 
             Object[] productData = productRepository.findProductArray(userInput); 
             Object[] traceData = stageRepository.findStageArray(userInput);
@@ -341,11 +334,7 @@ public String submitVerification(
                     innerProductData[4].toString()); 
 
                 model.addAttribute("productFound", true);
-                model.addAttribute("productId", p.getProductId());
-                model.addAttribute("name", p.getName());
-                model.addAttribute("category", p.getCategoryText());
-                model.addAttribute("brand", p.getBrand());
-                model.addAttribute("description", p.getDescription());
+                model.addAttribute("p", p);
 
                 if (traceData != null && traceData.length > 0) { //if there are stages 
                     for (int i = 0; i < traceData.length; i++) {
@@ -418,12 +407,106 @@ public String submitVerification(
             model.addAttribute("productFound", false);
             model.addAttribute("errorMessage", "No input provided.");
         }
+        if (userInput2 != null && !userInput2.isEmpty()) {
 
-        model.addAttribute("questionGenerated", questionGenerated);
-        model.addAttribute("userAnswer", userAnswer);
+            Object[] productData = productRepository.findProductArray(userInput2); 
+            Object[] traceData = stageRepository.findStageArray(userInput2);
+            Object[] claimData = claimRepository.findClaimArray(userInput2);
+            Object[] evidenceData = evidenceRepository.findEvidenceArray(userInput2);
+
+
+            if (productData != null && productData.length > 0) { 
+                System.out.println("Product found");
+                //System.out.println(java.util.Arrays.deepToString(traceData));
+
+                Object[] innerProductData = (Object[]) productData[0];
+                Products p = new Products(
+                    innerProductData[0].toString(), 
+                    innerProductData[1].toString(), 
+                    innerProductData[2].toString(), 
+                    innerProductData[3].toString(), 
+                    innerProductData[4].toString()); 
+
+                model.addAttribute("productFound2", true);
+                model.addAttribute("p2", p);
+
+                if (traceData != null && traceData.length > 0) { //if there are stages 
+                    for (int i = 0; i < traceData.length; i++) {
+                        Object[] stage = (Object[]) traceData[i];
+                        p.addStage(new Stages(
+                            stage[0].toString(), // stageId
+                            StageType.fromString(stage[2].toString()).name(), // stageType
+                            stage[3].toString(), // stageName
+                            stage[4].toString(),  // location
+                            //stage[4].toString(), // startDate
+                            "", // endDate is not currently used in the database so set to empty string
+                            stage[6].toString() // description
+                        ));
+                    }
+                    model.addAttribute("hasStages2", true);
+                }
+                else {
+                    model.addAttribute("hasStages2", false);
+                    System.out.println("No stages found for this product");
+                }
+
+                model.addAttribute("stages2", p.getListOfStagesDetails());
+
+                if (claimData != null && claimData.length > 0) { // if there are claims
+                    for (int i = 0; i < claimData.length; i++) {
+                        Object[] claimRow = (Object[]) claimData[i];
+                        
+                        String currentClaimId = claimRow[0].toString();
+                        
+                        Claims c = new Claims(
+                            claimRow[0].toString(), // claimId
+                            claimRow[3].toString(), // type
+                            claimRow[4].toString(), // text
+                            claimRow[5].toString(), // confidence
+                            claimRow[6].toString()  // rationale
+                        );
+
+                        if (evidenceData != null) {
+                            for (int j = 0; j < evidenceData.length; j++) {
+                                Object[] evRow = (Object[]) evidenceData[j];
+                                
+                                String claimIdFromEvidence = evRow[0].toString();
+
+                                if (claimIdFromEvidence.equals(currentClaimId)) {
+                                    c.addEvidence(new Evidence(
+                                        evRow[1].toString(), // id
+                                        evRow[2].toString(), // type
+                                        evRow[3].toString(), // issuer
+                                        evRow[4].toString(), // date/data
+                                        evRow[5].toString(), // summary
+                                        evRow[6].toString()  // fileReference
+                                    ));
+                                }
+                            }
+                        }
+                        p.addClaim(c);
+                    }
+                    model.addAttribute("hasClaims2", true);     
+                    model.addAttribute("claimsList2", p.getClaims());                }
+                else {
+                    model.addAttribute("hasClaims2", false);
+                }
+            } else {
+                model.addAttribute("productFound2", false);
+                System.out.println("No product found with ID: " + userInput2);
+                model.addAttribute("errorMessage2", "Invalid Product ID. Please try again with a valid ID.");
+            }
+        }
+        else {
+            model.addAttribute("productFound2", false);
+            model.addAttribute("errorMessage2", "No input provided.");
+        }
+        
         model.addAttribute("mission", mission);
         model.addAttribute("userInput", userInput);
+        model.addAttribute("userInput2", userInput2);
         
         return "compare";
     }
+
 }

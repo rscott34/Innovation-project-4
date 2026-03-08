@@ -10,17 +10,9 @@
 <body>
     <div class="navbar">
         <div class="navbar-left">
-            <div th:if="${questionGenerated == true}">
-                <a href="/"><button>Home</button></a>
-            </div>
-            <div th:if="${questionGenerated == false}">
-                <a href="/questions/generate"><button>Question</button></a>
-            </div>
+            <a href="/questions/generate"><button>Question</button></a>
         </div>
         <div class="navbar-right">
-            <span th:if="${questionGenerated == true}" class="score-display">
-                Score: <span th:text="${session.points}">0</span>
-            </span>
             <span th:if="${role == 'guest'}">
                 <a href="/login"><button>Login as Verifier</button></a>
             </span>
@@ -31,27 +23,10 @@
             </span>
         </div>
     </div>
-    <div th:if="${questionGenerated == true}">
-        <div class="header">
-            <h1 th:text="${mission.getQuestion()}">Question Text</h1>
-        </div>
-        <div class="search">
-            <form action="/questions/verify" method="post">
-                
-                <input type="text" name="userAnswer" placeholder="Enter answer here" required/>
-                <button type="submit">Attempt</button>
-            </form>
-        </div>
-    </div>
 
     <form th:if="${productFound != null && productFound == true}" action="/submit" method="post">
-        <input type="hidden" name="questionGenerated" th:value="${questionGenerated}">
-        <main th:if="${questionGenerated == true}">
-            <input type="hidden" name="userAnswer" th:value="${userAnswer}">
-        </main>
-        <main th:if="${questionGenerated == false}">
-            <input type="hidden" name="userAnswer">
-        </main>
+        <input type="hidden" name="questionGenerated" value="false">
+        <input type="hidden" name="userAnswer">
         <input type="hidden" name="userInput" th:value="${userInput}"/>
         <button type="submit">Simple View</button>
     </form>
@@ -68,14 +43,8 @@
             
             <div class="search">
                 <form action="/compare/submit" method="post">
-                    <input type="hidden" name="questionGenerated" th:value="${questionGenerated}">
-                    <main th:if="${questionGenerated == true}">
-                        <input type="hidden" name="userAnswer" th:value="${userAnswer}">
-                    </main>
-                    <main th:if="${questionGenerated == false}">
-                        <input type="hidden" name="userAnswer">
-                    </main>
                     <input type="text" name="userInput" placeholder="e.g. P100" required/>
+                    <input type="hidden" name="userInput2" th:value="${userInput2}"/>
                     <button type="submit">Send</button>
                 </form>
             </div>
@@ -84,28 +53,28 @@
                     <h2 class="section-header">Product Information</h2>
                     <div class="info">
                         <span class="label"> <b>Product ID:</b></span>
-                        <span class="value" th:text="${productId}">P100</span>
+                        <span class="value" th:text="${p.getProductId()}">P100</span>
                     </div>
                     <div class="info">
                         <span class="label"><b>Name:</b></span>
-                        <span class="value" th:text="${name}">P100</span>
+                        <span class="value" th:text="${p.getName()}">P100</span>
                     </div>
                     <div class="info">
                         <span class="label"><b>Category:</b></span>
-                        <span class="value" th:text="${category}">P100</span>
+                        <span class="value" th:text="${p.getCategoryText()}">P100</span>
                     </div>
                     <div class="info">
                         <span class="label"><b>Brand:</b></span>
-                        <span class="value" th:text="${brand}">P100</span>
+                        <span class="value" th:text="${p.getBrand()}">P100</span>
                     </div>
                     <div class="info">
                         <div>
                             <span class="label"><b>Description:</b></span>
-                            <span class="value" th:text="${description}">P100</span>
+                            <span class="value" th:text="${p.getDescription()}">P100</span>
                         </div>
 
                         <div style="margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 20px;">
-                            <a th:href="@{/origin-breakdown(productId=${productId})}">
+                            <a th:href="@{/origin-breakdown(productId=${p.getProductId()})}">
                                 <button type="button" style="background-color: var(--primary-dark);">View Ingredient Breakdown</button>
                             </a>
                         </div>
@@ -216,52 +185,46 @@
             
             <div class="search">
                 <form action="/compare/submit" method="post">
-                    <input type="hidden" name="questionGenerated" th:value="${questionGenerated}">
-                    <main th:if="${questionGenerated == true}">
-                        <input type="hidden" name="userAnswer" th:value="${userAnswer}">
-                    </main>
-                    <main th:if="${questionGenerated == false}">
-                        <input type="hidden" name="userAnswer">
-                    </main>
-                    <input type="text" name="userInput" placeholder="e.g. P100" required/>
+                    <input type="hidden" name="userInput" th:value="${userInput}"/>
+                    <input type="text" name="userInput2" placeholder="e.g. P100" required/>
                     <button type="submit">Send</button>
                 </form>
             </div>
-            <main th:if="${productFound != null && productFound == true}"> 
+            <main th:if="${productFound2 != null && productFound2 == true}"> 
                 <div class="product-section" >
                     <h2 class="section-header">Product Information</h2>
                     <div class="info">
                         <span class="label"> <b>Product ID:</b></span>
-                        <span class="value" th:text="${productId}">P100</span>
+                        <span class="value" th:text="${p2.getProductId()}">P100</span>
                     </div>
                     <div class="info">
                         <span class="label"><b>Name:</b></span>
-                        <span class="value" th:text="${name}">P100</span>
+                        <span class="value" th:text="${p2.getName()}">P100</span>
                     </div>
                     <div class="info">
                         <span class="label"><b>Category:</b></span>
-                        <span class="value" th:text="${category}">P100</span>
+                        <span class="value" th:text="${p2.getCategoryText()}">P100</span>
                     </div>
                     <div class="info">
                         <span class="label"><b>Brand:</b></span>
-                        <span class="value" th:text="${brand}">P100</span>
+                        <span class="value" th:text="${p2.getBrand()}">P100</span>
                     </div>
                     <div class="info">
                         <div>
                             <span class="label"><b>Description:</b></span>
-                            <span class="value" th:text="${description}">P100</span>
+                            <span class="value" th:text="${p2.getDescription()}">P100</span>
                         </div>
 
                         <div style="margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 20px;">
-                            <a th:href="@{/origin-breakdown(productId=${productId})}">
+                            <a th:href="@{/origin-breakdown(productId=${p2.getProductId()})}">
                                 <button type="button" style="background-color: var(--primary-dark);">View Ingredient Breakdown</button>
                             </a>
                         </div>
                     </div>
                 </div>
-                <div class="traceability-section" th:if="${hasStages != null && hasStages == true}">
+                <div class="traceability-section" th:if="${hasStages2 != null && hasStages2 == true}">
                     <h2 class="section-header">Traceability Stages</h2>
-                    <div class="stage-card" th:each="stage, iterStat : ${stages}">
+                    <div class="stage-card" th:each="stage, iterStat : ${stages2}">
                         <div th:if="${role == 'verifier'}" style="margin-top: 10px;">
                             <a th:href="@{/edit-stage(stageId=${stage[0]})}"><button>Edit Product Stage</button></a>
                         </div>
@@ -288,9 +251,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="claim-section section" th:if="${hasClaims == true}">
+                <div class="claim-section section" th:if="${hasClaims2 == true}">
                     <h2 class="section-header">Claims and Evidence</h2>
-                    <div class="claim-card" th:each="claim, claimStat : ${claimsList}"> 
+                    <div class="claim-card" th:each="claim, claimStat : ${claimsList2}"> 
                         <h3>Claim <span th:text="${claimStat.count}">1</span></h3>
                         
                         <div th:if="${role == 'verifier'}" style="margin-top: 10px;">
@@ -350,8 +313,8 @@
                     </div>
                 </div>
             </main>
-            <div class="error-card" th:if="${productFound != null && productFound == false}">
-                <p th:text="${errorMessage}">Error message</p>
+            <div class="error-card" th:if="${productFound2 != null && productFound2 == false}">
+                <p th:text="${errorMessage2}">Error message</p>
             </div>
         </div>
     </div>

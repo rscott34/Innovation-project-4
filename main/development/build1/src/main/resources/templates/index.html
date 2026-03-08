@@ -43,21 +43,16 @@
             </form>
         </div>
     </div>
-
-    <form action="/compare/submit" method="post" th:if="${productFound != null && productFound == true}">
-            <input type="hidden" name="questionGenerated" th:value="${questionGenerated}">
-            <main th:if="${questionGenerated == true}">
-                <input type="hidden" name="userAnswer" th:value="${userAnswer}">
-            </main>
-            <main th:if="${questionGenerated == false}">
-                <input type="hidden" name="userAnswer">
-            </main>
+    <div th:if="${questionGenerated == false}">
+        <form action="/compare/submit" method="post" th:if="${productFound != null && productFound == true}">
             <input type="hidden" name="userInput" th:value="${userInput}"/>
-        <button type="submit">Compare View</button>
-    </form>
-    <form action="/compare" method="get" th:if="${productFound == null || productFound == false}">
-        <button type="submit">Compare View</button>
-    </form>
+            <input type="hidden" name="userInput2" value=""/>
+            <button type="submit">Compare View</button>
+        </form>
+        <form action="/compare" method="get" th:if="${productFound == null || productFound == false}">
+            <button type="submit">Compare View</button>
+        </form>
+    </div>
 
     <div class="header">
         <h1>Enter Product ID</h1>
@@ -81,28 +76,28 @@
             <h2 class="section-header">Product Information</h2>
             <div class="info">
                 <span class="label"> <b>Product ID:</b></span>
-                <span class="value" th:text="${productId}">P100</span>
+                <span class="value" th:text="${p.getProductId()}">P100</span>
             </div>
             <div class="info">
                 <span class="label"><b>Name:</b></span>
-                <span class="value" th:text="${name}">P100</span>
+                <span class="value" th:text="${p.getName()}">P100</span>
             </div>
             <div class="info">
                 <span class="label"><b>Category:</b></span>
-                <span class="value" th:text="${category}">P100</span>
+                <span class="value" th:text="${p.getCategoryText()}">P100</span>
             </div>
             <div class="info">
                 <span class="label"><b>Brand:</b></span>
-                <span class="value" th:text="${brand}">P100</span>
+                <span class="value" th:text="${p.getBrand()}">P100</span>
             </div>
             <div class="info">
                 <div>
                     <span class="label"><b>Description:</b></span>
-                    <span class="value" th:text="${description}">P100</span>
+                    <span class="value" th:text="${p.getDescription()}">P100</span>
                 </div>
 
                 <div style="margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 20px;">
-                    <a th:href="@{/origin-breakdown(productId=${productId})}">
+                    <a th:href="@{/origin-breakdown(productId=${p.getProductId()})}">
                         <button type="button" style="background-color: var(--primary-dark);">View Ingredient Breakdown</button>
                     </a>
                 </div>
