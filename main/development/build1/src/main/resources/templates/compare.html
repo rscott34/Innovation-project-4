@@ -44,27 +44,29 @@
         </div>
     </div>
     
-    <form action="/compare/submit" method="post" th:if="${productFound != null && productFound == true}">
-            <input type="hidden" name="questionGenerated" th:value="${questionGenerated}">
-            <main th:if="${questionGenerated == true}">
-                <input type="hidden" name="userAnswer" th:value="${userAnswer}">
-            </main>
-            <main th:if="${questionGenerated == false}">
-                <input type="hidden" name="userAnswer">
-            </main>
-            <input type="hidden" name="userInput" th:value="${userInput}"/>
-        <button type="submit">Compare View</button>
+    <form th:if="${productFound != null && productFound == true}" action="/submit" method="post">
+        <input type="hidden" name="questionGenerated" th:value="${questionGenerated}">
+        <main th:if="${questionGenerated == true}">
+            <input type="hidden" name="userAnswer" th:value="${userAnswer}">
+        </main>
+        <main th:if="${questionGenerated == false}">
+            <input type="hidden" name="userAnswer">
+        </main>
+        <input type="hidden" name="userInput" th:value="${userInput}"/>
+        <button type="submit">Simple View</button>
     </form>
-    <form action="/compare" method="get" th:if="${productFound == null || productFound == false}">
-        <button type="submit">Compare View</button>
+    <form th:if="${productFound == null || productFound == false}" action="/" method="get">
+        <button type="submit">Simple View</button>
     </form>
 
     <div class="header">
         <h1>Enter Product ID</h1>
     </div>
 
+    
+    
     <div class="search">
-        <form action="/submit" method="post">
+        <form action="/compare/submit" method="post">
             <input type="hidden" name="questionGenerated" th:value="${questionGenerated}">
             <main th:if="${questionGenerated == true}">
                 <input type="hidden" name="userAnswer" th:value="${userAnswer}">
