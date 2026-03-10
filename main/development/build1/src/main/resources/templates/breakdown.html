@@ -30,9 +30,8 @@
 
     <div class="result-section">
         <div class="feedback-message">
-            <span>Visualizing component percentages from the database.</span>
+            <span>Pie Chart of Ingredient Shares</span>
         </div>
-
         <div th:if="${#lists.isEmpty(shares)}" class="info">
             <span class="label"><b>Notice:</b></span>
             <span class="value">No ingredient data available for this product.</span>
@@ -41,8 +40,6 @@
         <div th:if="${not #lists.isEmpty(shares)}">
             <canvas id="ingredientChart"></canvas>
         </div>
-
-        <!-- Pass data to JS via hidden fields -->
         <div id="chart-data">
             <span th:each="share : ${shares}"
                   th:data-label="${share[2]}"
