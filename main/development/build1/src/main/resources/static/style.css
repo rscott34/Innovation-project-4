@@ -572,3 +572,18 @@ footer {
     color: white;
     margin-top: 30px;
 } 
+
+/* Breakdown Page */
+.product-id-label {
+    color: white;
+    opacity: 0.9;
+}
+
+.chart-container {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.passport-link {
+    margin-top: 20px;
+}
