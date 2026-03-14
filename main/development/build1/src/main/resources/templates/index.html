@@ -43,10 +43,21 @@
             </form>
         </div>
     </div>
+    <div th:if="${questionGenerated == false}">
+        <form action="/compare/submit" method="post" th:if="${productFound != null && productFound == true}">
+            <input type="hidden" name="userInput" th:value="${userInput}"/>
+            <input type="hidden" name="userInput2" value=""/>
+            <button type="submit">Compare View</button>
+        </form>
+        <form action="/compare" method="get" th:if="${productFound == null || productFound == false}">
+            <button type="submit">Compare View</button>
+        </form>
+    </div>
+
     <div class="header">
         <h1>Enter Product ID</h1>
     </div>
-    
+
     <div class="search">
         <form action="/submit" method="post">
             <input type="hidden" name="questionGenerated" th:value="${questionGenerated}">
@@ -65,30 +76,48 @@
             <h2 class="section-header">Product Information</h2>
             <div class="info">
                 <span class="label"> <b>Product ID:</b></span>
-                <span class="value" th:text="${productId}">P100</span>
+                <span class="value" th:text="${p.getProductId()}">P100</span>
             </div>
             <div class="info">
                 <span class="label"><b>Name:</b></span>
-                <span class="value" th:text="${name}">P100</span>
+                <span class="value" th:text="${p.getName()}">P100</span>
             </div>
             <div class="info">
                 <span class="label"><b>Category:</b></span>
-                <span class="value" th:text="${category}">P100</span>
+                <span class="value" th:text="${p.getCategoryText()}">P100</span>
             </div>
             <div class="info">
                 <span class="label"><b>Brand:</b></span>
-                <span class="value" th:text="${brand}">P100</span>
+                <span class="value" th:text="${p.getBrand()}">P100</span>
             </div>
             <div class="info">
-                    <span class="label"><b>Description:</b></span>
-                    <span class="value" th:text="${description}">P100</span>
-                </div>
-
-                <div style="margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 20px;">
-                    <a th:href="@{/origin-breakdown(productId=${productId})}">
-                        <button type="button" style="background-color: var(--primary-dark);">View Ingredient Breakdown</button>
-                    </a>
-                </div>
+                <span class="label"><b>Description:</b></span>
+                <span class="value" th:text="${p.getDescription()}">P100</span>
+            </div>
+            <div class="info">
+                <details class="evidence-section">
+                    <summary><b>View Ingredient Breakdown</b></summary>
+                    <div class="evidence-card">
+                        <div th:if="${shares == null or #lists.isEmpty(shares)}" class="evidence-info">
+                            <span><b>Notice:</b></span>
+                            <span>No ingredient data available for this product.</span>
+                        </div>
+                        <div th:if="${shares != null and not #lists.isEmpty(shares)}">
+                            <div style="max-width: 480px; margin: 0 auto;">
+                                <canvas id="ingredientChart"></canvas>
+                            </div>
+                            <div id="chart-data">
+                                <span th:each="share : ${shares}"
+                                      th:data-label="${share[2]}"
+                                      th:data-value="${share[4]}"
+                                      th:data-origin="${share[1]}"
+                                      th:data-country="${share[3]}"
+                                      class="chart-item">
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </details>
             </div>
         </div>
         <div class="traceability-section" th:if="${hasStages != null && hasStages == true}">
@@ -188,6 +217,9 @@
     <footer>
         <p>This is an educational prototype, do not trust the official certifications for synthetic data</p>
     </footer>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <script th:src="@{/piechart.js}"></script>
 </body>
 </html>
 
