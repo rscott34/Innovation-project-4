@@ -68,16 +68,33 @@
                         <span class="value" th:text="${p.getBrand()}">P100</span>
                     </div>
                     <div class="info">
-                        <div>
-                            <span class="label"><b>Description:</b></span>
-                            <span class="value" th:text="${p.getDescription()}">P100</span>
-                        </div>
-
-                        <div style="margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 20px;">
-                            <a th:href="@{/origin-breakdown(productId=${p.getProductId()})}">
-                                <button type="button" style="background-color: var(--primary-dark);">View Ingredient Breakdown</button>
-                            </a>
-                        </div>
+                        <span class="label"><b>Description:</b></span>
+                        <span class="value" th:text="${p.getDescription()}">P100</span>
+                    </div>
+                    <div class="info">
+                        <details class="evidence-section">
+                            <summary><b>View Ingredient Breakdown</b></summary>
+                            <div class="evidence-card">
+                                <div th:if="${shares1 == null or #lists.isEmpty(shares1)}" class="evidence-info">
+                                    <span><b>Notice:</b></span>
+                                    <span>No ingredient data available for this product.</span>
+                                </div>
+                                <div th:if="${shares1 != null and not #lists.isEmpty(shares1)}">
+                                    <div style="max-width: 480px; margin: 0 auto;">
+                                        <canvas id="ingredientChart1"></canvas>
+                                    </div>
+                                    <div id="chart-data1">
+                                        <span th:each="share : ${shares1}"
+                                            th:data-label="${share[2]}"
+                                            th:data-value="${share[4]}"
+                                            th:data-origin="${share[1]}"
+                                            th:data-country="${share[3]}"
+                                            class="chart-item">
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </details>
                     </div>
                 </div>
                 <div class="traceability-section" th:if="${hasStages != null && hasStages == true}">
@@ -210,16 +227,33 @@
                         <span class="value" th:text="${p2.getBrand()}">P100</span>
                     </div>
                     <div class="info">
-                        <div>
-                            <span class="label"><b>Description:</b></span>
-                            <span class="value" th:text="${p2.getDescription()}">P100</span>
-                        </div>
-
-                        <div style="margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 20px;">
-                            <a th:href="@{/origin-breakdown(productId=${p2.getProductId()})}">
-                                <button type="button" style="background-color: var(--primary-dark);">View Ingredient Breakdown</button>
-                            </a>
-                        </div>
+                        <span class="label"><b>Description:</b></span>
+                        <span class="value" th:text="${p2.getDescription()}">P100</span>
+                    </div>
+                    <div class="info">
+                        <details class="evidence-section">
+                            <summary><b>View Ingredient Breakdown</b></summary>
+                            <div class="evidence-card">
+                                <div th:if="${shares2 == null or #lists.isEmpty(shares2)}" class="evidence-info">
+                                    <span><b>Notice:</b></span>
+                                    <span>No ingredient data available for this product.</span>
+                                </div>
+                                <div th:if="${shares2 != null and not #lists.isEmpty(shares2)}">
+                                    <div style="max-width: 480px; margin: 0 auto;">
+                                        <canvas id="ingredientChart2"></canvas>
+                                    </div>
+                                    <div id="chart-data2">
+                                        <span th:each="share : ${shares2}"
+                                            th:data-label="${share[2]}"
+                                            th:data-value="${share[4]}"
+                                            th:data-origin="${share[1]}"
+                                            th:data-country="${share[3]}"
+                                            class="chart-item">
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </details>
                     </div>
                 </div>
                 <div class="traceability-section" th:if="${hasStages2 != null && hasStages2 == true}">
@@ -322,6 +356,9 @@
     <footer>
         <p>This is an educational prototype, do not trust the official certifications for synthetic data</p>
     </footer>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <script th:src="@{/piechart.js}"></script>
 </body>
 </html>
 

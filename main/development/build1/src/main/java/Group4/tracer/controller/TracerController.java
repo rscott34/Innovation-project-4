@@ -161,6 +161,7 @@ public String submitVerification(
     }
 
     //FR2 product origin
+    /*
     @GetMapping("/origin-breakdown")
     public String showOriginBreakdown(@RequestParam String productId, Model model, HttpSession session) {
         List<Object[]> shares = inputSharesRepository.findInputSharesArray(productId);
@@ -172,6 +173,7 @@ public String submitVerification(
         model.addAttribute("role", role != null ? role : "guest"); //makes unlogged in users become guests
         return "breakdown"; 
     }
+    */
 
     @GetMapping("/mission")
     public String missionPage(Model model) {
@@ -185,7 +187,7 @@ public String submitVerification(
         @RequestParam String userInput, 
         HttpSession session, 
         Model model) {
-        
+
         Mission mission = (Mission) session.getAttribute("mission");
         String role = (String) session.getAttribute("role");
         model.addAttribute("role", role != null ? role : "guest");
@@ -197,6 +199,8 @@ public String submitVerification(
             Object[] claimData = claimRepository.findClaimArray(userInput);
             Object[] evidenceData = evidenceRepository.findEvidenceArray(userInput);
 
+            List<Object[]> shares = inputSharesRepository.findInputSharesArray(userInput);
+            model.addAttribute("shares", shares);
 
             if (productData != null && productData.length > 0) { 
                 System.out.println("Product found");
@@ -320,8 +324,11 @@ public String submitVerification(
             Object[] claimData = claimRepository.findClaimArray(userInput);
             Object[] evidenceData = evidenceRepository.findEvidenceArray(userInput);
 
+            List<Object[]> shares1 = inputSharesRepository.findInputSharesArray(userInput);
+            model.addAttribute("shares1", shares1);
 
             if (productData != null && productData.length > 0) { 
+
                 System.out.println("Product found");
                 //System.out.println(java.util.Arrays.deepToString(traceData));
 
@@ -414,6 +421,9 @@ public String submitVerification(
             Object[] claimData = claimRepository.findClaimArray(userInput2);
             Object[] evidenceData = evidenceRepository.findEvidenceArray(userInput2);
 
+
+            List<Object[]> shares2 = inputSharesRepository.findInputSharesArray(userInput2);
+            model.addAttribute("shares2", shares2);
 
             if (productData != null && productData.length > 0) { 
                 System.out.println("Product found");
