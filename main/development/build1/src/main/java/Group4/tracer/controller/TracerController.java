@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import Group4.tracer.enums.StageType;
 import Group4.tracer.model.ChangeLog;
@@ -20,10 +21,12 @@ import Group4.tracer.model.Mission;
 import Group4.tracer.model.Products;
 import Group4.tracer.model.Stages;
 import Group4.tracer.model.Verifier;
+import Group4.tracer.model.issueReport;
 import Group4.tracer.repository.ChangeLogRepository;
 import Group4.tracer.repository.ClaimRepository;
 import Group4.tracer.repository.EvidenceRepository;
 import Group4.tracer.repository.InputSharesRepository;
+import Group4.tracer.repository.IssueRepository;
 import Group4.tracer.repository.ProductRepository;
 import Group4.tracer.repository.StageRepository;
 import Group4.tracer.repository.VerifierRepository;
@@ -40,13 +43,14 @@ public class TracerController {
     @Autowired private ChangeLogRepository changeLogRepository;
     @Autowired private VerifierRepository verifierRepository;
     @Autowired private InputSharesRepository inputSharesRepository;
+    @Autowired private IssueRepository issueRepository;
 
 
-    //get mappijg for login page  
+    //get mapping for login page  
     @GetMapping("/login")
     public String loginPage() { return "login"; }
-    //post mapping for login page
 
+    //post mapping for login page
     @PostMapping("/login")
     public String doLogin(@RequestParam String username, @RequestParam String password, HttpSession session, Model model) {
         // Find the user account in the database by username
@@ -83,10 +87,11 @@ public class TracerController {
     // traceability editing
     @GetMapping("/edit-stage")
     public String editStageForm(@RequestParam String stageId, Model model) {
-    //sets stage id
+        //sets stage id
         model.addAttribute("stageId", stageId);
         return "edit-stage";
     }
+
     //sets stage data ready for UI
     @PostMapping("/update-stage")
     public String updateStage(@RequestParam String stageId, @RequestParam String newLocation, HttpSession session) {
@@ -110,9 +115,61 @@ public class TracerController {
         }
         return "redirect:/";
     }
-
-
     
+    @PostMapping("/update-product")
+    public String updateProductDetails(@RequestParam String productId, @RequestParam String newName, @RequestParam String newCategory, @RequestParam String newBrand, @RequestParam String newDescription, HttpSession session) {
+
+    Products product = productRepository.findById(productId).orElse(null);
+    if (product != null) {
+        // Capture old values for the log
+        String oldName = product.getName();
+        String oldBrand = product.getBrand();
+        String oldCat = product.getCategoryText();
+
+        // Update the product
+        product.setName(newName);
+        product.setBrand(newBrand);
+        product.setDescription(newDescription);
+        product.setCategoryString(newCategory);
+        productRepository.save(product);
+
+        // Create the ChangeLog entry
+        ChangeLog log = new ChangeLog();
+        log.setLogId(UUID.randomUUID().toString());
+        log.setEntityType("Product");
+        log.setEntityId(productId);
+        log.setChangedBy((String) session.getAttribute("username"));
+        log.setTimestamp(LocalDateTime.now().toString());
+
+        // Match the Stage format: "Updated [Fields] from [Old] to [New]"
+        String summary = String.format("Updated product info from [%s, %s, %s] to [%s, %s, %s]", oldName, oldBrand, oldCat, newName, newBrand, newCategory);
+        log.setChangeSummary(summary);
+        
+        changeLogRepository.save(log);
+    }
+
+        return "redirect:/"; 
+    }
+
+    @GetMapping("/edit-product")
+    public String editProductForm(@RequestParam String productId, HttpSession session, Model model) {
+        String role = (String) session.getAttribute("role");
+        if (!"verifier".equals(role)) {
+            return "redirect:/"; 
+        }
+
+        // 2. Fetch the product so the form knows what it's editing
+        Products product = productRepository.findById(productId).orElse(null);
+        
+        if (product != null) {
+            model.addAttribute("product", product);
+            model.addAttribute("categories", Group4.tracer.enums.ProductType.values());
+            return "edit-product"; // This must match your HTML filename (edit-product.html)
+        }
+        
+        return "redirect:/";
+    }
+
     // attaching evidence to claims
     @GetMapping("/verify-claim")
     public String verifyClaimForm(@RequestParam String claimId, Model model) {
@@ -123,9 +180,6 @@ public class TracerController {
         
         // Pass the database records to the HTML page
         model.addAttribute("evidenceList", evidenceFromDb);
-        
-
-
         return "verify-claim";
     }
 
@@ -138,7 +192,7 @@ public String submitVerification(
     
         System.out.println("Evidence ID: " + evidenceId);
         System.out.println("New Filepath: " + evidenceFile);
-    // Pass an empty string or a default value for the summary in the repository call
+    //Pass empty string or default value for summary in repository call
     evidenceRepository.updateEvidencePath(evidenceFile, evidenceId);
     
     Claims claim = claimRepository.findById(claimId).orElse(null);
@@ -151,6 +205,55 @@ public String submitVerification(
         claimRepository.save(claim);
     }
     return "redirect:/";
+}
+
+@GetMapping("/report-issue")
+public String showReportPage(@RequestParam String productId, Model model) {
+    model.addAttribute("productId", productId);
+    
+    // Using your specific repository method
+    // Note: Since findStageArray returns Object[], we pass it directly to the model
+    Object[] productStages = stageRepository.findStageArray(productId);
+    model.addAttribute("allStages", productStages);
+    
+    return "report-issue";
+}
+
+@PostMapping("/submit-issue")
+public String processReport(@RequestParam String productId,
+                            @RequestParam String stageId,
+                            @RequestParam String issueType,
+                            @RequestParam String description,
+                            RedirectAttributes redirectAttributes) {
+    
+    issueReport report = new issueReport();
+    report.setProductId(productId);
+    report.setStageId(stageId);
+    report.setIssueType(issueType);
+    report.setUserDescription(description);
+
+    issueRepository.save(report);
+
+    redirectAttributes.addFlashAttribute("message", "Your report for " + productId + " has been submitted.");
+    
+    return "redirect:/";
+}
+
+//Shows reports to verifiers
+@GetMapping("/verifier/inbox")
+public String showVerifierInbox(Model model) {
+    // Fetch all reports from the database
+    List<issueReport> reports = issueRepository.findAll();
+    model.addAttribute("reports", reports);
+    return "verifier-inbox";
+}
+
+@PostMapping("/verifier/resolve")
+public String resolveIssue(@RequestParam Long reportId) {
+    issueReport report = issueRepository.findById(reportId).orElseThrow();
+    report.setStatus("RESOLVED");
+    issueRepository.save(report);
+    return "redirect:/verifier/inbox";
 }
 
     //get changelog data to display 
@@ -210,6 +313,7 @@ public String submitVerification(
                     innerProductData[3].toString(), 
                     innerProductData[4].toString()); 
 
+                model.addAttribute("product", p);
                 model.addAttribute("productFound", true);
                 model.addAttribute("productId", p.getProductId());
                 model.addAttribute("name", p.getName());

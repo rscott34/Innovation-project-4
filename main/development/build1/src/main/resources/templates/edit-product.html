@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Product</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="header">
+        <h1>Edit Product Information</h1>
+    </div>
+
+    <div class="edit-form">
+        <p>
+            <b>Editing Product ID:</b> <span class="highlight" th:text="${product.productId}">P100</span>
+        </p>
+
+        <form action="/update-product" method="post">
+            <input type="hidden" name="productId" th:value="${product.productId}" />
+
+            <div class="form-group">
+                <label>Update Name:</label>
+                <input type="text" name="newName" th:value="${product.name}" required />
+            </div>
+            <div class="form-group" style="margin-top: 15px;">
+                <label>Update Category:</label>
+                    <select name="newCategory"> <option th:each="cat : ${categories}" 
+                                th:value="${cat}" 
+                                th:text="${cat}"
+                                th:selected="${cat == product.category}">
+                        </option>
+                    </select>
+            </div>
+            <div class="form-group" style="margin-top: 15px;">
+                <label>Update Brand:</label>
+                <input type="text" name="newBrand" th:value="${product.brand}" required />
+            </div>
+
+            <div class="form-group" style="margin-top: 15px;">
+                <label>Update Description:</label>
+                <textarea name="newDescription" th:text="${product.description}" rows="4" style="width: 100%; border-radius: 8px; padding: 10px;"></textarea>
+            </div>
+
+            <div class="form-actions" style="margin-top: 20px;">
+                <button type="submit">Save Changes</button>
+                <a href="/" class="cancel-link">Cancel</a>
+            </div>
+        </form>
+    </div>
+
+    <footer>
+        <p>This is an educational prototype, do not trust the official certifications for synthetic data</p>
+    </footer>
+</body>
+</html>

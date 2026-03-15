@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Issue Inbox</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+    <div class="navbar">
+        <div class="navbar-left">
+            <a href="/"><button>Home</button></a>
+        </div>
+        <div class="navbar-right">
+            <span class="score-display">Logged in as Verifier</span>
+        </div>
+    </div>
+
+    <div class="history-container">
+        <h2 class="section-header">Pending Issue Reports</h2>
+        
+        <div th:if="${reports.empty}" class="empty-state">
+            <p>No active reports to review.</p>
+        </div>
+
+        <table class="history-table" th:if="${!reports.empty}">
+            <thead>
+                <tr>
+                    <th>Product ID</th>
+                    <th>Stage ID</th>
+                    <th>Issue Type</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="report : ${reports}">
+                    <td th:text="${report.productId}"></td>
+                    <td th:text="${report.stageId}"></td>
+                    <td>
+                        <span class="score-display" th:text="${report.issueType}" 
+                              style="background-color: var(--error-color);"></span>
+                    </td>
+                    <td th:text="${report.userDescription}"></td>
+                    <td>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <a th:href="@{/edit-stage(stageId=${report.stageId})}">
+                                <button type="button" style="background-color: #3498db; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">Edit Stage</button>
+                            </a>
+
+                            <form th:action="@{/verifier/resolve}" method="post" th:if="${report.status == 'PENDING'}" style="margin: 0;">
+                                <input type="hidden" name="reportId" th:value="${report.id}">
+                                <button type="submit" style="background-color: #27ae60; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">Resolve</button>
+                            </form>
+                            
+                            <span th:if="${report.status == 'RESOLVED'}" style="color: #27ae60; font-weight: bold;">Resolved</span>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
