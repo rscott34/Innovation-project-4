@@ -1,16 +1,11 @@
 package Group4.tracer;
 
-<<<<<<< HEAD
-import org.junit.jupiter.api.Disabled;
-=======
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.List;
-
->>>>>>> 30e500a (Added FR2 traceability timeline tests)
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,12 +14,9 @@ import org.springframework.test.context.ActiveProfiles;
 import Group4.tracer.model.Stages;
 import Group4.tracer.repository.StageRepository;
 
+
 @SpringBootTest
-<<<<<<< HEAD
-@Disabled
-=======
 @ActiveProfiles("test")
->>>>>>> 30e500a (Added FR2 traceability timeline tests)
 class TracerApplicationTests {
 
     @Autowired
@@ -74,13 +66,12 @@ class TracerApplicationTests {
         assertFalse(stages.isEmpty());
 
         for (int i = 0; i < stages.size() - 1; i++) {
-            Integer currentStageId = stages.get(i).getStageId();
-            Integer nextStageId = stages.get(i + 1).getStageId();
+            String currentStageId = stages.get(i).getStageId();
+            String nextStageId = stages.get(i + 1).getStageId();
 
             assertNotNull(currentStageId);
             assertNotNull(nextStageId);
-            assertTrue(currentStageId <= nextStageId);
-        }
+            assertTrue(currentStageId.compareTo(nextStageId) <= 0);        }
     }
 
     @Test
@@ -93,7 +84,7 @@ class TracerApplicationTests {
         for (Stages stage : stages) {
             assertNotNull(stage.getStageId());
             assertNotNull(stage.getProductId());
-            assertNotNull(stage.getStageName());
+            assertNotNull(stage.getStageType()); //Changed stageName to stageType to match stages.java - Waj
         }
     }
 
@@ -127,10 +118,10 @@ class TracerApplicationTests {
         assertFalse(stages.isEmpty());
         assertNotNull(stages.get(0).getStageId());
 
-        Integer firstStageId = stages.get(0).getStageId();
+        String firstStageId = stages.get(0).getStageId(); //changed data type int to str - W
         for (Stages stage : stages) {
             assertNotNull(stage.getStageId());
-            assertTrue(firstStageId <= stage.getStageId());
+            assertTrue(firstStageId.compareTo(stage.getStageId()) <= 0);
         }
     }
 }

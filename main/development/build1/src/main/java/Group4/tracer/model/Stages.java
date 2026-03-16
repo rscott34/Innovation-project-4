@@ -19,6 +19,7 @@ public class Stages {
     private String startDate;
     private String endDate;
     private String description;
+    private String productId;
 
     public Stages() {
     }
@@ -61,6 +62,12 @@ public class Stages {
     }
     public String getLocation() {
         return location;
+    }
+    public String getProductId() {
+        return productId;
+    }
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
     public void setLocation(String location) {
         this.location = location;
