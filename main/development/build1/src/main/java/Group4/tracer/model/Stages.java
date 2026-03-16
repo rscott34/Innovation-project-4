@@ -6,6 +6,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Column;
 
 @Entity
 @Table(name = "Stages")
@@ -19,6 +20,8 @@ public class Stages {
     private String startDate;
     private String endDate;
     private String description;
+
+    @Column(name = "product_id")
     private String productId;
 
     public Stages() {
