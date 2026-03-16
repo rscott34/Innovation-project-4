@@ -16,6 +16,8 @@ public interface StageRepository extends JpaRepository<Stages, String> {
             "WHERE product_id = :productId " +
             "ORDER BY stage_id ASC", nativeQuery = true)
     Object[] findStageArray(@Param("productId") String productId);
+    // Returns all stages for a product ordered by stage_id
+    java.util.List<Stages> findByProductIdOrderByStageIdAsc(String productId);
 
     // Get specific stage value and evidence link for a product and stage name
     @Query(value = "SELECT stage_Id, evidence_link " +
