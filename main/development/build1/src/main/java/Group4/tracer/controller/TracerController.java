@@ -86,11 +86,23 @@ public class TracerController {
 
     // traceability editing
     @GetMapping("/edit-stage")
-    public String editStageForm(@RequestParam String stageId, Model model) {
-        //sets stage id
-        model.addAttribute("stageId", stageId);
-        return "edit-stage";
-    }
+    public String editStage(@RequestParam String stageId, Model model, HttpSession session) {
+        //checks if admin is editing product info
+        if ("GENERAL".equalsIgnoreCase(stageId)) {
+            String productId = (String) session.getAttribute("currentProductId");             
+            
+            if (productId == null) {
+                        return "redirect:/";
+                    }
+                    
+                    return "redirect:/edit-product?productId=" + productId;
+                }
+
+                // Existing logic for stages
+                Stages stage = stageRepository.findById(stageId).orElse(null);
+                model.addAttribute("stage", stage);
+                return "edit-stage";
+            }
 
     //sets stage data ready for UI
     @PostMapping("/update-stage")
@@ -313,6 +325,8 @@ public String resolveIssue(@RequestParam Long reportId) {
                     innerProductData[3].toString(), 
                     innerProductData[4].toString()); 
 
+                session.setAttribute("currentProductId", p.getProductId());
+                
                 model.addAttribute("product", p);
                 model.addAttribute("productFound", true);
                 model.addAttribute("productId", p.getProductId());

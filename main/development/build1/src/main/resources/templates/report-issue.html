@@ -16,14 +16,10 @@
             <input type="hidden" name="productId" th:value="${productId}">
 
             <label for="stageId">Select the stage with the error:</label>
-            <select name="stageId" id="stageId" required 
-                    style="width: 100%; padding: 10px; border: 2px solid var(--border-color); border-radius: 8px;">
-                <option value="" disabled selected>Select a Stage</option>
-                <option value="GENERAL">General Product Details</option>
-                
-                <option th:each="s : ${allStages}" 
-                        th:value="${s[0]}" 
-                        th:text="${'Stage ' + s[0] + ' - ' + s[1] + ' (' + s[2] + ')'}">
+            <select name="stageId">
+                <option value="GENERAL">General Product Details</option> <option th:each="stage : ${stages}" 
+                        th:value="${stage.stageId}" 
+                        th:text="${'Stage ' + stage.stageId + ' (' + stage.stageName + ')'}">
                 </option>
             </select>
 
