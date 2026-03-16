@@ -1,8 +1,8 @@
 input_id,product_id,input_name,country,percentage
-IN-001,P001,Spanish Origin Materials,Spain,60
-IN-002,P001,Portugese Origin Materials,Portugal,40
-IN-003,P002,Italian Origin Materials,Italy,70
-IN-004,P002,French Origin Materials,France,30
+IN-001,P002,Spanish Origin Materials,Spain,60
+IN-002,P002,Portugese Origin Materials,Portugal,40
+IN-003,P001,Italian Origin Materials,Italy,70
+IN-004,P001,French Origin Materials,France,30
 IN-005,P003,American Origin Materials,USA,50
 IN-006,P003,Italian Origin Materials,Italy,50
 IN-007,P004,French Origin Materials,France,80
@@ -13,9 +13,9 @@ IN-011,P006,Spanish Origin Materials,Spain,90
 IN-012,P006,Italian Origin Materials,Italy,10
 IN-013,P007,Bangladeshi Origin Materials,Bangladesh,80
 IN-014,P007,Thai Origin Materials,Thailand,20
-1N-015,P008,Indonesian Origin Materials,Indonesia,80
+IN-015,P008,Indonesian Origin Materials,Indonesia,80
 IN-016,P008,Indian Origin Materials,India,20
 IN-017,P009,Egyptian Origin Materials,Egypt,60
-IN-018,P009,Lybian Origin Materials,Lybia,40
+IN-018,P009,Libyan Origin Materials,Libya,40
 IN-019,P010,Italian Origin Materials,Italy,50
 IN-020,P010,Belgium Origin Materials,Belgium,50

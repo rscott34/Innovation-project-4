@@ -72,7 +72,7 @@
         </form>
     </div>
     <main th:if="${productFound != null && productFound == true}"> 
-        <div class="product-section" >
+        <div class="product-section" id="information">
             <h2 class="section-header">Product Information</h2>
             <div class="info">
                 <span class="label"> <b>Product ID:</b></span>
@@ -94,7 +94,7 @@
                 <span class="label"><b>Description:</b></span>
                 <span class="value" th:text="${p.getDescription()}">P100</span>
             </div>
-            <div class="info">
+            <div class="info" id="origin">
                 <details class="evidence-section">
                     <summary><b>View Ingredient Breakdown</b></summary>
                     <div class="evidence-card">
@@ -120,7 +120,7 @@
                 </details>
             </div>
         </div>
-        <div class="traceability-section" th:if="${hasStages != null && hasStages == true}">
+        <div class="traceability-section" id="stages" th:if="${hasStages != null && hasStages == true}">
             <h2 class="section-header">Traceability Stages</h2>
             <div class="stage-card" th:each="stage, iterStat : ${stages}">
                 <div th:if="${role == 'verifier'}" style="margin-top: 10px;">
@@ -149,7 +149,7 @@
                 </div>
             </div>
         </div>
-        <div class="claim-section section" th:if="${hasClaims == true}">
+        <div class="claim-section section" id="claims" th:if="${hasClaims == true}">
             <h2 class="section-header">Claims and Evidence</h2>
             <div class="claim-card" th:each="claim, claimStat : ${claimsList}"> 
                 <h3>Claim <span th:text="${claimStat.count}">1</span></h3>
@@ -177,7 +177,7 @@
                     <span><b>Rationale:</b></span>
                     <span th:text="${claim.rationale}"></span>
                 </div>
-                <details class="evidence-section" th:each="ev : ${claim.getListOfEvidenceDetails()}">
+                <details class="evidence-section" id="evidence" th:each="ev : ${claim.getListOfEvidenceDetails()}">
                     <summary><b>View Evidence</b></summary>
                     <div class="evidence-card">
                         <div class="evidence-info">
