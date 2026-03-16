@@ -1,6 +1,7 @@
 package Group4.tracer.controller;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -15,12 +16,14 @@ import Group4.tracer.enums.StageType;
 import Group4.tracer.model.ChangeLog;
 import Group4.tracer.model.Claims;
 import Group4.tracer.model.Evidence;
+import Group4.tracer.model.Mission;
 import Group4.tracer.model.Products;
 import Group4.tracer.model.Stages;
 import Group4.tracer.model.Verifier;
 import Group4.tracer.repository.ChangeLogRepository;
 import Group4.tracer.repository.ClaimRepository;
 import Group4.tracer.repository.EvidenceRepository;
+import Group4.tracer.repository.InputSharesRepository;
 import Group4.tracer.repository.ProductRepository;
 import Group4.tracer.repository.StageRepository;
 import Group4.tracer.repository.VerifierRepository;
@@ -35,9 +38,11 @@ public class TracerController {
     @Autowired private ClaimRepository claimRepository;
     @Autowired private EvidenceRepository evidenceRepository;
     @Autowired private ChangeLogRepository changeLogRepository;
-    @Autowired private VerifierRepository verifierRepository; // Added Verifier Repository
+    @Autowired private VerifierRepository verifierRepository;
+    @Autowired private InputSharesRepository inputSharesRepository;
 
-    //get mappijg for login page 
+
+    //get mappijg for login page  
     @GetMapping("/login")
     public String loginPage() { return "login"; }
     //post mapping for login page
@@ -67,7 +72,7 @@ public class TracerController {
     
     @GetMapping("/")
     public String showForm(HttpSession session, Model model) {
-    //get the role and username of the user
+        //get the role and username of the user
         model.addAttribute("questionGenerated", false);
         String role = (String) session.getAttribute("role");
         //sets user to guest if not loggied in as verifier
@@ -106,6 +111,8 @@ public class TracerController {
         return "redirect:/";
     }
 
+
+    
     // attaching evidence to claims
     @GetMapping("/verify-claim")
     public String verifyClaimForm(@RequestParam String claimId, Model model) {
@@ -117,36 +124,34 @@ public class TracerController {
         // Pass the database records to the HTML page
         model.addAttribute("evidenceList", evidenceFromDb);
         
+
+
         return "verify-claim";
     }
 
-    @PostMapping("/submit-verification")
-    public String submitVerification(@RequestParam String claimId, @RequestParam String evidenceFile, @RequestParam String explanation, HttpSession session) {
-        Claims claim = claimRepository.findById(claimId).orElse(null);
-        if (claim != null) {
-            
-            // Enforce Validation Rule
-            if (evidenceFile == null || evidenceFile.equals("none") || evidenceFile.isEmpty()) {
-                claim.setConfidenceLabelString("Unverified");
-                claim.setRationale("No evidence attached. Explanation: " + explanation);
-            } else {
-                claim.setConfidenceLabelString("Verified");
-                claim.setRationale("Evidence attached: " + evidenceFile + " | Explanation: " + explanation);
-            }
-            claimRepository.save(claim);
-
-            // add setails to to ChangeLog
-            ChangeLog log = new ChangeLog();
-            log.setLogId(UUID.randomUUID().toString());
-            log.setEntityType("Claim");
-            log.setEntityId(claimId);
-            log.setChangedBy((String) session.getAttribute("username"));
-            log.setTimestamp(LocalDateTime.now().toString());
-            log.setChangeSummary("Verified claim using file: " + evidenceFile);
-            changeLogRepository.save(log);
+@PostMapping("/submit-verification")
+public String submitVerification(
+    @RequestParam String claimId, 
+    @RequestParam String evidenceId, 
+    @RequestParam String evidenceFile, 
+    HttpSession session) {
+    
+        System.out.println("Evidence ID: " + evidenceId);
+        System.out.println("New Filepath: " + evidenceFile);
+    // Pass an empty string or a default value for the summary in the repository call
+    evidenceRepository.updateEvidencePath(evidenceFile, evidenceId);
+    
+    Claims claim = claimRepository.findById(claimId).orElse(null);
+    if (claim != null) {
+        if (evidenceFile.equals("none")) {
+            claim.setConfidenceLabelString("Unverified");
+        } else {
+            claim.setConfidenceLabelString("Verified");
         }
-        return "redirect:/";
+        claimRepository.save(claim);
     }
+    return "redirect:/";
+}
 
     //get changelog data to display 
     @GetMapping("/history")
@@ -155,6 +160,21 @@ public class TracerController {
         return "history";
     }
 
+    //FR2 product origin
+    /*
+    @GetMapping("/origin-breakdown")
+    public String showOriginBreakdown(@RequestParam String productId, Model model, HttpSession session) {
+        List<Object[]> shares = inputSharesRepository.findInputSharesArray(productId);
+        model.addAttribute("shares", inputSharesRepository.findInputSharesArray(productId));
+        model.addAttribute("productId", productId);
+        
+        //maintain role
+        String role = (String) session.getAttribute("role");
+        model.addAttribute("role", role != null ? role : "guest"); //makes unlogged in users become guests
+        return "breakdown"; 
+    }
+    */
+
     @GetMapping("/mission")
     public String missionPage(Model model) {
         return "mission";
@@ -162,28 +182,29 @@ public class TracerController {
 
     // add submit button for
     @PostMapping("/submit")
-    public String handleInput(
-        @RequestParam boolean questionGenerated, 
-        @RequestParam String questionText, 
+    public String handleInput(@RequestParam boolean questionGenerated, 
         @RequestParam String userAnswer, 
-        @RequestParam String correctAnswer, 
-        @RequestParam String evidenceLink, 
         @RequestParam String userInput, 
-        HttpSession session, Model model) { 
+        HttpSession session, 
+        Model model) {
+
+        Mission mission = (Mission) session.getAttribute("mission");
         String role = (String) session.getAttribute("role");
         model.addAttribute("role", role != null ? role : "guest");
         
-        System.out.println(questionText);
-        if (userInput != null) {
+        if (userInput != null && !userInput.isEmpty()) {
 
             Object[] productData = productRepository.findProductArray(userInput); 
             Object[] traceData = stageRepository.findStageArray(userInput);
             Object[] claimData = claimRepository.findClaimArray(userInput);
             Object[] evidenceData = evidenceRepository.findEvidenceArray(userInput);
 
+            List<Object[]> shares = inputSharesRepository.findInputSharesArray(userInput);
+            model.addAttribute("shares", shares);
+
             if (productData != null && productData.length > 0) { 
                 System.out.println("Product found");
-                System.out.println(java.util.Arrays.deepToString(traceData));
+                //System.out.println(java.util.Arrays.deepToString(traceData));
 
                 Object[] innerProductData = (Object[]) productData[0];
                 Products p = new Products(
@@ -194,12 +215,7 @@ public class TracerController {
                     innerProductData[4].toString()); 
 
                 model.addAttribute("productFound", true);
-
-                model.addAttribute("productId", p.getProductId());
-                model.addAttribute("name", p.getName());
-                model.addAttribute("category", p.getCategoryText());
-                model.addAttribute("brand", p.getBrand());
-                model.addAttribute("description", p.getDescription());
+                model.addAttribute("p", p);
 
                 if (traceData != null && traceData.length > 0) { //if there are stages 
                     for (int i = 0; i < traceData.length; i++) {
@@ -223,46 +239,49 @@ public class TracerController {
 
                 model.addAttribute("stages", p.getListOfStagesDetails());
 
-                if (claimData != null && claimData.length > 0) { //if there are claims
+                if (claimData != null && claimData.length > 0) { // if there are claims
                     for (int i = 0; i < claimData.length; i++) {
-                        Object[] claim = (Object[]) claimData[i];
-                        p.addClaim(new Claims(
-                            claim[0].toString(), 
-                            claim[2].toString(), 
-                            claim[3].toString(), 
-                            claim[4].toString(), 
-                            claim[5].toString()));
+                        Object[] claimRow = (Object[]) claimData[i];
+                        
+                        String currentClaimId = claimRow[0].toString();
+                        
+                        Claims c = new Claims(
+                            claimRow[0].toString(), // claimId
+                            claimRow[3].toString(), // type
+                            claimRow[4].toString(), // text
+                            claimRow[5].toString(), // confidence
+                            claimRow[6].toString()  // rationale
+                        );
+
+                        if (evidenceData != null) {
+                            for (int j = 0; j < evidenceData.length; j++) {
+                                Object[] evRow = (Object[]) evidenceData[j];
+                                
+                                String claimIdFromEvidence = evRow[0].toString();
+
+                                if (claimIdFromEvidence.equals(currentClaimId)) {
+                                    c.addEvidence(new Evidence(
+                                        evRow[1].toString(), // id
+                                        evRow[2].toString(), // type
+                                        evRow[3].toString(), // issuer
+                                        evRow[4].toString(), // date/data
+                                        evRow[5].toString(), // summary
+                                        evRow[6].toString()  // fileReference
+                                    ));
+                                }
+                            }
+                        }
+                        p.addClaim(c);
                     }
                     model.addAttribute("hasClaims", true);     
-                    model.addAttribute("claims", p.getListOfClaimsDetails());
-                }
+                    model.addAttribute("claimsList", p.getClaims());                }
                 else {
                     model.addAttribute("hasClaims", false);
                 }
-                
-                if (evidenceData != null && evidenceData.length > 0) {
-                    Claims claim = p.getClaimByIndex(0);
-                    for (int j = 0; j < evidenceData.length; j++) {
-                        Object[] ev = (Object[]) evidenceData[j];
-                        claim.addEvidence(new Evidence(
-                            ev[0].toString(), 
-                            ev[2].toString(), // skip claim_id 
-                            ev[3].toString(), 
-                            ev[4].toString(), 
-                            ev[5].toString(), 
-                            ev[6].toString()));
-                        System.out.println(ev[1].toString());
-                    }
-                    model.addAttribute("evidence", claim.getListOfEvidenceDetails());
-                } else {
-                    model.addAttribute("evidence", null);
-                    System.out.println("No evidence found for this product");
-                }
-
-            }
-            else {
+            } else {
                 model.addAttribute("productFound", false);
-                model.addAttribute("errorMessage", "Product ID " + userInput + " not found.");
+                System.out.println("No product found with ID: " + userInput);
+                model.addAttribute("errorMessage", "Invalid Product ID. Please try again with a valid ID.");
             }
         }
         else {
@@ -271,11 +290,233 @@ public class TracerController {
         }
 
         model.addAttribute("questionGenerated", questionGenerated);
-        model.addAttribute("questionText", questionText);
         model.addAttribute("userAnswer", userAnswer);
-        model.addAttribute("correctAnswer", correctAnswer);
-        model.addAttribute("evidenceLink", evidenceLink);
+        model.addAttribute("mission", mission);
+        model.addAttribute("userInput", userInput);
         
         return "index";
     }
+
+    //button for switching to compare view
+    @GetMapping("/compare")
+    public String compareView(HttpSession session, Model model) {
+        //get the role and username of the user
+        String role = (String) session.getAttribute("role");
+        //sets user to guest if not loggied in as verifier
+        model.addAttribute("role", role != null ? role : "guest");
+        return "compare";
+    }
+
+    @PostMapping("/compare/submit")
+    public String compareViewInput (@RequestParam String userInput,
+        @RequestParam String userInput2,
+        HttpSession session,
+        Model model) {
+        
+        Mission mission = (Mission) session.getAttribute("mission");
+        String role = (String) session.getAttribute("role");
+        model.addAttribute("role", role != null ? role : "guest");
+                
+        if (userInput != null && !userInput.isEmpty()) {
+
+            Object[] productData = productRepository.findProductArray(userInput); 
+            Object[] traceData = stageRepository.findStageArray(userInput);
+            Object[] claimData = claimRepository.findClaimArray(userInput);
+            Object[] evidenceData = evidenceRepository.findEvidenceArray(userInput);
+
+            List<Object[]> shares1 = inputSharesRepository.findInputSharesArray(userInput);
+            model.addAttribute("shares1", shares1);
+
+            if (productData != null && productData.length > 0) { 
+
+                System.out.println("Product found");
+                //System.out.println(java.util.Arrays.deepToString(traceData));
+
+                Object[] innerProductData = (Object[]) productData[0];
+                Products p = new Products(
+                    innerProductData[0].toString(), 
+                    innerProductData[1].toString(), 
+                    innerProductData[2].toString(), 
+                    innerProductData[3].toString(), 
+                    innerProductData[4].toString()); 
+
+                model.addAttribute("productFound", true);
+                model.addAttribute("p", p);
+
+                if (traceData != null && traceData.length > 0) { //if there are stages 
+                    for (int i = 0; i < traceData.length; i++) {
+                        Object[] stage = (Object[]) traceData[i];
+                        p.addStage(new Stages(
+                            stage[0].toString(), // stageId
+                            StageType.fromString(stage[2].toString()).name(), // stageType
+                            stage[3].toString(), // stageName
+                            stage[4].toString(),  // location
+                            //stage[4].toString(), // startDate
+                            "", // endDate is not currently used in the database so set to empty string
+                            stage[6].toString() // description
+                        ));
+                    }
+                    model.addAttribute("hasStages", true);
+                }
+                else {
+                    model.addAttribute("hasStages", false);
+                    System.out.println("No stages found for this product");
+                }
+
+                model.addAttribute("stages", p.getListOfStagesDetails());
+
+                if (claimData != null && claimData.length > 0) { // if there are claims
+                    for (int i = 0; i < claimData.length; i++) {
+                        Object[] claimRow = (Object[]) claimData[i];
+                        
+                        String currentClaimId = claimRow[0].toString();
+                        
+                        Claims c = new Claims(
+                            claimRow[0].toString(), // claimId
+                            claimRow[3].toString(), // type
+                            claimRow[4].toString(), // text
+                            claimRow[5].toString(), // confidence
+                            claimRow[6].toString()  // rationale
+                        );
+
+                        if (evidenceData != null) {
+                            for (int j = 0; j < evidenceData.length; j++) {
+                                Object[] evRow = (Object[]) evidenceData[j];
+                                
+                                String claimIdFromEvidence = evRow[0].toString();
+
+                                if (claimIdFromEvidence.equals(currentClaimId)) {
+                                    c.addEvidence(new Evidence(
+                                        evRow[1].toString(), // id
+                                        evRow[2].toString(), // type
+                                        evRow[3].toString(), // issuer
+                                        evRow[4].toString(), // date/data
+                                        evRow[5].toString(), // summary
+                                        evRow[6].toString()  // fileReference
+                                    ));
+                                }
+                            }
+                        }
+                        p.addClaim(c);
+                    }
+                    model.addAttribute("hasClaims", true);     
+                    model.addAttribute("claimsList", p.getClaims());                }
+                else {
+                    model.addAttribute("hasClaims", false);
+                }
+            } else {
+                model.addAttribute("productFound", false);
+                System.out.println("No product found with ID: " + userInput);
+                model.addAttribute("errorMessage", "Invalid Product ID. Please try again with a valid ID.");
+            }
+        }
+        else {
+            model.addAttribute("productFound", false);
+            model.addAttribute("errorMessage", "No input provided.");
+        }
+        if (userInput2 != null && !userInput2.isEmpty()) {
+
+            Object[] productData = productRepository.findProductArray(userInput2); 
+            Object[] traceData = stageRepository.findStageArray(userInput2);
+            Object[] claimData = claimRepository.findClaimArray(userInput2);
+            Object[] evidenceData = evidenceRepository.findEvidenceArray(userInput2);
+
+
+            List<Object[]> shares2 = inputSharesRepository.findInputSharesArray(userInput2);
+            model.addAttribute("shares2", shares2);
+
+            if (productData != null && productData.length > 0) { 
+                System.out.println("Product found");
+                //System.out.println(java.util.Arrays.deepToString(traceData));
+
+                Object[] innerProductData = (Object[]) productData[0];
+                Products p = new Products(
+                    innerProductData[0].toString(), 
+                    innerProductData[1].toString(), 
+                    innerProductData[2].toString(), 
+                    innerProductData[3].toString(), 
+                    innerProductData[4].toString()); 
+
+                model.addAttribute("productFound2", true);
+                model.addAttribute("p2", p);
+
+                if (traceData != null && traceData.length > 0) { //if there are stages 
+                    for (int i = 0; i < traceData.length; i++) {
+                        Object[] stage = (Object[]) traceData[i];
+                        p.addStage(new Stages(
+                            stage[0].toString(), // stageId
+                            StageType.fromString(stage[2].toString()).name(), // stageType
+                            stage[3].toString(), // stageName
+                            stage[4].toString(),  // location
+                            //stage[4].toString(), // startDate
+                            "", // endDate is not currently used in the database so set to empty string
+                            stage[6].toString() // description
+                        ));
+                    }
+                    model.addAttribute("hasStages2", true);
+                }
+                else {
+                    model.addAttribute("hasStages2", false);
+                    System.out.println("No stages found for this product");
+                }
+
+                model.addAttribute("stages2", p.getListOfStagesDetails());
+
+                if (claimData != null && claimData.length > 0) { // if there are claims
+                    for (int i = 0; i < claimData.length; i++) {
+                        Object[] claimRow = (Object[]) claimData[i];
+                        
+                        String currentClaimId = claimRow[0].toString();
+                        
+                        Claims c = new Claims(
+                            claimRow[0].toString(), // claimId
+                            claimRow[3].toString(), // type
+                            claimRow[4].toString(), // text
+                            claimRow[5].toString(), // confidence
+                            claimRow[6].toString()  // rationale
+                        );
+
+                        if (evidenceData != null) {
+                            for (int j = 0; j < evidenceData.length; j++) {
+                                Object[] evRow = (Object[]) evidenceData[j];
+                                
+                                String claimIdFromEvidence = evRow[0].toString();
+
+                                if (claimIdFromEvidence.equals(currentClaimId)) {
+                                    c.addEvidence(new Evidence(
+                                        evRow[1].toString(), // id
+                                        evRow[2].toString(), // type
+                                        evRow[3].toString(), // issuer
+                                        evRow[4].toString(), // date/data
+                                        evRow[5].toString(), // summary
+                                        evRow[6].toString()  // fileReference
+                                    ));
+                                }
+                            }
+                        }
+                        p.addClaim(c);
+                    }
+                    model.addAttribute("hasClaims2", true);     
+                    model.addAttribute("claimsList2", p.getClaims());                }
+                else {
+                    model.addAttribute("hasClaims2", false);
+                }
+            } else {
+                model.addAttribute("productFound2", false);
+                System.out.println("No product found with ID: " + userInput2);
+                model.addAttribute("errorMessage2", "Invalid Product ID. Please try again with a valid ID.");
+            }
+        }
+        else {
+            model.addAttribute("productFound2", false);
+            model.addAttribute("errorMessage2", "No input provided.");
+        }
+        
+        model.addAttribute("mission", mission);
+        model.addAttribute("userInput", userInput);
+        model.addAttribute("userInput2", userInput2);
+        
+        return "compare";
+    }
+
 }

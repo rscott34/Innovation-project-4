@@ -1,24 +1,30 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Verifier Login</title><link rel="stylesheet" th:href="@{/style.css}"></head>
-<body style="padding: 20px;">
-    <h2>Verifier Admin Login</h2>
-    
-    <div th:if="${error != null}" style="color: red; margin-bottom: 10px;">
-        <strong th:text="${error}"></strong>
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+</head> 
+<body>
+    <div class="header">
+        <h1>Product Tracer System</h1>
     </div>
-
-    <form action="/login" method="post">
-        <label><strong>Username:</strong></label><br/>
-        <input type="text" name="username" required style="margin-bottom: 15px; padding: 5px; width: 200px;"/><br/>
-
-        <label><strong>Password:</strong></label><br/>
-        <input type="password" name="password" required style="margin-bottom: 15px; padding: 5px; width: 200px;"/><br/>
-
-        <button type="submit">Login</button>
-    </form>
-    
-    <br/>
-    <a href="/">Continue as Guest (Back to Search)</a>
+    <div class="login-section">
+        <form action="/login" method="post">
+            <input type="text" name="username" placeholder="Username" required />
+            <input type="password" name="password" placeholder="Password" required />
+            <button type="submit">Log in</button>
+        </form>
+    </div>
+    <!--
+    <div class="error-card" th:if="${productFound != null && productFound == false}">
+        <p th:text="${errorMessage}">Error message</p>
+    </div>
+    -->
+    <footer>
+        <p>This is an educational prototype, do not trust the official certifications for synthetic data</p>
+    </footer>
 </body>
 </html>

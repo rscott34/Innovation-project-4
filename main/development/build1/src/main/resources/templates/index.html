@@ -3,55 +3,69 @@
 <head>
     <title>Tracer Input</title>
     <link rel="stylesheet" th:href="@{/style.css}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
 </head> 
 <body>
-    <div style="background-color: #f1f1f1; padding: 10px; text-align: right;">
-        <div th:if="${questionGenerated == true}">
-            <a href="/"><button>Home</button></a>
+    <div class="navbar">
+        <div class="navbar-left">
+            <div th:if="${questionGenerated == true}">
+                <a href="/"><button>Home</button></a>
+            </div>
+            <div th:if="${questionGenerated == false}">
+                <a href="/questions/generate"><button>Question</button></a>
+            </div>
         </div>
-        <div th:if="${questionGenerated == false}">
-            <a href="/questions/generate"><button>Question</button></a>
+        <div class="navbar-right">
+            <span th:if="${questionGenerated == true}" class="score-display">
+                Score: <span th:text="${session.points}">0</span>
+            </span>
+            <span th:if="${role == 'guest'}">
+                <a href="/login"><button>Login as Verifier</button></a>
+            </span>
+            <span th:if="${role == 'verifier'}">
+                Logged in as Verifier 
+                <a href="/history"><button>View History</button></a>
+                <a href="/logout"><button>Logout</button></a>
+            </span>
         </div>
-        <span th:if="${role == 'guest'}">
-            <a href="/login"><button>Login as Verifier</button></a>
-        </span>
-        <span th:if="${role == 'verifier'}">
-            Logged in as Verifier | 
-            <a href="/history"><button>View History</button></a> | 
-            <a href="/logout"><button>Logout</button></a>
-        </span>
     </div>
-    <main th:if="${questionGenerated == true}">
+    <div th:if="${questionGenerated == true}">
         <div class="header">
-            <h1 th:text="${questionText}">Question Text</h1>
+            <h1 th:text="${mission.getQuestion()}">Question Text</h1>
         </div>
         <div class="search">
             <form action="/questions/verify" method="post">
                 
                 <input type="text" name="userAnswer" placeholder="Enter answer here" required/>
-                <input type="hidden" name="correctAnswer" th:value="${correctAnswer}">
-                <input type="hidden" name="evidenceLink" th:value="${evidenceLink}">
                 <button type="submit">Attempt</button>
             </form>
         </div>
-    </main>
+    </div>
+    <div th:if="${questionGenerated == false}">
+        <form action="/compare/submit" method="post" th:if="${productFound != null && productFound == true}">
+            <input type="hidden" name="userInput" th:value="${userInput}"/>
+            <input type="hidden" name="userInput2" value=""/>
+            <button type="submit">Compare View</button>
+        </form>
+        <form action="/compare" method="get" th:if="${productFound == null || productFound == false}">
+            <button type="submit">Compare View</button>
+        </form>
+    </div>
+
     <div class="header">
         <h1>Enter Product ID</h1>
     </div>
+
     <div class="search">
         <form action="/submit" method="post">
             <input type="hidden" name="questionGenerated" th:value="${questionGenerated}">
             <main th:if="${questionGenerated == true}">
-                <input type="hidden" name="questionText" th:value="${questionText}">
                 <input type="hidden" name="userAnswer" th:value="${userAnswer}">
-                <input type="hidden" name="correctAnswer" th:value="${correctAnswer}">
-                <input type="hidden" name="evidenceLink" th:value="${evidenceLink}">
             </main>
             <main th:if="${questionGenerated == false}">
-                <input type="hidden" name="questionText">
                 <input type="hidden" name="userAnswer">
-                <input type="hidden" name="correctAnswer">
-                <input type="hidden" name="evidenceLink">
             </main>
             <input type="text" name="userInput" placeholder="e.g. P100" required/>
             <button type="submit">Send</button>
@@ -62,24 +76,48 @@
             <h2 class="section-header">Product Information</h2>
             <div class="info">
                 <span class="label"> <b>Product ID:</b></span>
-                <span class="value" th:text="${productId}">P100</span>
+                <span class="value" th:text="${p.getProductId()}">P100</span>
             </div>
             <div class="info">
                 <span class="label"><b>Name:</b></span>
-                <span class="value" th:text="${name}">P100</span>
+                <span class="value" th:text="${p.getName()}">P100</span>
             </div>
             <div class="info">
                 <span class="label"><b>Category:</b></span>
-                <span class="value" th:text="${category}">P100</span>
+                <span class="value" th:text="${p.getCategoryText()}">P100</span>
             </div>
             <div class="info">
                 <span class="label"><b>Brand:</b></span>
-                <span class="value" th:text="${brand}">P100</span>
+                <span class="value" th:text="${p.getBrand()}">P100</span>
             </div>
             <div class="info">
-
                 <span class="label"><b>Description:</b></span>
-                <span class="value" th:text="${description}">P100</span>
+                <span class="value" th:text="${p.getDescription()}">P100</span>
+            </div>
+            <div class="info">
+                <details class="evidence-section">
+                    <summary><b>View Ingredient Breakdown</b></summary>
+                    <div class="evidence-card">
+                        <div th:if="${shares == null or #lists.isEmpty(shares)}" class="evidence-info">
+                            <span><b>Notice:</b></span>
+                            <span>No ingredient data available for this product.</span>
+                        </div>
+                        <div th:if="${shares != null and not #lists.isEmpty(shares)}">
+                            <div style="max-width: 480px; margin: 0 auto;">
+                                <canvas id="ingredientChart"></canvas>
+                            </div>
+                            <div id="chart-data">
+                                <span th:each="share : ${shares}"
+                                      th:data-label="${share[2]}"
+                                      th:data-value="${share[4]}"
+                                      th:data-origin="${share[1]}"
+                                      th:data-country="${share[3]}"
+                                      class="chart-item">
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </details>
             </div>
         </div>
         <div class="traceability-section" th:if="${hasStages != null && hasStages == true}">
@@ -111,66 +149,77 @@
                 </div>
             </div>
         </div>
-        <div class="claim-section" th:if="${hasClaims != null && hasClaims == true}">
+        <div class="claim-section section" th:if="${hasClaims == true}">
             <h2 class="section-header">Claims and Evidence</h2>
-            <div class="claim-card" th:each="claim, iterStat : ${claims}"> 
-                <h3>Claim <span th:text="${iterStat.count}">1</span></h3>
+            <div class="claim-card" th:each="claim, claimStat : ${claimsList}"> 
+                <h3>Claim <span th:text="${claimStat.count}">1</span></h3>
+                
                 <div th:if="${role == 'verifier'}" style="margin-top: 10px;">
-                    <a th:href="@{/verify-claim(claimId=${claim[0]})}"><button>Verify Claim</button></a>
+                    <a th:href="@{/verify-claim(claimId=${claim.claimId})}"><button>Verify Claim</button></a>
                 </div>
                 <div class="stage-info">
                     <span><b>Claim ID:</b></span>
-                    <span th:text="${claim[0]}">C001</span>
+                    <span th:text="${claim.claimId}"></span>
                 </div>
                 <div class="stage-info">
                     <span><b>Claim Type:</b></span>
-                    <span th:text="${claim[1]}">Enviromental</span>
+                    <span th:text="${claim.claimType}"></span>
                 </div>
                 <div class="stage-info">
                     <span><b>Text:</b></span>
-                    <span th:text="${claim[2]}">xyz</span>
+                    <span th:text="${claim.claimText}"></span>
                 </div>
                 <div class="stage-info">
-                    <span><b>Confidence Label:</b></span>
-                    <span th:text="${claim[3]}">Verified</span>
+                    <span><b>Confidence:</b></span>
+                    <span th:text="${claim.confidenceLabelText}"></span>
                 </div>
                 <div class="stage-info">
                     <span><b>Rationale:</b></span>
-                    <span th:text="${claim[4]}">xyz</span>
+                    <span th:text="${claim.rationale}"></span>
                 </div>
-                <div class="evidence-section" th:if="${evidence != null}" th:each="ev, iterStat : ${evidence}">
-                    <div class="evidence-card" th:if="${ev != null}">
+                <details class="evidence-section" th:each="ev : ${claim.getListOfEvidenceDetails()}">
+                    <summary><b>View Evidence</b></summary>
+                    <div class="evidence-card">
                         <div class="evidence-info">
                             <span><b>Evidence Id:</b></span>
-                            <span th:text="${ev[0]}">E001</span>
+                            <span th:text="${ev[0]}"></span>
                         </div>
                         <div class="evidence-info">
                             <span><b>Evidence Type:</b></span>
-                            <span th:text="${ev[1]}">Certificate</span>
+                            <span th:text="${ev[1]}"></span>
                         </div>
                         <div class="evidence-info">
                             <span><b>Issuer:</b></span>
-                            <span th:text="${ev[2]}">V1</span>
+                            <span th:text="${ev[2]}"></span>
                         </div>
                         <div class="evidence-info">
                             <span><b>Date:</b></span>
-                            <span th:text="${ev[3]}">2025-01-15</span>
+                            <span th:text="${ev[3]}"></span>
                         </div>
                         <div class="evidence-info">
                             <span><b>Summary:</b></span>
-                            <span th:text="${ev[4]}">Summary</span>
+                            <span th:text="${ev[4]}"></span>
                         </div>
                         <div class="evidence-info">
-                            <span><b>File Reference:</b></span>
-                            <span th:text="${ev[5]}">E001</span>
+                            <span><b>Certification Image:</b></span>
+                            <div class="evidence-image">
+                                <img th:src="${ev[5]}" alt="Evidence Image">
+                            </div>
                         </div>
                     </div>
-                </div>
+                </details>
             </div>
         </div>
     </main>
     <div class="error-card" th:if="${productFound != null && productFound == false}">
         <p th:text="${errorMessage}">Error message</p>
     </div>
+    <footer>
+        <p>This is an educational prototype, do not trust the official certifications for synthetic data</p>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <script th:src="@{/piechart.js}"></script>
 </body>
 </html>
+

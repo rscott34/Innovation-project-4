@@ -1,5 +1,7 @@
 package Group4.tracer.model;
 
+import Group4.tracer.enums.GradingType;
+import Group4.tracer.enums.MissionDifficulty;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -8,33 +10,76 @@ import jakarta.persistence.Table;
 @Table(name = "QuestMission")
 public class Mission {
     @Id
-    private String mission_id; //primary key of table
-    private String product_id;
-    private String tier;
+    private String missionId; //primary key of table
+    private String productId;
+    private MissionDifficulty tier;
     private String question;
-    private String answer_key;
-    private String grading_type;
-    private String explanation_link;
+    private String answer;
+    private GradingType gradingType;
+    private String feedback;
 
     public Mission() {
     }
-    public Mission(String mission_id, String product_id, String tier, String question, String answer, String grading_type, String explanation_link) {
-        this.mission_id = mission_id;
-        this.product_id = product_id;
-        this.tier = tier;
+    public Mission(String mission_id, String product_id, String tier, String question, String answer, String grading_type, String feedback) {
+        this.missionId = mission_id;
+        this.productId = product_id;
+        setTierString(tier);
         this.question = question;
-        this.answer_key = answer;
-        this.grading_type = grading_type;
-        this.explanation_link = explanation_link;
+        this.answer = answer;
+        setGradingTypeString(grading_type);
+        this.feedback = feedback;
     }
 
     public String getQuestion() {
         return question;
     }
     public String getAnswer() {
-        return answer_key;
+        return answer;
+    }
+    public String getPassport() {
+        return productId;
     }
     public String getExplanation() {
-        return explanation_link;
+        return feedback;
+    }
+
+    public final void setTierString(String tier) {
+        for (MissionDifficulty diff : MissionDifficulty.values()) {
+            if (diff.name().equalsIgnoreCase(tier)) {
+                this.tier = diff;
+                return;
+            }
+        }
+        this.tier = null;
+    }
+
+    public final void setGradingTypeString(String type) {
+        for (GradingType grad : GradingType.values()) {
+            if (grad.name().equalsIgnoreCase(type)) {
+                this.gradingType = grad;
+                return;
+            }
+        }
+        this.tier = null;
+    }
+
+    public GradingType getGradingType() {
+        return gradingType;
+    }
+    public String getGradingTypeText() {
+        if (gradingType == null) {
+            return "null";
+        }
+        return gradingType.name();
+    }
+
+    public MissionDifficulty getDifficulty() {
+        return tier;
+    }
+    public String getDifficultyText() {
+        if (tier == null) {
+            return "null";
+        }
+        return tier.name();
     }
 }

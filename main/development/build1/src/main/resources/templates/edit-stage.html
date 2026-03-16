@@ -1,18 +1,32 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Edit Stage</title><link rel="stylesheet" th:href="@{/style.css}"></head>
-<body style="padding: 20px;">
-    <h2>Edit Timeline Stage Data</h2>
-    <form action="/update-stage" method="post">
-        <input type="hidden" name="stageId" th:value="${stageId}" />
-        <p><strong>Editing Stage ID:</strong> <span th:text="${stageId}"></span></p>
-
-        <label>Update Location:</label><br/>
-        <input type="text" name="newLocation" placeholder="Enter new location/materials..." required style="width: 300px; padding: 5px;"/>
-        <br/><br/>
-        <button type="submit">Save Changes</button>
-    </form>
-    <br/>
-    <a href="/">Cancel</a>
+<head>
+    <title>Edit Stage</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="header">
+        <h1>Edit Timeline Stage</h1>
+    </div>
+    <div class="edit-form">
+        <p>
+            <b>Editing Stage ID:</b> <span class="highlight" th:text="${stageId}">S001</span>
+        </p>
+        <form action="/update-stage" method="post">
+            <input type="hidden" name="stageId" th:value="${stageId}" />
+            <label>Update Location:</label>
+            <input type="text" name="newLocation" placeholder="Enter new location/materials..." required />
+            <div class="form-actions">
+                <button type="submit">Save Changes</button>
+                <a href="/" class="cancel-link">Cancel</a>
+            </div>
+        </form>
+    </div>
+    <footer>
+        <p>This is an educational prototype, do not trust the official certifications for synthetic data</p>
+    </footer>
 </body>
 </html>

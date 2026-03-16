@@ -120,6 +120,7 @@ public class Products {
             current[2] = claim.getClaimText();
             current[3] = claim.getConfidenceLabelText();
             current[4] = claim.getRationale();
+
             result[i] = current;
             i++;
         }
@@ -212,6 +213,10 @@ public class Products {
         }
         this.category = null;
     }
+
+public List<Claims> getClaims() {
+    return this.claims;
+}
 
     public String getBrand() {
         return brand;

@@ -8,10 +8,9 @@ import Group4.tracer.model.Mission;
 
 @Repository
 public interface MissionRepository extends JpaRepository<Mission, String> {
-
     //Searching for all stages by product ID
     @Query(value = "SELECT * " +
-            "FROM public.\"questMission\" ", nativeQuery = true)
+            "FROM public.\"questMission\"", nativeQuery = true)
     Object[] findMissionArray();
 }
 

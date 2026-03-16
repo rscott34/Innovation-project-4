@@ -1,25 +1,47 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>System History</title><link rel="stylesheet" th:href="@{/style.css}"></head>
-<body style="padding: 20px;">
-    <h2>Database Change Log History</h2>
-    <a href="/"><button>Back to Search</button></a>
-    <br/><br/>
-    <table border="1" style="width: 100%; border-collapse: collapse; padding: 5px;">
-        <tr style="background-color: #ddd;">
-            <th>Entity Type</th>
-            <th>Entity ID</th>
-            <th>Changed By</th>
-            <th>Timestamp</th>
-            <th>Change Summary</th>
-        </tr>
-        <tr th:each="log : ${logs}">
-            <td th:text="${log.entityType}" style="padding: 5px;"></td>
-            <td th:text="${log.entityId}" style="padding: 5px;"></td>
-            <td th:text="${log.changedBy}" style="padding: 5px;"></td>
-            <td th:text="${log.timestamp}" style="padding: 5px;"></td>
-            <td th:text="${log.changeSummary}" style="padding: 5px;"></td>
-        </tr>
-    </table>
+<head>
+    <title>Change History</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="header">
+        <h1>Database Change Log</h1>
+    </div>
+
+    <div class="history-container">
+        <div class="back-button">
+            <a href="/"><button>← Back to Search</button></a>
+        </div>
+        <table class="history-table">
+            <thead>
+                <tr>
+                    <th>Entity Type</th>
+                    <th>Entity ID</th>
+                    <th>Changed By</th>
+                    <th>Timestamp</th>
+                    <th>Change Summary</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="log : ${logs}">
+                    <td th:text="${log.entityType}">Stage</td>
+                    <td th:text="${log.entityId}">S001</td>
+                    <td th:text="${log.changedBy}">admin</td>
+                    <td th:text="${log.timestamp}">2024-01-01</td>
+                    <td th:text="${log.changeSummary}">Updated location</td>
+                </tr>
+            </tbody>
+        </table>
+        <div th:if="${logs == null or #lists.isEmpty(logs)}" class="empty-state">
+            <p>No change log entries found.</p>
+        </div>
+    </div>
+    <footer>
+        <p>This is an educational prototype, do not trust the official certifications for synthetic data</p>
+    </footer>
 </body>
 </html>

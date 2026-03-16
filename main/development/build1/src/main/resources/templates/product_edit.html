@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Tracer Input</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+</head> 
+<body>
+    <div class="header">
+        <h1>Admin Interface</h1>
+        <h1>Enter Product ID</h1>
+    </div>
+    
+    <div class="search">
+        <form action="/submit" method="post">
+            <input type="text" name="userInput" placeholder="e.g. P100" required />
+            <button type="submit">Search</button>
+        </form>
+    </div>
+    
+    <form action="/save" method="post" th:if="${productFound != null && productFound == true}">
+        <main>
+            <div class="product-section">
+                <h2 class="section-header">Product Information</h2>
+                
+                <div class="info">
+                    <span class="label"><b>Product ID:</b></span>
+                    <span class="value" th:text="${productId}">P100</span>
+                </div>
+                
+                <div class="info">
+                    <span class="label"><b>Name:</b></span>
+                    <input type="text" name="productName" class="value" 
+                           th:value="${name}" required />
+                </div>
+                
+                <div class="info">
+                    <span class="label"><b>Category:</b></span>
+                    <select name="productCategory" class="value" required>
+                        <option value="Food" th:selected="${category == 'Food'}">Food</option>
+                        <option value="Luxury" th:selected="${category == 'Luxury'}">Luxury</option>
+                        <option value="Clothing" th:selected="${category == 'Clothing'}">Clothing</option>
+                        <option value="Home" th:selected="${category == 'Home'}">Home</option>
+                    </select>
+                </div>
+                
+                <div class="info">
+                    <span class="label"><b>Brand:</b></span>
+                    <input type="text" name="productBrand" class="value" 
+                           th:value="${brand}" required />
+                </div>
+                
+                <div class="info">
+                    <span class="label"><b>Description:</b></span>
+                    <textarea name="productDescription" class="value" 
+                              rows="3" required th:text="${description}"></textarea>
+                </div>
+            </div>
+            
+            <div class="traceability-section" th:if="${hasStages != null && hasStages == true}">
+                <h2 class="section-header">Traceability Stages</h2>
+                <div class="stage-card" th:each="stage, iterStat : ${stages}">
+                    <h3>Stage <span th:text="${iterStat.count}">1</span></h3>
+                    
+                    <div class="stage-info">
+                        <span><b>Stage ID:</b></span>
+                        <span th:text="${stage[0]}">S1-001</span>
+                    </div>
+                    
+                    <div class="stage-info">
+                        <span><b>Stage Type:</b></span>
+                        <input type="text" th:name="'stages[' + ${iterStat.index} + '].stageType'" 
+                               class="value" th:value="${stage[1]}" required />
+                    </div>
+                    
+                    <div class="stage-info">
+                        <span><b>Location:</b></span>
+                        <input type="text" th:name="'stages[' + ${iterStat.index} + '].location'" 
+                               class="value" th:value="${stage[2]}" required />
+                    </div>
+                    
+                    <div class="stage-info">
+                        <span><b>Start Date:</b></span>
+                        <input type="date" th:name="'stages[' + ${iterStat.index} + '].startDate'" 
+                               class="value" th:value="${stage[3]}" required />
+                    </div>
+                    
+                    <div class="stage-info">
+                        <span><b>End Date:</b></span>
+                        <input type="date" th:name="'stages[' + ${iterStat.index} + '].endDate'" 
+                               class="value" th:value="${stage[4]}" />
+                    </div>
+                    
+                    <div class="stage-info">
+                        <span><b>Description:</b></span>
+                        <textarea th:name="'stages[' + ${iterStat.index} + '].description'" 
+                                  class="value" rows="2" th:text="${stage[5]}"></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="claim-section" th:if="${hasClaims != null && hasClaims == true}">
+                <h2 class="section-header">Claims and Evidence</h2>
+                <div class="claim-card" th:each="claim, claimIter : ${claims}"> 
+                    <h3>Claim <span th:text="${claimIter.count}">1</span></h3>
+                    
+                    <div class="stage-info">
+                        <span><b>Claim ID:</b></span>
+                        <span th:text="${claim[0]}">C001</span>
+                    </div>
+                    
+                    <div class="stage-info">
+                        <span><b>Claim Type:</b></span>
+                        <input type="text" th:name="'claims[' + ${claimIter.index} + '].claimType'" 
+                               class="value" th:value="${claim[1]}" required />
+                    </div>
+                    
+                    <div class="stage-info">
+                        <span><b>Text:</b></span>
+                        <textarea th:name="'claims[' + ${claimIter.index} + '].claimText'" 
+                                  class="value" rows="2" th:text="${claim[2]}"></textarea>
+                    </div>
+                    
+                    <div class="stage-info">
+                        <span><b>Confidence Label:</b></span>
+                        <select th:name="'claims[' + ${claimIter.index} + '].confidenceLabel'" class="value" required>
+                            <option value="Verified" th:selected="${claim[3] == 'Verified'}">Verified</option>
+                            <option value="Partially Verified" th:selected="${claim[3] == 'Partially Verified'}">Partially Verified</option>
+                            <option value="Unverified" th:selected="${claim[3] == 'Unverified'}">Unverified</option>
+                        </select>
+                    </div>
+                    
+                    <div class="stage-info">
+                        <span><b>Rationale:</b></span>
+                        <textarea th:name="'claims[' + ${claimIter.index} + '].rationale'" 
+                                  class="value" rows="2" th:text="${claim[4]}"></textarea>
+                    </div>
+                    
+                    <div class="evidence-section" th:if="${evidence != null}" 
+                         th:each="ev, evIter : ${evidence}">
+                        <div class="evidence-card" th:if="${ev != null}">
+                            <h4>Evidence <span th:text="${evIter.count}">1</span></h4>
+                            
+                            <div class="evidence-info">
+                                <span><b>Evidence ID:</b></span>
+                                <span th:text="${ev[0]}">E001</span>
+                            </div>
+                            
+                            <div class="evidence-info">
+                                <span><b>Evidence Type:</b></span>
+                                <input type="text" th:name="'evidence[' + ${evIter.index} + '].evidenceType'" 
+                                       class="value" th:value="${ev[1]}" required />
+                            </div>
+                            
+                            <div class="evidence-info">
+                                <span><b>Issuer:</b></span>
+                                <input type="text" th:name="'evidence[' + ${evIter.index} + '].issuer'" 
+                                       class="value" th:value="${ev[2]}" required />
+                            </div>
+                            
+                            <div class="evidence-info">
+                                <span><b>Date:</b></span>
+                                <input type="date" th:name="'evidence[' + ${evIter.index} + '].date'" 
+                                       class="value" th:value="${ev[3]}" required />
+                            </div>
+                            
+                            <div class="evidence-info">
+                                <span><b>Summary:</b></span>
+                                <textarea th:name="'evidence[' + ${evIter.index} + '].summary'" 
+                                          class="value" rows="2" th:text="${ev[4]}"></textarea>
+                            </div>
+                            
+                            <div class="evidence-info">
+                                <span><b>File Reference:</b></span>
+                                <input type="text" th:name="'evidence[' + ${evIter.index} + '].fileReference'" 
+                                       class="value" th:value="${ev[5]}" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin: 30px 0;">
+                <button type="submit" style="background-color: #4CAF50; color: white; 
+                        padding: 15px 40px; border: none; border-radius: 4px; 
+                        cursor: pointer; font-size: 18px; font-weight: bold;">
+                    Save All Changes
+                </button>
+            </div>
+        </main>
+    </form>
+    <footer>
+        <p>This is an educational prototype, do not trust the official certifications for synthetic data</p>
+    </footer>
+</body>
+</html>
