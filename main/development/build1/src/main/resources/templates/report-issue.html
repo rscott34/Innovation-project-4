@@ -20,7 +20,7 @@
                 <option value="GENERAL">General Product Details</option> 
                 <option th:each="stage : ${allStages}" 
                         th:value="${stage[0]}" 
-                        th:text="${'Stage ' + stage[0] + ' (' + stage[3] + ')'}">
+                        th:text="${'Stage ' + stage[0] + (stage.length > 3 ? ' (' + stage[3] + ')' : '')}">
                 </option>
             </select>
 

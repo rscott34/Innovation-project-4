@@ -228,7 +228,7 @@
 
     <div th:if="${productFound}" style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border-color);">
         <p style="color: white; margin-bottom: 15px;">Notice an issue with the traceability data?</p>
-        <a th:href="@{/report-issue(productId=${productId})}">
+        <a th:href="@{/report-issue(productId=${product.productId})}">
             <button type="button" class="btn-report">Report Issue</button>
         </a>
     </div>
