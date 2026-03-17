@@ -1,6 +1,7 @@
 package Group4.tracer.model;
 
 import Group4.tracer.enums.UserType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -13,22 +14,24 @@ public class User {
     @Id
     private String userId;
 
-    private String userName;
+    @Column(name = "\"user_name\"")
+    private String username;
+
+    @Column(name = "\"password\"")
     private String password;
 
+    @Column(name = "\"user_type\"")
     @Enumerated(EnumType.STRING)
     private UserType userType;
 
+    @Column(name = "score")
+    private int score;
+
+    @Column(name = "questions")
+    private String missions;
+
     public User() {
     }
-
-    public User(String userId, String userName, String password, String userType) {
-        this.userId = userId;
-        this.userName = userName;
-        this.password = password;
-        setUserTypeString(userType);
-    }
-
 
     //getters and setters
     public String getUserId() {
@@ -38,10 +41,10 @@ public class User {
         userId = Id;
     }
     public String getUserName() {
-        return userName;
+        return username;
     }
     public void setUserName(String name) {
-        userName = name;
+        username = name;
     }
     public String getPassword() {
         return password;
@@ -71,4 +74,12 @@ public class User {
         }
         this.userType = null;
     }
+    public int getScore() {
+        return score;
+    }
+
+    public String[] getMissions() {
+        return missions.split(",");
+    }
+    
 }

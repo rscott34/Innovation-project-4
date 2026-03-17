@@ -28,10 +28,16 @@ public class QuestionController {
     public String generateQuestion(Model model, HttpSession session) {
         Object[] questionRecords = missionRepository.findMissionArray();
         Object[] questionData = (Object[]) questionRecords[rand.nextInt(questionRecords.length)];
-        System.out.println(questionData.toString());
         
         if (questionData != null && questionData.length > 0) {
             // stageData[0] = stage_value, stageData[1] = evidence_link
+            
+            String options;
+            if (questionData[6] == null) {
+                options = "-";
+            } else {
+                options = questionData[6].toString();
+            }
 
             Mission mission = new Mission(
                 questionData[0].toString(),
@@ -40,7 +46,9 @@ public class QuestionController {
                 questionData[3].toString(),
                 questionData[4].toString(),
                 questionData[5].toString(),
-                questionData[6].toString()
+                options,
+                questionData[7].toString(),
+                questionData[8].toString()
             );
             session.setAttribute("mission", mission);
 
@@ -70,6 +78,7 @@ public class QuestionController {
         model.addAttribute("userAnswer", userAnswer);
         model.addAttribute("correctAnswer", mission.getAnswer());
         model.addAttribute("passport", mission.getPassport());
+        model.addAttribute("anchor", mission.getAnchor());
         
         
 
@@ -77,9 +86,9 @@ public class QuestionController {
             int points = 0;
 
             points = switch (mission.getDifficulty()) {
-                case Easy -> 5;
-                case Medium -> 10;
-                case Hard -> 20;
+                case basic -> 5;
+                case intermediate -> 10;
+                case advanced -> 20;
             };
             session.setAttribute("points", (int) session.getAttribute("points") + points);
             model.addAttribute("resultMessage", "Correct!");

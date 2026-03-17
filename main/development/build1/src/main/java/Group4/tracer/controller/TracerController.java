@@ -13,20 +13,21 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import Group4.tracer.enums.StageType;
+import Group4.tracer.enums.UserType;
 import Group4.tracer.model.ChangeLog;
 import Group4.tracer.model.Claims;
 import Group4.tracer.model.Evidence;
 import Group4.tracer.model.Mission;
 import Group4.tracer.model.Products;
 import Group4.tracer.model.Stages;
-import Group4.tracer.model.Verifier;
+import Group4.tracer.model.User;
 import Group4.tracer.repository.ChangeLogRepository;
 import Group4.tracer.repository.ClaimRepository;
 import Group4.tracer.repository.EvidenceRepository;
 import Group4.tracer.repository.InputSharesRepository;
 import Group4.tracer.repository.ProductRepository;
 import Group4.tracer.repository.StageRepository;
-import Group4.tracer.repository.VerifierRepository;
+import Group4.tracer.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -38,7 +39,7 @@ public class TracerController {
     @Autowired private ClaimRepository claimRepository;
     @Autowired private EvidenceRepository evidenceRepository;
     @Autowired private ChangeLogRepository changeLogRepository;
-    @Autowired private VerifierRepository verifierRepository;
+    @Autowired private UserRepository userRepository;
     @Autowired private InputSharesRepository inputSharesRepository;
 
 
@@ -50,11 +51,18 @@ public class TracerController {
     @PostMapping("/login")
     public String doLogin(@RequestParam String username, @RequestParam String password, HttpSession session, Model model) {
         // Find the user account in the database by username
-        Optional<Verifier> verifierOpt = verifierRepository.findByUsername(username);
+        Optional<User> userOpt = userRepository.findByUsername(username);
+        System.out.println(userOpt.get().getUserTypeText());
+
         
         // Verify that user exists and if password matches.
-        if (verifierOpt.isPresent() && verifierOpt.get().getPassword().equals(password)) {
-            session.setAttribute("role", "verifier");
+        if (userOpt.isPresent() && userOpt.get().getPassword().equals(password)) {
+            if (userOpt.get().getUserType().equals(UserType.Consumer)) {
+                session.setAttribute("role", "consumer");
+            } else {
+                session.setAttribute("role", "verifier");
+            }
+            
             session.setAttribute("username", username); 
             return "redirect:/"; // successful login so user must be redirected to product search page.
         } else {
@@ -175,16 +183,12 @@ public String submitVerification(
     }
     */
 
-    @GetMapping("/mission")
-    public String missionPage(Model model) {
-        return "mission";
-    }
-
     // add submit button for
     @PostMapping("/submit")
     public String handleInput(@RequestParam boolean questionGenerated, 
         @RequestParam String userAnswer, 
-        @RequestParam String userInput, 
+        @RequestParam String userInput,
+        @RequestParam(required = false) String anchor,
         HttpSession session, 
         Model model) {
 
@@ -293,6 +297,7 @@ public String submitVerification(
         model.addAttribute("userAnswer", userAnswer);
         model.addAttribute("mission", mission);
         model.addAttribute("userInput", userInput);
+        model.addAttribute("anchor", anchor);
         
         return "index";
     }

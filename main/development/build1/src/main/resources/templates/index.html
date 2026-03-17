@@ -22,11 +22,15 @@
                 Score: <span th:text="${session.points}">0</span>
             </span>
             <span th:if="${role == 'guest'}">
-                <a href="/login"><button>Login as Verifier</button></a>
+                <a href="/login"><button>Login</button></a>
             </span>
             <span th:if="${role == 'verifier'}">
                 Logged in as Verifier 
                 <a href="/history"><button>View History</button></a>
+                <a href="/logout"><button>Logout</button></a>
+            </span>
+            <span th:if="${role == 'consumer'}">
+                Logged in as Consumer 
                 <a href="/logout"><button>Logout</button></a>
             </span>
         </div>
@@ -36,11 +40,16 @@
             <h1 th:text="${mission.getQuestion()}">Question Text</h1>
         </div>
         <div class="search">
-            <form action="/questions/verify" method="post">
-                
+            <form action="/questions/verify" method="post" th:if="${mission.getGradingTypeText() == 'numeric'}">
                 <input type="text" name="userAnswer" placeholder="Enter answer here" required/>
                 <button type="submit">Attempt</button>
             </form>
+            <div th:if="${mission.gradingTypeText == 'multiple_choice'}">
+                <form th:each="option : ${mission.options}" action="/questions/verify" method="post">
+                    <input type="hidden" name="userAnswer" th:value="${option}"/>
+                    <button type="submit" th:text="${option}"></button>
+                </form>
+            </div>
         </div>
     </div>
     <div th:if="${questionGenerated == false}">
@@ -220,6 +229,14 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
     <script th:src="@{/piechart.js}"></script>
+
+    <script th:inline="javascript">
+        const anchor = /*[[${anchor}]]*/ null;
+        if (anchor) {
+            const el = document.getElementById(anchor.replace('#', ''));
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>
 

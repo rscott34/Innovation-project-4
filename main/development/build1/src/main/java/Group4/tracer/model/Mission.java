@@ -1,5 +1,8 @@
 package Group4.tracer.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import Group4.tracer.enums.GradingType;
 import Group4.tracer.enums.MissionDifficulty;
 import jakarta.persistence.Entity;
@@ -16,18 +19,22 @@ public class Mission {
     private String question;
     private String answer;
     private GradingType gradingType;
+    private String[] options;
     private String feedback;
+    private String anchor;
 
     public Mission() {
     }
-    public Mission(String mission_id, String product_id, String tier, String question, String answer, String grading_type, String feedback) {
+    public Mission(String mission_id, String product_id, String tier, String question, String answer, String grading_type, String options, String feedback, String anchor) {
         this.missionId = mission_id;
         this.productId = product_id;
         setTierString(tier);
         this.question = question;
         this.answer = answer;
         setGradingTypeString(grading_type);
+        this.options = options.split(",");
         this.feedback = feedback;
+        this.anchor = anchor;
     }
 
     public String getQuestion() {
@@ -81,5 +88,11 @@ public class Mission {
             return "null";
         }
         return tier.name();
+    }
+    public String getAnchor() {
+        return anchor;
+    }
+    public String[] getOptions() {
+        return options;
     }
 }
