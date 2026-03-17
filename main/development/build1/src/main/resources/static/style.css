@@ -626,3 +626,16 @@ button {
     transform: translateY(-2px);
     box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
 }
+
+.logo-container {
+    display: flex;
+    justify-content: center; /* Centers horizontally */
+    align-items: center;     /* Centers vertically */
+    padding: 20px 0;         /* Adds some space around the logo */
+    width: 100%;
+}
+
+.site-logo {
+    max-width: 200px;        /* Adjust this to fit your logo size */
+    height: auto;         
+}

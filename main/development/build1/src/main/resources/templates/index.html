@@ -16,6 +16,17 @@
             <div th:if="${questionGenerated == false}">
                 <a href="/questions/generate"><button>Question</button></a>
             </div>
+
+            <div th:if="${questionGenerated == false}">
+                <form action="/compare/submit" method="post" th:if="${productFound != null && productFound == true}">
+                    <input type="hidden" name="userInput" th:value="${userInput}"/>
+                    <input type="hidden" name="userInput2" value=""/>
+                    <button type="submit">Compare View</button>
+                </form>
+                <form action="/compare" method="get" th:if="${productFound == null || productFound == false}">
+                    <button type="submit">Compare View</button>
+                </form>
+            </div>
         </div>
         <div class="navbar-right">
             <span th:if="${questionGenerated == true}" class="score-display">
@@ -32,27 +43,21 @@
             </span>
         </div>
     </div>
+
+    <div class="logo-container">
+        <img th:src="@{/assets/InnovationLogo.png}" alt="Tracer Logo" class="site-logo">
+    </div>
+
     <div th:if="${questionGenerated == true}">
         <div class="header">
             <h1 th:text="${mission.getQuestion()}">Question Text</h1>
         </div>
         <div class="search">
             <form action="/questions/verify" method="post">
-                
                 <input type="text" name="userAnswer" placeholder="Enter answer here" required/>
                 <button type="submit">Attempt</button>
             </form>
         </div>
-    </div>
-    <div th:if="${questionGenerated == false}">
-        <form action="/compare/submit" method="post" th:if="${productFound != null && productFound == true}">
-            <input type="hidden" name="userInput" th:value="${userInput}"/>
-            <input type="hidden" name="userInput2" value=""/>
-            <button type="submit">Compare View</button>
-        </form>
-        <form action="/compare" method="get" th:if="${productFound == null || productFound == false}">
-            <button type="submit">Compare View</button>
-        </form>
     </div>
 
     <div class="header">
