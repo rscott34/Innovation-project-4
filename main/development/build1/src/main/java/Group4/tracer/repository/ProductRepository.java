@@ -1,5 +1,7 @@
 package Group4.tracer.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,16 +12,18 @@ import Group4.tracer.model.Products;
 @Repository
 public interface ProductRepository extends JpaRepository<Products, String> {
 
+    Optional<Products> findById(String productId);
+
+    Products findByProductId(String productId);
     //Search for the productId
     //This is the SQL query that is run with each productId search
     @Query(value = "SELECT * " +
             "FROM public.\"products\" " +
             "WHERE product_id = :productId " +
             "ORDER BY product_id ASC", nativeQuery = true)
-
     //findProductArray takes a productId string and returns an array of product information
     Object[] findProductArray(@Param("productId") String productId);
-
+    
     @Query(value = "SELECT product_id FROM public.\"products\" ORDER BY RANDOM() LIMIT 1", nativeQuery = true)
     String getRandomProductId();
 
