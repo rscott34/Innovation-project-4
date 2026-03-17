@@ -17,9 +17,10 @@
 
             <label for="stageId">Select the stage with the error:</label>
             <select name="stageId">
-                <option value="GENERAL">General Product Details</option> <option th:each="stage : ${stages}" 
-                        th:value="${stage.stageId}" 
-                        th:text="${'Stage ' + stage.stageId + ' (' + stage.stageName + ')'}">
+                <option value="GENERAL">General Product Details</option> 
+                <option th:each="stage : ${allStages}" 
+                        th:value="${stage[0]}" 
+                        th:text="${'Stage ' + stage[0] + ' (' + stage[3] + ')'}">
                 </option>
             </select>
 
