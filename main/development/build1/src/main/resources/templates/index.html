@@ -32,13 +32,17 @@
             <span th:if="${questionGenerated == true}" class="score-display">
                 Score: <span th:text="${session.points}">0</span>
             </span>
-            <span th:if="${role == 'guest'}">
-                <a href="/login"><button>Login as Verifier</button></a>
+            <span th:if="${session.role == 'guest'}">
+                <a href="/login"><button>Login</button></a>
             </span>
             <span th:if="${role == 'verifier'}">
                 Logged in as Verifier
                 <a href="/verifier/inbox"><button>Inbox</button></a>
                 <a href="/history"><button>View History</button></a>
+                <a href="/logout"><button>Logout</button></a>
+            </span>
+            <span th:if="${session.role == 'consumer'}">
+                Logged in as Consumer 
                 <a href="/logout"><button>Logout</button></a>
             </span>
         </div>
@@ -53,10 +57,16 @@
             <h1 th:text="${mission.getQuestion()}">Question Text</h1>
         </div>
         <div class="search">
-            <form action="/questions/verify" method="post">
+            <form action="/questions/verify" method="post" th:if="${mission.getGradingTypeText() == 'numeric'}">
                 <input type="text" name="userAnswer" placeholder="Enter answer here" required/>
                 <button type="submit">Attempt</button>
             </form>
+            <div th:if="${mission.gradingTypeText == 'multiple_choice'}">
+                <form th:each="option : ${mission.options}" action="/questions/verify" method="post">
+                    <input type="hidden" name="userAnswer" th:value="${option}"/>
+                    <button type="submit" th:text="${option}"></button>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -78,7 +88,7 @@
         </form>
     </div>
     <main th:if="${productFound != null && productFound == true}"> 
-        <div class="product-section" >
+        <div class="product-section" id="information">
             <h2 class="section-header">Product Information</h2>
             <div class="info">
                 <span class="label"> <b>Product ID:</b></span>
@@ -107,7 +117,7 @@
                     </a>
                 </div>
             </div>  
-            <div class="info">
+            <div class="info" id="origin">
                 <details class="evidence-section">
                     <summary><b>View Ingredient Breakdown</b></summary>
                     <div class="evidence-card">
@@ -133,10 +143,10 @@
                 </details>
             </div>
         </div>
-        <div class="traceability-section" th:if="${hasStages != null && hasStages == true}">
+        <div class="traceability-section" id="stages" th:if="${hasStages != null && hasStages == true}">
             <h2 class="section-header">Traceability Stages</h2>
             <div class="stage-card" th:each="stage, iterStat : ${stages}">
-                <div th:if="${role == 'verifier'}" style="margin-top: 10px;">
+                <div th:if="${session.role == 'verifier'}" style="margin-top: 10px;">
                     <a th:href="@{/edit-stage(stageId=${stage[0]})}"><button>Edit Product Stage</button></a>
                 </div>
                 <h3>Stage <span th:text="${iterStat.count}">1</span></h3>
@@ -165,12 +175,12 @@
                 
             </div>
         </div>
-        <div class="claim-section section" th:if="${hasClaims == true}">
+        <div class="claim-section section" id="claims" th:if="${hasClaims == true}">
             <h2 class="section-header">Claims and Evidence</h2>
             <div class="claim-card" th:each="claim, claimStat : ${claimsList}"> 
                 <h3>Claim <span th:text="${claimStat.count}">1</span></h3>
                 
-                <div th:if="${role == 'verifier'}" style="margin-top: 10px;">
+                <div th:if="${session.role == 'verifier'}" style="margin-top: 10px;">
                     <a th:href="@{/verify-claim(claimId=${claim.claimId})}"><button>Verify Claim</button></a>
                 </div>
                 <div class="stage-info">
@@ -193,7 +203,7 @@
                     <span><b>Rationale:</b></span>
                     <span th:text="${claim.rationale}"></span>
                 </div>
-                <details class="evidence-section" th:each="ev : ${claim.getListOfEvidenceDetails()}">
+                <details class="evidence-section" id="evidence" th:each="ev : ${claim.getListOfEvidenceDetails()}">
                     <summary><b>View Evidence</b></summary>
                     <div class="evidence-card">
                         <div class="evidence-info">
@@ -244,6 +254,14 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
     <script th:src="@{/piechart.js}"></script>
+
+    <script th:inline="javascript">
+        const anchor = /*[[${anchor}]]*/ null;
+        if (anchor) {
+            const el = document.getElementById(anchor.replace('#', ''));
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>
 

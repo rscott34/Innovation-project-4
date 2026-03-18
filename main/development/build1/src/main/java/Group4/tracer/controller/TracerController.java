@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import Group4.tracer.enums.StageType;
+import Group4.tracer.enums.UserType;
 import Group4.tracer.model.ChangeLog;
 import Group4.tracer.model.Claims;
 import Group4.tracer.model.Evidence;
 import Group4.tracer.model.Mission;
 import Group4.tracer.model.Products;
 import Group4.tracer.model.Stages;
-import Group4.tracer.model.Verifier;
-import Group4.tracer.model.issueReport;
+import Group4.tracer.model.User;
 import Group4.tracer.repository.ChangeLogRepository;
 import Group4.tracer.repository.ClaimRepository;
 import Group4.tracer.repository.EvidenceRepository;
@@ -29,7 +29,7 @@ import Group4.tracer.repository.InputSharesRepository;
 import Group4.tracer.repository.IssueRepository;
 import Group4.tracer.repository.ProductRepository;
 import Group4.tracer.repository.StageRepository;
-import Group4.tracer.repository.VerifierRepository;
+import Group4.tracer.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -41,7 +41,7 @@ public class TracerController {
     @Autowired private ClaimRepository claimRepository;
     @Autowired private EvidenceRepository evidenceRepository;
     @Autowired private ChangeLogRepository changeLogRepository;
-    @Autowired private VerifierRepository verifierRepository;
+    @Autowired private UserRepository userRepository;
     @Autowired private InputSharesRepository inputSharesRepository;
     @Autowired private IssueRepository issueRepository;
 
@@ -54,12 +54,21 @@ public class TracerController {
     @PostMapping("/login")
     public String doLogin(@RequestParam String username, @RequestParam String password, HttpSession session, Model model) {
         // Find the user account in the database by username
-        Optional<Verifier> verifierOpt = verifierRepository.findByUsername(username);
+        Optional<User> userOpt = userRepository.findByUsername(username);
         
         // Verify that user exists and if password matches.
-        if (verifierOpt.isPresent() && verifierOpt.get().getPassword().equals(password)) {
-            session.setAttribute("role", "verifier");
-            session.setAttribute("username", username); 
+        if (userOpt.isPresent() && userOpt.get().getPassword().equals(password)) {
+            User user = userOpt.get();
+            user.checkFields();
+            if (user.getUserType().equals(UserType.Consumer)) {
+                session.setAttribute("role", "consumer");
+            } else {
+                session.setAttribute("role", "verifier");
+            }
+
+            session.setAttribute("points", user.getScore());
+            
+            session.setAttribute("user", user); 
             return "redirect:/"; // successful login so user must be redirected to product search page.
         } else {
             model.addAttribute("error", "Invalid username or password.");
@@ -80,7 +89,9 @@ public class TracerController {
         model.addAttribute("questionGenerated", false);
         String role = (String) session.getAttribute("role");
         //sets user to guest if not loggied in as verifier
-        model.addAttribute("role", role != null ? role : "guest");
+        session.setAttribute("role", role != null ? role : "guest");
+        User user = (User) session.getAttribute("user");
+        session.setAttribute("user", user != null ? user : new User());
         return "index";
     }
 
@@ -120,7 +131,7 @@ public class TracerController {
             log.setLogId(UUID.randomUUID().toString());
             log.setEntityType("Stage");
             log.setEntityId(stageId);
-            log.setChangedBy((String) session.getAttribute("username"));
+            log.setChangedBy(((User) session.getAttribute("user")).getUserName());
             log.setTimestamp(LocalDateTime.now().toString());
             log.setChangeSummary("Updated location from " + oldLoc + " to " + newLocation);
             changeLogRepository.save(log);
@@ -290,22 +301,18 @@ public String resolveIssue(@RequestParam Long reportId) {
     }
     */
 
-    @GetMapping("/mission")
-    public String missionPage(Model model) {
-        return "mission";
-    }
-
     // add submit button for
     @PostMapping("/submit")
     public String handleInput(@RequestParam boolean questionGenerated, 
         @RequestParam String userAnswer, 
-        @RequestParam String userInput, 
+        @RequestParam String userInput,
+        @RequestParam(required = false) String anchor,
         HttpSession session, 
         Model model) {
 
         Mission mission = (Mission) session.getAttribute("mission");
         String role = (String) session.getAttribute("role");
-        model.addAttribute("role", role != null ? role : "guest");
+        session.setAttribute("role", role != null ? role : "guest");
         
         if (userInput != null && !userInput.isEmpty()) {
 
@@ -411,6 +418,7 @@ public String resolveIssue(@RequestParam Long reportId) {
         model.addAttribute("userAnswer", userAnswer);
         model.addAttribute("mission", mission);
         model.addAttribute("userInput", userInput);
+        model.addAttribute("anchor", anchor);
         
         return "index";
     }
@@ -421,7 +429,7 @@ public String resolveIssue(@RequestParam Long reportId) {
         //get the role and username of the user
         String role = (String) session.getAttribute("role");
         //sets user to guest if not loggied in as verifier
-        model.addAttribute("role", role != null ? role : "guest");
+        session.setAttribute("role", role != null ? role : "guest");
         return "compare";
     }
 
@@ -433,7 +441,7 @@ public String resolveIssue(@RequestParam Long reportId) {
         
         Mission mission = (Mission) session.getAttribute("mission");
         String role = (String) session.getAttribute("role");
-        model.addAttribute("role", role != null ? role : "guest");
+        session.setAttribute("role", role != null ? role : "guest");
                 
         if (userInput != null && !userInput.isEmpty()) {
 
