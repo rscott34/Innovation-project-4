@@ -1,4 +1,4 @@
-product_id,name,category,brand,description
+product_id,names,category,brand,description
 P000,Olive Oil,FOOD,Tesco,Olive oil from Spain
 P001,Gucci Handbag,LUXURY,Gucci,Gucci Handbag from Italy
 P002,Orange,FOOD,Tesco,Orange from Belgium

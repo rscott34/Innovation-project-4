@@ -16,6 +16,17 @@
             <div th:if="${questionGenerated == false}">
                 <a href="/questions/generate"><button>Question</button></a>
             </div>
+
+            <div th:if="${questionGenerated == false}">
+                <form action="/compare/submit" method="post" th:if="${productFound != null && productFound == true}">
+                    <input type="hidden" name="userInput" th:value="${userInput}"/>
+                    <input type="hidden" name="userInput2" value=""/>
+                    <button type="submit">Compare View</button>
+                </form>
+                <form action="/compare" method="get" th:if="${productFound == null || productFound == false}">
+                    <button type="submit">Compare View</button>
+                </form>
+            </div>
         </div>
         <div class="navbar-right">
             <span th:if="${questionGenerated == true}" class="score-display">
@@ -25,7 +36,8 @@
                 <a href="/login"><button>Login</button></a>
             </span>
             <span th:if="${session.role == 'verifier'}">
-                Logged in as Verifier 
+                Logged in as Verifier
+                <a href="/verifier/inbox"><button>Inbox</button></a>
                 <a href="/history"><button>View History</button></a>
                 <a href="/logout"><button>Logout</button></a>
             </span>
@@ -35,6 +47,11 @@
             </span>
         </div>
     </div>
+
+    <div class="logo-container">
+        <img th:src="@{/assets/InnovationLogo.png}" alt="Tracer Logo" class="site-logo">
+    </div>
+
     <div th:if="${questionGenerated == true}">
         <div class="header">
             <h1 th:text="${mission.getQuestion()}">Question Text</h1>
@@ -51,16 +68,6 @@
                 </form>
             </div>
         </div>
-    </div>
-    <div th:if="${questionGenerated == false}">
-        <form action="/compare/submit" method="post" th:if="${productFound != null && productFound == true}">
-            <input type="hidden" name="userInput" th:value="${userInput}"/>
-            <input type="hidden" name="userInput2" value=""/>
-            <button type="submit">Compare View</button>
-        </form>
-        <form action="/compare" method="get" th:if="${productFound == null || productFound == false}">
-            <button type="submit">Compare View</button>
-        </form>
     </div>
 
     <div class="header">
@@ -103,6 +110,13 @@
                 <span class="label"><b>Description:</b></span>
                 <span class="value" th:text="${p.getDescription()}">P100</span>
             </div>
+            <div class="product-header">
+                <div th:if="${session.role == 'verifier'}">            
+                    <a th:href="@{/edit-product(productId=${product.productId})}">
+                        <button class="btn-small">Edit Product Info</button>
+                    </a>
+                </div>
+            </div>  
             <div class="info" id="origin">
                 <details class="evidence-section">
                     <summary><b>View Ingredient Breakdown</b></summary>
@@ -156,6 +170,9 @@
                     <span><b>Description:</b></span>
                     <span th:text="${stage[5]}">Description of the stage</span>
                 </div>
+                
+
+                
             </div>
         </div>
         <div class="claim-section section" id="claims" th:if="${hasClaims == true}">
@@ -223,6 +240,14 @@
     <div class="error-card" th:if="${productFound != null && productFound == false}">
         <p th:text="${errorMessage}">Error message</p>
     </div>
+
+    <div th:if="${productFound}" style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border-color);">
+        <p style="color: white; margin-bottom: 15px;">Notice an issue with the traceability data?</p>
+        <a th:href="@{/report-issue(productId=${product.productId})}">
+            <button type="button" class="btn-report">Report Issue</button>
+        </a>
+    </div>
+    
     <footer>
         <p>This is an educational prototype, do not trust the official certifications for synthetic data</p>
     </footer>

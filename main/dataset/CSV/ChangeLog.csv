@@ -1,2 +1,2 @@
 log_id,entity_type,entity_id,Verifier_ID,timestamp,change_summary
-L_001,Claim,C001,V1,2025-02-18,Verified claim after validating EU certificate E_101
+L_001,Claim,C001,V1,2025-02-18,"Raw materials for P001 updated to Valencia, Spain"

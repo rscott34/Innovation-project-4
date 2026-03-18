@@ -2,7 +2,7 @@
     /* Primary Colors */
     --primary-color: #667eea;
     --primary-dark: #5568d3;
-    --error-color: #ff6b6b;
+    --error-color: #264c98;
     
     /* Text Colors */
     --text-dark: #333;
@@ -586,4 +586,56 @@ footer {
 
 .passport-link {
     margin-top: 20px;
+}
+
+/* Report Section at the bottom of the page */
+.report-section {
+    margin: 30px auto;
+    max-width: 800px;
+    text-align: center;
+    border-top: 2px solid var(--border-light);
+    padding-top: 30px;
+    color: var(--bg-white);
+}
+
+.report-section h3 {
+    font-size: 1.8em;
+    margin-bottom: 10px;
+}
+
+button {
+    background: var(--primary-color);
+    color: var(--bg-white);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-report {
+    background: var(--error-color);
+    border: 2px solid white;
+    color: white;
+    margin-top: 10px;
+}
+
+.btn-report:hover {
+    filter: brightness(0.9);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+}
+
+.logo-container {
+    display: flex;
+    justify-content: center; /* Centers horizontally */
+    align-items: center;     /* Centers vertically */
+    padding: 20px 0;         /* Adds some space around the logo */
+    width: 100%;
+}
+
+.site-logo {
+    max-width: 200px;        /* Adjust this to fit your logo size */
+    height: auto;         
 }

@@ -11,6 +11,15 @@
     <div class="navbar">
         <div class="navbar-left">
             <a href="/questions/generate"><button>Question</button></a>
+            <form th:if="${productFound != null && productFound == true}" action="/submit" method="post" style="display: inline;">
+                <input type="hidden" name="questionGenerated" value="false">
+                <input type="hidden" name="userAnswer">
+                <input type="hidden" name="userInput" th:value="${userInput}"/>
+                <button type="submit">Simple View</button>
+            </form>
+            <form th:if="${productFound == null || productFound == false}" action="/" method="get">
+                <button type="submit">Simple View</button>
+            </form>
         </div>
         <div class="navbar-right">
             <span th:if="${role == 'guest'}">
@@ -24,15 +33,10 @@
         </div>
     </div>
 
-    <form th:if="${productFound != null && productFound == true}" action="/submit" method="post">
-        <input type="hidden" name="questionGenerated" value="false">
-        <input type="hidden" name="userAnswer">
-        <input type="hidden" name="userInput" th:value="${userInput}"/>
-        <button type="submit">Simple View</button>
-    </form>
-    <form th:if="${productFound == null || productFound == false}" action="/" method="get">
-        <button type="submit">Simple View</button>
-    </form>
+    <div class="logo-container">
+        <img th:src="@{/assets/InnovationLogo.png}" alt="Tracer Logo" class="site-logo">
+    </div>
+
     <div class="split">
         <div class = "split-column">
             <div class="header">
