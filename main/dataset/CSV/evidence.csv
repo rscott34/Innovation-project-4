@@ -1,0 +1,5 @@
+evidence_id,type,issuer,date,summary,file_reference
+E1,Certificate,V1,2025-01-15,Certificate for EU organic label,assets/eu-organic-logo-600x400_0.png
+E2,Certificate,V1,2025-01-28,Fair Labor Association (FLA) verification,assets/FairLaborAccreditationBadge_ONLYFORAPPROVEDUSE-e1726245330900.png
+E3,Certificate,V1,2025-02-17,Certified Carbob Neutral Company,assets/Carbon-Neutral-Logo.jpg
+E4,N/A,N/A,N/A,N/A,N/A

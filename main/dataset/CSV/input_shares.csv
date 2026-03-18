@@ -1,0 +1,41 @@
+input_id,product_id,input_name,country,percentages
+IN-001,P000,Spanish Origin Materials,Spain,70
+IN-002,P000,French Origin Materials,France,30
+IN-003,P001,Spanish Origin Materials,Spain,60
+IN-004,P001,French Origin Materials,France,40
+IN-005,P002,British Origin Materials,United Kingdom,90
+IN-006,P002,Chinese Origin Materials,China,10
+IN-007,P003,British Origin Materials,United Kindom,90
+IN-008,P003,Chinese Origin Materials,China,10
+IN-009,P004,British Origin Materials,United Kingdom,80
+IN-010,P004,Chinese Origin Materials,China,20
+IN-011,P005,Italian Origin Materials,Italy,90
+IN-012,P005,French Origin Materials,France,10
+IN-013,P006,Swiss Origin Materials,Switzerland,40
+IN-014,P006,Botswanan Origin Materials,Botswana,60
+IN-015,P007,French Origin Materials,France,50
+IN-016,P007,South African Origin Materials,South Africa,50
+IN-017,P008,Chinese Origin Materials,China,70
+IN-018,P008,American Origin Materials,USA,30
+IN-019,P009,French Origin Materials,France,60
+IN-020,P009,Spanish Origin Materials,Spain,40
+IN-021,P010,Banglaseshi Origin Materials,Bangladesh,70
+IN-022,P010,Vietnamese Origin Materials,Vietnam,30
+IN-023,P011,Vietnamese Origin Materials,Vietnam,80
+IN-024,P011,Bangladeshi Origin Materials,Bangladesh,20
+IN-025,P012,Indian Origin Materials,India,70
+IN-026,P012,Vietnamese Origin Materials,Vietnam,30
+IN-027,P013,Indonesian Origin Materials,Indonesia,30
+IN-028,P013,Indian Origin Materials,India,70
+IN-029,P014,American Origin Materials,USA,50
+IN-030,P014,Vietnamese Origin Materials,Vietnam,50
+IN-031,P015,British Origin Materials,United Kingdom,50
+IN-032,P015,French Origin Materials,France,50
+IN-033,P016,Swedish Origin Materials,Sweden,40
+IN-034,P016,Finnish Origin Materials,Finland,60
+IN-035,P017,Hungarian Origin Materials,Hungary,60
+IN-036,P017,Botswanan Origin Materials,Botswana,40
+IN-037,P018,Vietnamese Origin Materials,Vietnam,50
+IN-038,P018,Bangladeshi Origin Materials,Bangladesh,50
+IN-039,P019,British Origin Materials,United Kingdom,80
+IN-040,P019,Vietnamese Origin Materials,Vietnam,20

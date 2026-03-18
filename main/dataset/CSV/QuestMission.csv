@@ -1,0 +1,19 @@
+mission_id,product_id,tiers,question,answer,grading_type,options,explanation,anchor
+M001,P001,basic,Which country does the Gucci handbag come from?,Italy,multiple_choice,"Italy,France,Spain,Germany",P005 product information shows that the handbag comes from Italy,#information
+M002,P000,basic,What type of product is P000?,Olive Oil,multiple_choice,"Olive Oil,Orange,Strawberry,Mango",P000 is Olive Oil from Spain. View the product details page,#information
+M003,P002,basic,Which claim is verified for product P002?,Organic Certified,multiple_choice,"Fair Labour,Organic,Carbon Neutral,Recycled",Claim C005 for P002 is verified with EU Organic certificate E1,#claims
+M004,P060,basic,Which luxury brand makes product P006?,Rolex,multiple_choice,"Rolex,Gucci,Louis Vuitton,Chanel",P006 is an Rolex watch from Switzerland,#information
+M005,P001,basic,Is the 'Organic Certified' claim for P001 verified?,Yes,multiple_choice,"Yes,No",Claim C003 for P001 is verified with EU organic certificate E1,#claims
+M006,P003,basic,Where are the potatoes for P002 harvested?,Norfolk UK,multiple_choice,"Devon UK,Suffolk UK,Norfolk UK,Cheshire UK","S2-001 shows raw materials from Norfolk, United Kingdom",#stages
+M007,P001,intermediate,What percentage of materials for P005 come from Italy?,90,numeric,,IN-011 shows Italian Origin Materials at 90%,#origin
+M008,P001,intermediate,What percentage of materials for P013 come from India?,70,numeric,,IN-028 shows Indian Origin Materials at 70%,#origin
+M009,P002,intermediate,Which country contributes less to P002?,China,multiple_choice,"Spain,Portugal,China,Bangladesh","IN-005 shows UK at 90%, IN-006 shows China at 10%",#origin
+M010,P005,intermediate,What percentage of materials for P007 come from South Africa?,50,numeric,,IN-016 shows South African Origin Materials at 50%,#origin
+M011,P005,intermediate,What percentage of materials for P018 come from Vietnam?,50,numeric,,IN-037 shows Vietnamese Origin Materials at 50%,#origin
+M012,P007,intermediate,Which country contributes 60% of materials for P009?,France,multiple_choice,"Bangladesh,Thailand,India,France",IN-019 shows French Origin Materials at 60%,#origin
+M013,P001,advanced,What is the combined percentage of Spanish and French materials for P001?,100,numeric,,Spain (60%) + France (40%) = 100% of materials,#origin
+M014,P001,advanced,Which claim for P016 is verified?,Fair Labour Certified,multiple_choice,"Organic Certified,Carbon Neutral Shipping,Fair Labour,Recycled",Claim C025 for P016 is marked as 'Verified',#claims
+M015,P010,advanced,Which two countries contribute equally to P015?,United Kingdom and France,multiple_choice,"Italy and Belgium,Spain and Portugal,United Kingdom and France,USA and Italy",IN-031 and IN-032 show UK (50%) and France (50%) for P015,#origin
+M016,P000,advanced,"Based on stages data, how many days between harvesting and retail for P000?",10,numeric,,S0-001 (15/3) to S0-005 (25/3) = 10 days. Check the timeline,#stages
+M017,P002,advanced,What evidence supports the Fair Labour claim for P001?,FLA certificate,multiple_choice,"EU certificate,FLA certificate,Self declaration,None",Evidence E2 is a Fair Labor Association (FLA) verification certificate,#evidence
+M018,P009,advanced,Which country provides 60% of materials for P009?,France,multiple_choice,"Egypt,France,Italy,Spain",IN-019 shows French Origin Materials at 60% for P009,#origin
