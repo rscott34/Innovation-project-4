@@ -22,6 +22,7 @@ import Group4.tracer.model.Mission;
 import Group4.tracer.model.Products;
 import Group4.tracer.model.Stages;
 import Group4.tracer.model.User;
+import Group4.tracer.model.issueReport;
 import Group4.tracer.repository.ChangeLogRepository;
 import Group4.tracer.repository.ClaimRepository;
 import Group4.tracer.repository.EvidenceRepository;
@@ -62,7 +63,8 @@ public class TracerController {
             user.checkFields();
             if (user.getUserType().equals(UserType.Consumer)) {
                 session.setAttribute("role", "consumer");
-            } else {
+            } else if (user.getUserType().equals(UserType.Verifier)) {
+                System.out.println("Verifier");
                 session.setAttribute("role", "verifier");
             }
 

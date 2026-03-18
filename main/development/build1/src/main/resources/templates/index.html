@@ -35,7 +35,7 @@
             <span th:if="${session.role == 'guest'}">
                 <a href="/login"><button>Login</button></a>
             </span>
-            <span th:if="${role == 'verifier'}">
+            <span th:if="${session.role == 'verifier'}">
                 Logged in as Verifier
                 <a href="/verifier/inbox"><button>Inbox</button></a>
                 <a href="/history"><button>View History</button></a>
@@ -111,7 +111,7 @@
                 <span class="value" th:text="${p.getDescription()}">P100</span>
             </div>
             <div class="product-header">
-                <div th:if="${role == 'verifier'}">            
+                <div th:if="${session.role == 'verifier'}">            
                     <a th:href="@{/edit-product(productId=${product.productId})}">
                         <button class="btn-small">Edit Product Info</button>
                     </a>
