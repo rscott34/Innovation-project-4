@@ -33,12 +33,12 @@ public class QuestionController {
         Object[] questionRecords = missionRepository.findMissionArray();
         List<Object[]> filteredQuestions = new ArrayList<>();
         User user = (User) session.getAttribute("user");
+        System.out.println(user.getRank().name() + user.rankPoints.get(user.getRank()));
         for (Object questionData : questionRecords) {
             Object[] row = (Object[]) questionData;
             
             if (!user.getMissions().contains(row[0].toString())) {
                 filteredQuestions.add(row);
-                System.out.println(row[0].toString());
             }
         }
         if (filteredQuestions.isEmpty()) {
@@ -119,9 +119,9 @@ public class QuestionController {
                 System.out.println("--------------");
                 System.out.println(mission.getId());
                 System.out.println(user.getMissions());
+                user.addToScore(points);
                 //Logic for saving
                 if (!((String) session.getAttribute("role")).equals("guest")) {
-                        user.addToScore(points);
                         userRepository.save(user);
                 } 
             } else {
