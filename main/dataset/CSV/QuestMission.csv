@@ -1,2 +1,0 @@
-mission_id,product_id,tier,question,answer,grading_type,explanation
-M001,P001,Easy,"Which country does the Gucci handbag come from?","Italy",exact_answer,"P001 product information shows that the handbag comes from Italy"
