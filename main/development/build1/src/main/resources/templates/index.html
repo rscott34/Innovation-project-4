@@ -21,15 +21,15 @@
             <span th:if="${questionGenerated == true}" class="score-display">
                 Score: <span th:text="${session.points}">0</span>
             </span>
-            <span th:if="${role == 'guest'}">
+            <span th:if="${session.role == 'guest'}">
                 <a href="/login"><button>Login</button></a>
             </span>
-            <span th:if="${role == 'verifier'}">
+            <span th:if="${session.role == 'verifier'}">
                 Logged in as Verifier 
                 <a href="/history"><button>View History</button></a>
                 <a href="/logout"><button>Logout</button></a>
             </span>
-            <span th:if="${role == 'consumer'}">
+            <span th:if="${session.role == 'consumer'}">
                 Logged in as Consumer 
                 <a href="/logout"><button>Logout</button></a>
             </span>
@@ -132,7 +132,7 @@
         <div class="traceability-section" id="stages" th:if="${hasStages != null && hasStages == true}">
             <h2 class="section-header">Traceability Stages</h2>
             <div class="stage-card" th:each="stage, iterStat : ${stages}">
-                <div th:if="${role == 'verifier'}" style="margin-top: 10px;">
+                <div th:if="${session.role == 'verifier'}" style="margin-top: 10px;">
                     <a th:href="@{/edit-stage(stageId=${stage[0]})}"><button>Edit Product Stage</button></a>
                 </div>
                 <h3>Stage <span th:text="${iterStat.count}">1</span></h3>
@@ -163,7 +163,7 @@
             <div class="claim-card" th:each="claim, claimStat : ${claimsList}"> 
                 <h3>Claim <span th:text="${claimStat.count}">1</span></h3>
                 
-                <div th:if="${role == 'verifier'}" style="margin-top: 10px;">
+                <div th:if="${session.role == 'verifier'}" style="margin-top: 10px;">
                     <a th:href="@{/verify-claim(claimId=${claim.claimId})}"><button>Verify Claim</button></a>
                 </div>
                 <div class="stage-info">

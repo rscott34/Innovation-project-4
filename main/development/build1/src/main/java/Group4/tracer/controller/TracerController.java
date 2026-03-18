@@ -52,18 +52,20 @@ public class TracerController {
     public String doLogin(@RequestParam String username, @RequestParam String password, HttpSession session, Model model) {
         // Find the user account in the database by username
         Optional<User> userOpt = userRepository.findByUsername(username);
-        System.out.println(userOpt.get().getUserTypeText());
-
         
         // Verify that user exists and if password matches.
         if (userOpt.isPresent() && userOpt.get().getPassword().equals(password)) {
-            if (userOpt.get().getUserType().equals(UserType.Consumer)) {
+            User user = userOpt.get();
+            user.checkFields();
+            if (user.getUserType().equals(UserType.Consumer)) {
                 session.setAttribute("role", "consumer");
             } else {
                 session.setAttribute("role", "verifier");
             }
+
+            session.setAttribute("points", user.getScore());
             
-            session.setAttribute("username", username); 
+            session.setAttribute("user", user); 
             return "redirect:/"; // successful login so user must be redirected to product search page.
         } else {
             model.addAttribute("error", "Invalid username or password.");
@@ -84,7 +86,9 @@ public class TracerController {
         model.addAttribute("questionGenerated", false);
         String role = (String) session.getAttribute("role");
         //sets user to guest if not loggied in as verifier
-        model.addAttribute("role", role != null ? role : "guest");
+        session.setAttribute("role", role != null ? role : "guest");
+        User user = (User) session.getAttribute("user");
+        session.setAttribute("user", user != null ? user : new User());
         return "index";
     }
 
@@ -111,7 +115,7 @@ public class TracerController {
             log.setLogId(UUID.randomUUID().toString());
             log.setEntityType("Stage");
             log.setEntityId(stageId);
-            log.setChangedBy((String) session.getAttribute("username"));
+            log.setChangedBy(((User) session.getAttribute("user")).getUserName());
             log.setTimestamp(LocalDateTime.now().toString());
             log.setChangeSummary("Updated location from " + oldLoc + " to " + newLocation);
             changeLogRepository.save(log);
@@ -194,7 +198,7 @@ public String submitVerification(
 
         Mission mission = (Mission) session.getAttribute("mission");
         String role = (String) session.getAttribute("role");
-        model.addAttribute("role", role != null ? role : "guest");
+        session.setAttribute("role", role != null ? role : "guest");
         
         if (userInput != null && !userInput.isEmpty()) {
 
@@ -308,7 +312,7 @@ public String submitVerification(
         //get the role and username of the user
         String role = (String) session.getAttribute("role");
         //sets user to guest if not loggied in as verifier
-        model.addAttribute("role", role != null ? role : "guest");
+        session.setAttribute("role", role != null ? role : "guest");
         return "compare";
     }
 
@@ -320,7 +324,7 @@ public String submitVerification(
         
         Mission mission = (Mission) session.getAttribute("mission");
         String role = (String) session.getAttribute("role");
-        model.addAttribute("role", role != null ? role : "guest");
+        session.setAttribute("role", role != null ? role : "guest");
                 
         if (userInput != null && !userInput.isEmpty()) {
 

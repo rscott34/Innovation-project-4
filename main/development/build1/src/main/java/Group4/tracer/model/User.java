@@ -28,7 +28,7 @@ public class User {
     private int score;
 
     @Column(name = "questions")
-    private String missions;
+    private String missions = "";
 
     public User() {
     }
@@ -77,9 +77,26 @@ public class User {
     public int getScore() {
         return score;
     }
-
-    public String[] getMissions() {
-        return missions.split(",");
+    public void addToScore(int points) {
+        score += points;
     }
-    
+
+    public String getMissions() {
+        return missions;
+    }
+    public void addMission(String id) {
+        if (missions.isEmpty()) {
+            missions = id;
+        } else {
+            missions = missions.concat("," + id);
+        }
+    }
+    public void emptyMissions() {
+        missions = "";
+    }
+    public void checkFields() {
+        if (missions == null) {
+            missions = "";
+        }
+    }
 }
