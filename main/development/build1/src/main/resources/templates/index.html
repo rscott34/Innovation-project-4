@@ -34,15 +34,18 @@
             </span>
             <span th:if="${session.role == 'guest'}">
                 <a href="/login"><button>Login</button></a>
+                <a href="/register"><button>Create Account</button></a>
             </span>
             <span th:if="${session.role == 'verifier'}">
                 Logged in as Verifier
+                <a href="/profile"><button>Profile</button></a>
                 <a href="/verifier/inbox"><button>Inbox</button></a>
                 <a href="/history"><button>View History</button></a>
                 <a href="/logout"><button>Logout</button></a>
             </span>
             <span th:if="${session.role == 'consumer'}">
                 Logged in as Consumer 
+                <a href="/profile"><button>Profile</button></a>
                 <a href="/logout"><button>Logout</button></a>
             </span>
         </div>
@@ -55,14 +58,15 @@
     <div th:if="${questionGenerated == true}">
         <div class="header">
             <h1 th:text="${mission.getQuestion()}">Question Text</h1>
+            <h2 th:text="|Difficulty: ${mission.getDifficultyText()}|">Difficulty Text</h2>
         </div>
         <div class="search">
             <form action="/questions/verify" method="post" th:if="${mission.getGradingTypeText() == 'numeric'}">
                 <input type="text" name="userAnswer" placeholder="Enter answer here" required/>
                 <button type="submit">Attempt</button>
             </form>
-            <div th:if="${mission.gradingTypeText == 'multiple_choice'}">
-                <form th:each="option : ${mission.options}" action="/questions/verify" method="post">
+            <div th:if="${mission.getGradingTypeText() == 'multiple_choice'}">
+                <form th:each="option : ${mission.getOptions()}" action="/questions/verify" method="post">
                     <input type="hidden" name="userAnswer" th:value="${option}"/>
                     <button type="submit" th:text="${option}"></button>
                 </form>

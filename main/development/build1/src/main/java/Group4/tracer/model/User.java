@@ -1,17 +1,16 @@
 package Group4.tracer.model;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import Group4.tracer.enums.Rank;
 import Group4.tracer.enums.UserType;
 import jakarta.persistence.Column;
-import jakarta.persistence.Transient;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import java.util.Map;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "app_users")
@@ -36,7 +35,7 @@ public class User {
     private String missions = "";
 
     @Transient
-    public Map<Rank, Integer> rankPoints = Map.of(
+    public Map<Rank, Integer> rankMax = Map.of(
         Rank.Copper, 15,
         Rank.Bronze, 30,
         Rank.Silver, 60,
@@ -44,6 +43,16 @@ public class User {
         Rank.Platinum, 150,
         Rank.Diamond, 210,
         Rank.Legendary, -1
+    );
+    @Transient
+    public Map<Rank, Integer> rankMin = Map.of(
+        Rank.Copper, 0,
+        Rank.Bronze, 15,
+        Rank.Silver, 30,
+        Rank.Gold, 60,
+        Rank.Platinum, 90,
+        Rank.Diamond, 150,
+        Rank.Legendary, 210
     );
 
     public User() {
@@ -134,4 +143,5 @@ public class User {
             return Rank.Legendary;
         }
     }
+
 }

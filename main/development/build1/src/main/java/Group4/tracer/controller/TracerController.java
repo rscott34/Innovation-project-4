@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import Group4.tracer.enums.Rank;
 import Group4.tracer.enums.StageType;
 import Group4.tracer.enums.UserType;
 import Group4.tracer.model.ChangeLog;
@@ -95,6 +96,82 @@ public class TracerController {
         User user = (User) session.getAttribute("user");
         session.setAttribute("user", user != null ? user : new User());
         return "index";
+    }
+
+    @GetMapping("/register")
+    public String registerPage() {
+        return "register";
+    }
+
+    @PostMapping("/register")
+    public String register(
+            @RequestParam String username,
+            @RequestParam String password,
+            @RequestParam String confirmPassword,
+            Model model) {
+
+        if (!password.equals(confirmPassword)) {
+            model.addAttribute("errorMessage", "Passwords do not match.");
+            return "register";
+        }
+        if (userRepository.existsByUsername(username)) {
+            model.addAttribute("errorMessage", "Username already taken.");
+            return "register";
+        }
+
+        User user = new User();
+
+        int i = 0;
+        while (userRepository.existsById(String.format("U%03d", i))) {
+            i++;
+        }
+        user.setUserId(String.format("U%03d", i));
+
+        user.setUserName(username);
+        user.setPassword(password); // hash this in production!
+        user.setUserTypeString("consumer");
+        userRepository.save(user);
+
+        return "redirect:/login";
+    }
+
+    //Profile section
+    @GetMapping("/profile")
+    public String profile(HttpSession session, Model model) {
+        User user = (User) session.getAttribute("user");
+
+        Rank rank = user.getRank();
+        Rank[] ranks = Rank.values();
+        Rank nextRank = null;
+        if (rank.ordinal() + 1 < ranks.length) {
+            nextRank = ranks[rank.ordinal() + 1];
+        }
+        model.addAttribute("rank", rank.name());
+        if (nextRank == null) {
+            model.addAttribute("nextRank", null);
+        } else {
+            model.addAttribute("nextRank", nextRank.name());
+        }
+
+        int min = user.rankMin.get(rank);
+        int max = user.rankMax.get(rank);
+        float progress = ((float) (user.getScore() - min)) / ((float) (max-min)) * 100;
+        System.out.println(progress);
+        model.addAttribute("progress", progress);
+        model.addAttribute("pointsLeft", user.rankMax.get(rank) - user.getScore());
+
+        //logic for getting top users
+        List<User> top;
+        if (rank == Rank.Legendary) {
+            top = userRepository.findTop20Legendary(min);
+        } else {
+            top = userRepository.findTop20InRange(min, max);
+        }
+
+        model.addAttribute("leaderboard", top);
+
+        
+        return "profile";
     }
 
     // traceability editing

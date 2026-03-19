@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Register</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="header">
+        <h1>Product Tracer System</h1>
+        <p class="header-subtitle">Create an account</p>
+    </div>
+    <div class="login-section">
+        <form action="/register" method="post">
+            <input type="text" name="username" placeholder="Username"         required />
+            <input type="password" name="password" placeholder="Password"         required />
+            <input type="password" name="confirmPassword" placeholder="Confirm Password" required />
+            <button type="submit">Create Account</button>
+        </form>
+        <div class="error-card" th:if="${errorMessage != null}" style="margin-top: 15px;">
+            <p th:text="${errorMessage}">Error message</p>
+        </div>
+        <p style="text-align:center; margin-top: 15px; color: #555;">
+            Already have an account? <a href="/login" style="color: var(--primary-color); font-weight: 600;">Log in</a>
+        </p>
+    </div>
+    <footer>
+        <p>This is an educational prototype, do not trust the official certifications for synthetic data</p>
+    </footer>
+</body>
+</html>
