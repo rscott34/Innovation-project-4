@@ -33,7 +33,6 @@ public class QuestionController {
         Object[] questionRecords = missionRepository.findMissionArray();
         List<Object[]> filteredQuestions = new ArrayList<>();
         User user = (User) session.getAttribute("user");
-        System.out.println(user.getRank().name() + user.rankPoints.get(user.getRank()));
         for (Object questionData : questionRecords) {
             Object[] row = (Object[]) questionData;
             
@@ -105,12 +104,12 @@ public class QuestionController {
         
 
         if (isCorrect) {
-            int points = 0;
+            int points;
 
             points = switch (mission.getDifficulty()) {
-                case basic -> 5;
-                case intermediate -> 10;
-                case advanced -> 20;
+                case Basic -> 5;
+                case Intermediate -> 10;
+                case Advanced -> 20;
             };
             session.setAttribute("points", (int) session.getAttribute("points") + points);
             User user = (User) session.getAttribute("user");

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Tracer – Profile</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --copper:   #a06125;
+            --bronze:   #dc9145;
+            --silver:   #a8b8c8;
+            --gold:     #ffd700;
+            --platinum: #4fc6a4;
+            --diamond:  #88d4e8;
+            --legendary:#c084fc;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="navbar-left">
+            <a href="/"><button>Home</button></a>
+            <a href="/questions/generate"><button>Question</button></a>
+        </div>
+        <div class="navbar-right">
+            <span class="score-display">Score: <span th:text="${session.points}">0</span></span>
+            <span th:if="${session.role == 'guest'}">
+                <a href="/login"><button>Login</button></a>
+            </span>
+            <span th:if="${session.role == 'verifier'}">
+                Logged in as Verifier
+                <a href="/verifier/inbox"><button>Inbox</button></a>
+                <a href="/logout"><button>Logout</button></a>
+            </span>
+            <span th:if="${session.role == 'consumer'}">
+                Logged in as Consumer
+                <a href="/logout"><button>Logout</button></a>
+            </span>
+        </div>
+    </div>
+
+    <div class="header">
+        <h1>My Profile</h1>
+    </div>
+    <div class="profile-card" th:if="${session.user != null}">
+
+        <div class="avatar"
+             th:text="${#strings.toUpperCase(#strings.substring(session.user.getUserName(), 0, 2))}">AB</div>
+
+        <div class="profile-meta">
+            <h2 th:text="${session.user.getUserName()}">Username</h2>
+            <span class="user-type-badge" th:text="${session.user.getUserTypeText()}">Consumer</span>
+        </div>
+
+        <div class="rank-section">
+
+            <div class="rank-row">
+                <div class="rank-badge">
+                    <div class="rank-gem" th:classappend="'rc-' + ${rank}"></div>
+                    <span class="rank-name" th:classappend="'rt-' + ${rank}" th:text="${rank}">Gold</span>
+                </div>
+                <span class="rank-score">
+                    <span th:text="${session.user.getScore()}">80</span> pts
+                    <span th:if="${nextRank != null}">
+                        &nbsp;·&nbsp;<span th:text="${pointsLeft}">10</span> pts to next rank
+                    </span>
+                    <span th:if="${nextRank == null}">&nbsp;· Max rank achieved!</span>
+                </span>
+            </div>
+
+            <div class="progress-bar-wrap">
+                <div class="progress-bar-fill"
+                     th:style="'width:' + ${progress} + '%;'"
+                     th:classappend="${rank == 'Legendary'} ? 'rc-Legendary' : ''">
+                </div>
+            </div>
+
+            <div class="progress-labels">
+                <span th:text="${rank}">Gold</span>
+                <span class="next-rank-label" th:if="${nextRank != null}">
+                    <span class="next-gem" th:classappend="'rc-' + ${nextRank}"></span>
+                    <span th:text="${nextRank}">Platinum</span>
+                </span>
+                <span th:if="${nextRank == null}">👑 Legendary</span>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="leaderboard-wrap">
+        <h2 class="section-header"
+            th:text="'Top Players · ' + ${rank} + ' Rank'">Top Players · Gold Rank</h2>
+        <p class="lb-subtitle">The 20 highest-scoring players at your current rank.</p>
+
+        <table class="lb-table">
+            <thead>
+                <tr>
+                    <th style="width:44px">#</th>
+                    <th>Player</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="entry, stat : ${leaderboard}"
+                    th:classappend="${entry.getUserId() == session.user.getUserId()} ? 'is-me' : ''">
+
+                    <td>
+                        <span class="lb-rank-num"
+                              th:classappend="${stat.index == 0} ? 'pos-1' : (${stat.index == 1} ? 'pos-2' : (${stat.index == 2} ? 'pos-3' : ''))"
+                              th:text="${stat.count}">1</span>
+                    </td>
+
+                    <td>
+                        <div class="lb-username">
+                            <div class="lb-avatar"
+                                 th:text="${#strings.toUpperCase(#strings.substring(entry.getUserName(), 0, 2))}">AB</div>
+                            <span th:text="${entry.getUserName()}">Username</span>
+                            <span class="you-tag"
+                                  th:if="${entry.getUserId() == session.user.getUserId()}">(You)</span>
+                        </div>
+                    </td>
+
+                    <td th:text="${entry.getScore()}">90</td>
+                </tr>
+
+                <tr th:if="${leaderboard == null or #lists.isEmpty(leaderboard)}">
+                    <td colspan="3" class="empty-state">No other players at this rank yet.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <footer>
+        <p>This is an educational prototype, do not trust the official certifications for synthetic data</p>
+    </footer>
+
+</body>
+</html>

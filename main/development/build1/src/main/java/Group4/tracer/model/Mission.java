@@ -1,5 +1,9 @@
 package Group4.tracer.model;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import Group4.tracer.enums.GradingType;
 import Group4.tracer.enums.MissionDifficulty;
 import jakarta.persistence.Entity;
@@ -90,7 +94,10 @@ public class Mission {
         return anchor;
     }
     public String[] getOptions() {
-        return options;
+        String[] shuffled = options.clone();
+        List<String> list = Arrays.asList(shuffled);
+        Collections.shuffle(list);
+        return list.toArray(new String[0]);
     }
 
     public String getId() {
