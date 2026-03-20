@@ -1,4 +1,4 @@
-claim_id,product_id,evidence_id,claim_type,claim_texts,confidence_label,rationale
+claim_id,product_id,evidence_id,claim_type,claim_text,confidence_label,rationale
 C001,P000,E1,Sustainability,Organic Certified,Verified,EU organic certificate attached
 C002,P000,E3,Environmental,Carbon Neutral Certified,Verified,Carbon Neutral Certificate attached
 C003,P001,E1,Sustainability,Organic Certified,Verified,EU organic certificate attached
