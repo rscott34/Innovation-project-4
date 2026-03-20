@@ -260,6 +260,9 @@ public String showVerifierInbox(Model model) {
     return "verifier-inbox";
 }
 
+@GetMapping("/contact")
+public String contactPage() { return "contact"; }
+
 @PostMapping("/verifier/resolve")
 public String resolveIssue(@RequestParam Long reportId) {
     issueReport report = issueRepository.findById(reportId).orElseThrow();
