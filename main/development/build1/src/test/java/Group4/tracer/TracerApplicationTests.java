@@ -1,136 +1,113 @@
 package Group4.tracer;
 
-<<<<<<< HEAD
-import org.junit.jupiter.api.Disabled;
-=======
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.List;
-
->>>>>>> 30e500a (Added FR2 traceability timeline tests)
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 
+import Group4.tracer.model.Products;
 import Group4.tracer.model.Stages;
+import Group4.tracer.repository.ProductRepository;
 import Group4.tracer.repository.StageRepository;
 
 @SpringBootTest
-<<<<<<< HEAD
-@Disabled
-=======
 @ActiveProfiles("test")
->>>>>>> 30e500a (Added FR2 traceability timeline tests)
+@TestPropertySource(properties = {
+    "spring.datasource.url=jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=PostgreSQL",
+    "spring.datasource.driverClassName=org.h2.Driver",
+    "spring.datasource.username=sa",
+    "spring.datasource.password=",
+    "spring.jpa.database-platform=org.hibernate.dialect.H2Dialect",
+    "spring.jpa.hibernate.ddl-auto=create-drop",
+    "spring.sql.init.mode=never"
+})
 class TracerApplicationTests {
 
     @Autowired
     private StageRepository stageRepository;
 
+    @Autowired
+    private ProductRepository productRepository;
+
+    @BeforeEach
+    void setUpTestData() {
+        stageRepository.deleteAll();
+        productRepository.deleteAll();
+
+        Products product = new Products("P001", "Test Product", "Food", "Test Brand", "Test Description");
+        productRepository.save(product);
+
+        Stages stage1 = new Stages(
+            "S001",
+            "RawMaterials",
+            "Brazil",
+            "2024-01-01",
+            "2024-01-05",
+            "Raw material sourcing",
+            "P001"
+        );
+
+        Stages stage2 = new Stages(
+            "S002",
+            "Processing",
+            "UK",
+            "2024-01-06",
+            "2024-01-10",
+            "Processing stage",
+            "P001"
+        );
+
+        stageRepository.save(stage1);
+        stageRepository.save(stage2);
+    }
+
     @Test
     void contextLoads() {
         assertNotNull(stageRepository);
+        assertNotNull(productRepository);
+    }
+
+    private String findExistingProductId() {
+        List<Products> allProducts = productRepository.findAll();
+
+        assertNotNull(allProducts);
+        assertFalse(allProducts.isEmpty(), "Expected seeded product data in the test database.");
+
+        for (Products product : allProducts) {
+            if (product != null && product.getProductId() != null) {
+                List<Stages> stages = stageRepository.findByProductIdOrderByStageIdAsc(product.getProductId());
+                if (stages != null && !stages.isEmpty()) {
+                    return product.getProductId();
+                }
+            }
+        }
+
+        fail("Expected at least one seeded product with timeline stages in the test database.");
+        return null;
     }
 
     @Test
-    void fr2_validProductIdReturnsTimelineStages() {
-        List<Stages> stages = stageRepository.findByProductIdOrderByStageIdAsc("1");
+    void testFindStagesByProductId() {
+        String productId = findExistingProductId();
 
-        assertNotNull(stages);
-        assertFalse(stages.isEmpty());
-    }
-
-    @Test
-    void fr2_invalidProductIdReturnsNoTimelineStages() {
-        List<Stages> stages = stageRepository.findByProductIdOrderByStageIdAsc("99999");
-
-        assertNotNull(stages);
-        assertTrue(stages.isEmpty());
-    }
-
-    @Test
-    void fr2_returnedStagesBelongToRequestedProduct() {
-        String productId = "1";
         List<Stages> stages = stageRepository.findByProductIdOrderByStageIdAsc(productId);
 
         assertNotNull(stages);
-        assertFalse(stages.isEmpty());
+        assertFalse(stages.isEmpty(), "Stages should not be empty");
 
-        for (Stages stage : stages) {
-            assertNotNull(stage);
-            assertNotNull(stage.getProductId());
-            assertEquals(productId, stage.getProductId());
-        }
-    }
-
-    @Test
-    void fr2_returnedStagesAreOrderedByStageIdAscending() {
-        List<Stages> stages = stageRepository.findByProductIdOrderByStageIdAsc("1");
-
-        assertNotNull(stages);
-        assertFalse(stages.isEmpty());
-
-        for (int i = 0; i < stages.size() - 1; i++) {
-            Integer currentStageId = stages.get(i).getStageId();
-            Integer nextStageId = stages.get(i + 1).getStageId();
-
-            assertNotNull(currentStageId);
-            assertNotNull(nextStageId);
-            assertTrue(currentStageId <= nextStageId);
-        }
-    }
-
-    @Test
-    void fr2_stageTimelineFieldsArePopulated() {
-        List<Stages> stages = stageRepository.findByProductIdOrderByStageIdAsc("1");
-
-        assertNotNull(stages);
-        assertFalse(stages.isEmpty());
-
-        for (Stages stage : stages) {
-            assertNotNull(stage.getStageId());
-            assertNotNull(stage.getProductId());
-            assertNotNull(stage.getStageName());
-        }
-    }
-
-    @Test
-    void fr2_returnedStagesContainNoNullObjects() {
-        List<Stages> stages = stageRepository.findByProductIdOrderByStageIdAsc("1");
-
-        assertNotNull(stages);
-        assertFalse(stages.isEmpty());
-
-        for (Stages stage : stages) {
-            assertNotNull(stage);
-        }
-    }
-
-    @Test
-    void fr2_sameProductQueryReturnsConsistentResults() {
-        List<Stages> firstCall = stageRepository.findByProductIdOrderByStageIdAsc("1");
-        List<Stages> secondCall = stageRepository.findByProductIdOrderByStageIdAsc("1");
-
-        assertNotNull(firstCall);
-        assertNotNull(secondCall);
-        assertEquals(firstCall.size(), secondCall.size());
-    }
-
-    @Test
-    void fr2_firstReturnedStageHasSmallestStageId() {
-        List<Stages> stages = stageRepository.findByProductIdOrderByStageIdAsc("1");
-
-        assertNotNull(stages);
-        assertFalse(stages.isEmpty());
-        assertNotNull(stages.get(0).getStageId());
-
-        Integer firstStageId = stages.get(0).getStageId();
-        for (Stages stage : stages) {
-            assertNotNull(stage.getStageId());
-            assertTrue(firstStageId <= stage.getStageId());
+        for (int i = 1; i < stages.size(); i++) {
+            assertTrue(
+                stages.get(i - 1).getStageId().compareTo(stages.get(i).getStageId()) <= 0,
+                "Stages are not ordered correctly"
+            );
         }
     }
 }

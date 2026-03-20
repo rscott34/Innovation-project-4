@@ -1,30 +1,34 @@
 package Group4.tracer.controller;
 
-import Group4.tracer.repository.StageRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 import java.util.Arrays;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import Group4.tracer.repository.StageRepository;
 
 @RestController
 @RequestMapping("/stages")
 public class StageSearch {
 
-    @Autowired //spring boot uses this to find the productRepository
+    @Autowired
     private StageRepository stageRepository;
 
     @GetMapping("/search")
-    public Object[] searchStage(@RequestParam String id) {
-        //call SQL query from productRepository.java
-        Object[] traceabilityResult = stageRepository.findStageArray(id);
+    public Object searchStage(@RequestParam String id) {
+        List<Object[]> traceabilityResult = stageRepository.findStageArray(id);
 
-        if (traceabilityResult != null && traceabilityResult.length > 0) {
+        if (traceabilityResult != null && !traceabilityResult.isEmpty()) {
             System.out.println("productId: " + id);
-            System.out.println(Arrays.toString(traceabilityResult));
-
+            System.out.println(Arrays.deepToString(traceabilityResult.toArray()));
             return traceabilityResult;
         } else {
             System.out.println("productId " + id + " not found in database.");
-            return new Object[] {"Error: Product not found"};
+            return new Object[] { "Error: Product not found" };
         }
     }
 }
