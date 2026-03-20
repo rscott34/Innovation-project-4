@@ -1,0 +1,21 @@
+product_id,names,category,brand,description
+P000,Olive Oil,FOOD,Tesco,Olive oil from Spain
+P001,Orange,FOOD,Tesco,Orange from Spain
+P002,Potato,FOOD,Tesco,Sack of potatoes from United Kingdom
+P003,Cheddar Cheese,FOOD,Tesco,Block of cheddar cheese from United Kingdom
+P004,Bread,FOOD,Tesco,Loaf of bread from United Kingdom
+P005,Gucci Handbag,LUXURY,Gucci,Gucci handbag from Italy
+P006,Rolex Watch,LUXURY,Rolex,Watch from Switzerland
+P007,Cartier Necklace,LUXURY,Cartier,Jewelery from France
+P008,iPhone 17,LUXURY,Apple,Smartphone from China
+P009,Moët & Chandon Champagne,LUXURY,Moët & Chandon,Champagne from France
+P010,T-shirt,CLOTHING,Next,T-shirt from Bangladesh
+P011,Hoodie,CLOTHING,Nicce,Hoodie from Vietnam
+P012,Jeans,CLOTHING,Levi,Jeans from India
+P013,Swim Shorts,CLOTHING,Quicksilver,Swim shorts from Indonesia
+P014,Cap,CLOTHING,Adidas,Cap from United States of America
+P015,Sofa,HOME,John Lewis,Sofa from the United Kingdom
+P016,Desk,HOME,Ikea,Desk from Sweden
+P017,Coffee Machine,HOME,Nescafe,Coffee Machine from Hungary
+P018,Pillows,HOME,Dunelm,Pillows from Vietnam
+P019,Rug,HOME,Fishpools,Rug from the United Kingdom
