@@ -47,7 +47,7 @@ public class TracerController {
     @Autowired private UserRepository userRepository;
     @Autowired private InputSharesRepository inputSharesRepository;
     @Autowired private IssueRepository issueRepository;
-    @Autowired private BCryptPasswordEncoder passwordEncoder; // Add this line
+    @Autowired private BCryptPasswordEncoder passwordEncoder;
 
     //get mapping for login page  
     @GetMapping("/login")
@@ -133,7 +133,7 @@ public class TracerController {
         String hashed = passwordEncoder.encode(password);
         user.setPassword(hashed); //hashes using bitEncoder
         
-        System.out.println("Plaintext was " + password + " and Hash is " + hashed); //used for confirming hash
+        //System.out.println("Plaintext was " + password + " and Hash is " + hashed); //used for confirming hash
         
         user.setUserTypeString("consumer"); //might be changed to CONSUMER
         userRepository.save(user);

@@ -1,4 +1,4 @@
-product_id,names,category,brand,description
+product_id,name,category,brand,description
 P000,Olive Oil,FOOD,Tesco,Olive oil from Spain
 P001,Orange,FOOD,Tesco,Orange from Spain
 P002,Potato,FOOD,Tesco,Sack of potatoes from United Kingdom
