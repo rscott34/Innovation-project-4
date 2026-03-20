@@ -18,11 +18,11 @@
             <button type="submit">Log in</button>
         </form>
     </div>
-    <!--
-    <div class="error-card" th:if="${productFound != null && productFound == false}">
-        <p th:text="${errorMessage}">Error message</p>
+
+    <div class="error-card" th:if="${error != null}">
+        <p th:text="${error}"></p>
     </div>
-    -->
+  
     <footer>
         <p>This is an educational prototype, do not trust the official certifications for synthetic data</p>
     </footer>

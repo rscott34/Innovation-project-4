@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,7 +47,7 @@ public class TracerController {
     @Autowired private UserRepository userRepository;
     @Autowired private InputSharesRepository inputSharesRepository;
     @Autowired private IssueRepository issueRepository;
-
+    @Autowired private BCryptPasswordEncoder passwordEncoder; // Add this line
 
     //get mapping for login page  
     @GetMapping("/login")
@@ -59,7 +60,7 @@ public class TracerController {
         Optional<User> userOpt = userRepository.findByUsername(username);
         
         // Verify that user exists and if password matches.
-        if (userOpt.isPresent() && userOpt.get().getPassword().equals(password)) {
+        if (userOpt.isPresent() && passwordEncoder.matches(password, userOpt.get().getPassword())) {
             User user = userOpt.get();
             user.checkFields();
             if (user.getUserType().equals(UserType.Consumer)) {
@@ -128,8 +129,13 @@ public class TracerController {
         user.setUserId(String.format("U%03d", i));
 
         user.setUserName(username);
-        user.setPassword(password); // hash this in production!
-        user.setUserTypeString("consumer");
+
+        String hashed = passwordEncoder.encode(password);
+        user.setPassword(hashed); //hashes using bitEncoder
+        
+        //System.out.println("Plaintext was " + password + " and Hash is " + hashed); //used for confirming hash
+        
+        user.setUserTypeString("consumer"); //might be changed to CONSUMER
         userRepository.save(user);
 
         return "redirect:/login";
