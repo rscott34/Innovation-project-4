@@ -251,6 +251,7 @@
             <button type="button" class="btn-report">Report Issue</button>
         </a>
     </div>
+
     
     <footer>
         <p>This is an educational prototype, do not trust the official certifications for synthetic data</p>
@@ -266,6 +267,40 @@
             if (el) el.scrollIntoView({ behavior: 'smooth' });
         }
     </script>
+
+    <script th:inline="javascript">
+        document.addEventListener("DOMContentLoaded", function() {
+            // Only show if the user hasn't interacted yet
+            if (!localStorage.getItem("cookieAccepted")) {
+                const popup = document.getElementById("cookie-popup");
+                if (popup) popup.style.display = "block";
+            }
+        });
+
+        function acceptCookies() {
+            localStorage.setItem("cookieAccepted", "true");
+            document.getElementById("cookie-popup").style.display = "none";
+        }
+
+        function closePopup() {
+            // We hide it for this session, but don't set localStorage 
+            // so it reappears next time (Standard GDPR "Decline" behavior)
+            document.getElementById("cookie-popup").style.display = "none";
+        }
+    </script>
+
+
+    <div id="cookie-popup" class="cookie-banner">
+        <div class="cookie-content">
+            <h3 style="color: var(--text-dark); margin-bottom: 10px;">Cookie Consent</h3>
+            <p>We use cookies to ensure you get the best experience on our Product Tracer System. By clicking "Accept", you agree to our use of cookies.</p>
+            <div class="cookie-buttons">
+                <button onclick="acceptCookies()" class="accept-btn">Accept</button>
+                <button onclick="closePopup()" class="decline-btn">Decline</button>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>
 

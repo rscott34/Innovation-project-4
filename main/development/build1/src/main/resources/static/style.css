@@ -872,3 +872,59 @@ button {
 @media (max-width: 600px) {
     .profile-card, .leaderboard-wrap { padding: 24px 18px; }
 }
+
+.cookie-banner {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 450px;
+    background-color: var(--bg-white); 
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: var(--shadow-lg);
+    z-index: 10000; 
+    display: none; 
+    border: 1px solid var(--border-color);
+}
+
+.cookie-content p {
+    color: var(--text-medium);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.cookie-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.accept-btn {
+    background-color: var(--primary-color) !important;
+    color: white !important;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.accept-btn:hover {
+    background-color: var(--primary-dark) !important;
+}
+
+.decline-btn {
+    background-color: transparent !important;
+    color: var(--text-medium) !important;
+    border: 1px solid var(--border-color) !important;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.decline-btn:hover {
+    background-color: var(--bg-hover) !important;
+}
