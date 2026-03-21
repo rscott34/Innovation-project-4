@@ -203,7 +203,8 @@
                                         <div><p class="text-gray-500 mb-0.5">Date</p><p class="text-white" th:text="${ev[3]}"></p></div>
                                         <div class="col-span-2"><p class="text-gray-500 mb-0.5">Summary</p><p class="text-gray-300" th:text="${ev[4]}"></p></div>
                                         <div th:if="${ev[5] != null && ev[5] != 'N/A'}" class="col-span-2">
-                                            <img th:src="${ev[5]}" alt="Evidence" class="max-h-24 rounded-lg border border-white/10">
+                                            <p th:text="${ev[5]}"></p>
+                                            <img th:src="@{|/${ev[5]}|}" alt="Evidence" class="max-h-24 rounded-lg border border-white/10">
                                         </div>
                                     </div>
                                 </details>
@@ -349,7 +350,7 @@
                                         <div><p class="text-gray-500 mb-0.5">Date</p><p class="text-white" th:text="${ev[3]}"></p></div>
                                         <div class="col-span-2"><p class="text-gray-500 mb-0.5">Summary</p><p class="text-gray-300" th:text="${ev[4]}"></p></div>
                                         <div th:if="${ev[5] != null && ev[5] != 'N/A'}" class="col-span-2">
-                                            <img th:src="${ev[5]}" alt="Evidence" class="max-h-24 rounded-lg border border-white/10">
+                                            <img th:src="@{|/${ev[5]}|}" alt="Evidence" class="max-h-24 rounded-lg border border-white/10">
                                         </div>
                                     </div>
                                 </details>
