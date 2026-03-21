@@ -71,7 +71,12 @@
                     </span>
                     <a href="/verifier/inbox" class="px-2 py-2 text-sm text-gray-300 hover:text-white transition-all">Inbox</a>
                     <a href="/history" class="px-2 py-2 text-sm text-gray-300 hover:text-white transition-all">History</a>
-                    <a href="/logout" class="px-2 py-2 text-sm text-gray-300 font-semibold hover:text-white transition-all">Logout <span class="text-brand-400">→</span></a>                </span>
+                    <a href="/logout" class="px-2 py-2 text-sm text-gray-300 font-semibold hover:text-white transition-all">Logout <span class="text-brand-400">→</span></a>                
+                </span>
+                <span th:if="${role == 'consumer'}" class="flex items-center gap-3">
+                    <a href="/profile" class="text-sm text-gray-300 hover:text-white transition-all">Profile</a>
+                    <a href="/logout" class="text-sm text-gray-300 font-semibold hover:text-white transition-all">Logout <span class="text-brand-400">→</span></a>
+                </span>
             </div>
         </div>
     </nav>
@@ -87,6 +92,14 @@
                     Submit
                 </button>
             </form>
+            <div th:if="${mission.getGradingTypeText() == 'multiple_choice'}" class="flex flex-wrap gap-2 mt-4">
+                <form th:each="option : ${mission.getOptions()}" action="/questions/verify" method="post">
+                    <input type="hidden" name="userAnswer" th:value="${option}"/>
+                    <button type="submit" th:text="${option}"
+                            class="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-white text-sm hover:bg-brand-500/20 hover:border-brand-500/30 hover:text-brand-400 transition-all">
+                    </button>
+                </form>
+            </div>
         </div>
 
         <!-- Hero Search -->
@@ -332,5 +345,51 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
     <script th:src="@{/piechart.js}"></script>
+
+    <script th:inline="javascript">
+        const anchor = /*[[${anchor}]]*/ null;
+        if (anchor) {
+            const el = document.getElementById(anchor.replace('#', ''));
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+
+    <script th:inline="javascript">
+        document.addEventListener("DOMContentLoaded", function() {
+            // Only show if the user hasn't interacted yet
+            if (!localStorage.getItem("cookieAccepted")) {
+                const popup = document.getElementById("cookie-popup");
+                if (popup) popup.style.display = "block";
+            }
+        });
+
+        function acceptCookies() {
+            localStorage.setItem("cookieAccepted", "true");
+            document.getElementById("cookie-popup").style.display = "none";
+        }
+
+        function closePopup() {
+            // We hide it for this session, but don't set localStorage 
+            // so it reappears next time (Standard GDPR "Decline" behavior)
+            document.getElementById("cookie-popup").style.display = "none";
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            if (!localStorage.getItem("cookieAccepted")) {
+                document.getElementById("cookie-popup").classList.remove("hidden");
+            }
+        });
+    </script>
+
+
+    <div id="cookie-popup" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-full max-w-md px-6 py-5 rounded-2xl bg-gray-900 border border-white/10 shadow-xl">
+        <h3 class="text-white font-semibold mb-2">Cookie Consent</h3>
+        <p class="text-gray-400 text-sm mb-4">We use cookies to ensure you get the best experience on our Product Tracer System. By clicking "Accept", you agree to our use of cookies.</p>
+        <div class="flex gap-3">
+            <button onclick="acceptCookies()" class="flex-1 py-2 rounded-xl bg-brand-500 hover:bg-brand-600 text-white font-semibold text-sm transition-all">Accept</button>
+            <button onclick="closePopup()" class="flex-1 py-2 rounded-xl border border-white/10 text-gray-300 hover:text-white text-sm font-semibold transition-all">Decline</button>
+        </div>
+    </div>
+
 </body>
 </html>

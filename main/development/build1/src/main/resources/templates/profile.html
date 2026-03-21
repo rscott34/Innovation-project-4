@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>soucr — Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['DM Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .rank-Copper   { color: #a06125; }
+        .rank-Bronze   { color: #dc9145; }
+        .rank-Silver   { color: #a8b8c8; }
+        .rank-Gold     { color: #ffd700; }
+        .rank-Platinum { color: #4fc6a4; }
+        .rank-Diamond  { color: #88d4e8; }
+        .rank-Legendary{ color: #c084fc; }
+
+        .bar-Copper    { background: #a06125; }
+        .bar-Bronze    { background: #dc9145; }
+        .bar-Silver    { background: #a8b8c8; }
+        .bar-Gold      { background: #ffd700; }
+        .bar-Platinum  { background: #4fc6a4; }
+        .bar-Diamond   { background: #88d4e8; }
+        .bar-Legendary { background: linear-gradient(90deg, #c084fc, #818cf8); }
+    </style>
+</head>
+<body class="min-h-screen text-gray-100" style="background: radial-gradient(ellipse at top left, rgba(34,197,94,0.15) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(34,197,94,0.08) 0%, transparent 50%), #0a0f0a;">
+
+    <!-- Navbar -->
+    <nav class="top-0 z-50">
+        <div class="max-w-6xl mx-auto px-6 h-16 grid grid-cols-3 items-center">
+            <div>
+                <a href="/"><img th:src="@{/assets/favicon.png}" alt="soucr" class="h-8 w-auto"></a>
+            </div>
+            <div class="flex items-center justify-center gap-1">
+                <a href="/" class="px-4 py-2 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-white/10 transition-all">Home</a>
+                <a href="/questions/generate" class="px-4 py-2 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-white/10 transition-all">Question</a>
+                <a href="/contact" class="px-4 py-2 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-white/10 transition-all">Contact Us</a>
+            </div>
+            <div class="flex items-center justify-end gap-3">
+                <span class="flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/20 border border-brand-500/30 text-brand-400 text-sm font-semibold">
+                    <i class="fas fa-star text-xs"></i>
+                    <span th:text="${session.points}">0</span> pts
+                </span>
+                <span th:if="${session.role == 'verifier'}" class="flex items-center gap-3">
+                    <span class="px-3 py-1 rounded-full bg-brand-500/20 border border-brand-500/30 text-brand-400 text-xs font-semibold">Verifier</span>
+                    <a href="/verifier/inbox" class="text-sm text-gray-300 hover:text-white transition-all">Inbox</a>
+                    <a href="/logout" class="text-sm text-gray-300 hover:text-white transition-all">Logout <span class="text-brand-400">→</span></a>
+                </span>
+                <span th:if="${session.role == 'consumer'}" class="flex items-center gap-3">
+                    <a href="/logout" class="text-sm text-gray-300 hover:text-white transition-all">Logout <span class="text-brand-400">→</span></a>
+                </span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-3xl mx-auto px-6 py-12 space-y-6">
+
+        <!-- Profile Card -->
+        <div th:if="${session.user != null}" class="rounded-2xl bg-white/5 border border-white/10 overflow-hidden">
+            <div class="p-6 flex items-center gap-5">
+                <!-- Avatar -->
+                <div class="w-16 h-16 rounded-2xl bg-brand-500/20 border border-brand-500/30 flex items-center justify-center flex-shrink-0">
+                    <span class="text-brand-400 text-xl font-bold"
+                          th:text="${#strings.toUpperCase(#strings.substring(session.user.getUserName(), 0, 2))}">AB</span>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold text-white" th:text="${session.user.getUserName()}">Username</h1>
+                    <span class="px-2.5 py-0.5 rounded-full bg-white/10 text-gray-300 text-xs font-semibold"
+                          th:text="${session.user.getUserTypeText()}">Consumer</span>
+                </div>
+            </div>
+
+            <!-- Rank & Progress -->
+            <div class="px-6 pb-6 space-y-3">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-gem text-sm" th:classappend="'rank-' + ${rank}"></i>
+                        <span class="font-semibold" th:classappend="'rank-' + ${rank}" th:text="${rank}">Gold</span>
+                    </div>
+                    <div class="text-sm text-gray-400">
+                        <span class="text-white font-medium" th:text="${session.user.getScore()}">80</span> pts
+                        <span th:if="${nextRank != null}">
+                            &nbsp;·&nbsp;<span th:text="${pointsLeft}">10</span> pts to <span th:text="${nextRank}">Platinum</span>
+                        </span>
+                        <span th:if="${nextRank == null}">&nbsp;· 👑 Max rank!</span>
+                    </div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="w-full h-2 rounded-full bg-white/10 overflow-hidden">
+                    <div class="h-full rounded-full transition-all"
+                         th:classappend="'bar-' + ${rank}"
+                         th:style="'width:' + ${progress} + '%'"></div>
+                </div>
+
+                <div class="flex justify-between text-xs text-gray-500">
+                    <span th:text="${rank}">Gold</span>
+                    <span th:if="${nextRank != null}" th:classappend="'rank-' + ${nextRank}" th:text="${nextRank}">Platinum</span>
+                    <span th:if="${nextRank == null}">Legendary 👑</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Leaderboard -->
+        <div class="rounded-2xl bg-white/5 border border-white/10 overflow-hidden">
+            <div class="flex items-center gap-3 px-6 py-4 border-b border-white/5">
+                <i class="fas fa-trophy text-amber-400"></i>
+                <h2 class="font-semibold text-white">Top Players
+                    <span class="text-gray-500 font-normal text-sm ml-1" th:text="'· ' + ${rank} + ' Rank'"></span>
+                </h2>
+            </div>
+
+            <div th:if="${leaderboard == null or #lists.isEmpty(leaderboard)}" class="px-6 py-8 text-center text-gray-400 text-sm">
+                No other players at this rank yet.
+            </div>
+
+            <table th:if="${leaderboard != null and not #lists.isEmpty(leaderboard)}" class="w-full text-sm">
+                <thead>
+                    <tr class="border-b border-white/5">
+                        <th class="text-left px-6 py-3 text-xs text-gray-500 uppercase tracking-widest w-12">#</th>
+                        <th class="text-left px-6 py-3 text-xs text-gray-500 uppercase tracking-widest">Player</th>
+                        <th class="text-left px-6 py-3 text-xs text-gray-500 uppercase tracking-widest">Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="entry, stat : ${leaderboard}"
+                        th:classappend="${entry.getUserId() == session.user.getUserId()} ? 'bg-brand-500/5' : ''"
+                        class="border-b border-white/5 last:border-0 hover:bg-white/5 transition-all">
+                        <td class="px-6 py-4">
+                            <span th:if="${stat.index == 0}" class="text-amber-400 font-bold">1</span>
+                            <span th:if="${stat.index == 1}" class="text-gray-400 font-bold">2</span>
+                            <span th:if="${stat.index == 2}" class="text-amber-700 font-bold">3</span>
+                            <span th:if="${stat.index > 2}" class="text-gray-500" th:text="${stat.count}"></span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center flex-shrink-0">
+                                    <span class="text-xs font-bold text-gray-300"
+                                          th:text="${#strings.toUpperCase(#strings.substring(entry.getUserName(), 0, 2))}">AB</span>
+                                </div>
+                                <span class="text-white" th:text="${entry.getUserName()}">Username</span>
+                                <span th:if="${entry.getUserId() == session.user.getUserId()}"
+                                      class="px-2 py-0.5 rounded-full bg-brand-500/20 text-brand-400 text-xs font-semibold">You</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-white font-medium" th:text="${entry.getScore()}">90</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/5 mt-16 py-8 text-center">
+        <p class="text-xs text-gray-600">This is an educational prototype — do not trust official certifications for synthetic data.</p>
+    </footer>
+
+</body>
+</html>

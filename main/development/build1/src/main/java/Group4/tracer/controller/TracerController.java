@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,14 +14,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import Group4.tracer.enums.Rank;
 import Group4.tracer.enums.StageType;
+import Group4.tracer.enums.UserType;
 import Group4.tracer.model.ChangeLog;
 import Group4.tracer.model.Claims;
 import Group4.tracer.model.Evidence;
 import Group4.tracer.model.Mission;
 import Group4.tracer.model.Products;
 import Group4.tracer.model.Stages;
-import Group4.tracer.model.Verifier;
+import Group4.tracer.model.User;
 import Group4.tracer.model.issueReport;
 import Group4.tracer.repository.ChangeLogRepository;
 import Group4.tracer.repository.ClaimRepository;
@@ -29,7 +32,7 @@ import Group4.tracer.repository.InputSharesRepository;
 import Group4.tracer.repository.IssueRepository;
 import Group4.tracer.repository.ProductRepository;
 import Group4.tracer.repository.StageRepository;
-import Group4.tracer.repository.VerifierRepository;
+import Group4.tracer.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -41,25 +44,39 @@ public class TracerController {
     @Autowired private ClaimRepository claimRepository;
     @Autowired private EvidenceRepository evidenceRepository;
     @Autowired private ChangeLogRepository changeLogRepository;
-    @Autowired private VerifierRepository verifierRepository;
+    @Autowired private UserRepository userRepository;
     @Autowired private InputSharesRepository inputSharesRepository;
     @Autowired private IssueRepository issueRepository;
-
+    @Autowired private BCryptPasswordEncoder passwordEncoder;
 
     //get mapping for login page  
     @GetMapping("/login")
-    public String loginPage() { return "login"; }
+    public String loginPage(HttpSession session, Model model) {
+        String role = (String) session.getAttribute("role");
+        model.addAttribute("role", role != null ? role : "guest");
+        return "login";
+    }
 
     //post mapping for login page
     @PostMapping("/login")
     public String doLogin(@RequestParam String username, @RequestParam String password, HttpSession session, Model model) {
         // Find the user account in the database by username
-        Optional<Verifier> verifierOpt = verifierRepository.findByUsername(username);
+        Optional<User> userOpt = userRepository.findByUsername(username);
         
         // Verify that user exists and if password matches.
-        if (verifierOpt.isPresent() && verifierOpt.get().getPassword().equals(password)) {
-            session.setAttribute("role", "verifier");
-            session.setAttribute("username", username); 
+        if (userOpt.isPresent() && passwordEncoder.matches(password, userOpt.get().getPassword())) {
+            User user = userOpt.get();
+            user.checkFields();
+            if (user.getUserType().equals(UserType.Consumer)) {
+                session.setAttribute("role", "consumer");
+            } else if (user.getUserType().equals(UserType.Verifier)) {
+                System.out.println("Verifier");
+                session.setAttribute("role", "verifier");
+            }
+
+            session.setAttribute("points", user.getScore());
+            
+            session.setAttribute("user", user); 
             return "redirect:/"; // successful login so user must be redirected to product search page.
         } else {
             model.addAttribute("error", "Invalid username or password.");
@@ -80,8 +97,93 @@ public class TracerController {
         model.addAttribute("questionGenerated", false);
         String role = (String) session.getAttribute("role");
         //sets user to guest if not loggied in as verifier
-        model.addAttribute("role", role != null ? role : "guest");
+        String resolvedRole = role != null ? role : "guest";
+        session.setAttribute("role", resolvedRole);
+        model.addAttribute("role", resolvedRole);
+        User user = (User) session.getAttribute("user");
+        session.setAttribute("user", user != null ? user : new User());
         return "index";
+    }
+
+    @GetMapping("/register")
+    public String registerPage() {
+        return "register";
+    }
+
+    @PostMapping("/register")
+    public String register(
+            @RequestParam String username,
+            @RequestParam String password,
+            @RequestParam String confirmPassword,
+            Model model) {
+
+        if (!password.equals(confirmPassword)) {
+            model.addAttribute("errorMessage", "Passwords do not match.");
+            return "register";
+        }
+        if (userRepository.existsByUsername(username)) {
+            model.addAttribute("errorMessage", "Username already taken.");
+            return "register";
+        }
+
+        User user = new User();
+
+        int i = 0;
+        while (userRepository.existsById(String.format("U%03d", i))) {
+            i++;
+        }
+        user.setUserId(String.format("U%03d", i));
+
+        user.setUserName(username);
+
+        String hashed = passwordEncoder.encode(password);
+        user.setPassword(hashed); //hashes using bitEncoder
+        
+        //System.out.println("Plaintext was " + password + " and Hash is " + hashed); //used for confirming hash
+        
+        user.setUserTypeString("consumer"); //might be changed to CONSUMER
+        userRepository.save(user);
+
+        return "redirect:/login";
+    }
+
+    //Profile section
+    @GetMapping("/profile")
+    public String profile(HttpSession session, Model model) {
+        User user = (User) session.getAttribute("user");
+
+        Rank rank = user.getRank();
+        Rank[] ranks = Rank.values();
+        Rank nextRank = null;
+        if (rank.ordinal() + 1 < ranks.length) {
+            nextRank = ranks[rank.ordinal() + 1];
+        }
+        model.addAttribute("rank", rank.name());
+        if (nextRank == null) {
+            model.addAttribute("nextRank", null);
+        } else {
+            model.addAttribute("nextRank", nextRank.name());
+        }
+
+        int min = user.rankMin.get(rank);
+        int max = user.rankMax.get(rank);
+        float progress = ((float) (user.getScore() - min)) / ((float) (max-min)) * 100;
+        System.out.println(progress);
+        model.addAttribute("progress", progress);
+        model.addAttribute("pointsLeft", user.rankMax.get(rank) - user.getScore());
+
+        //logic for getting top users
+        List<User> top;
+        if (rank == Rank.Legendary) {
+            top = userRepository.findTop20Legendary(min);
+        } else {
+            top = userRepository.findTop20InRange(min, max);
+        }
+
+        model.addAttribute("leaderboard", top);
+
+        
+        return "profile";
     }
 
     // traceability editing
@@ -120,7 +222,7 @@ public class TracerController {
             log.setLogId(UUID.randomUUID().toString());
             log.setEntityType("Stage");
             log.setEntityId(stageId);
-            log.setChangedBy((String) session.getAttribute("username"));
+            log.setChangedBy(((User) session.getAttribute("user")).getUserName());
             log.setTimestamp(LocalDateTime.now().toString());
             log.setChangeSummary("Updated location from " + oldLoc + " to " + newLocation);
             changeLogRepository.save(log);
@@ -296,23 +398,21 @@ public String resolveIssue(@RequestParam Long reportId) {
     }
     */
 
-    @GetMapping("/mission")
-    public String missionPage(Model model) {
-        return "mission";
-    }
-
     // add submit button for
     @PostMapping("/submit")
     public String handleInput(@RequestParam boolean questionGenerated, 
         @RequestParam String userAnswer, 
-        @RequestParam String userInput, 
+        @RequestParam String userInput,
+        @RequestParam(required = false) String anchor,
         HttpSession session, 
         Model model) {
 
         Mission mission = (Mission) session.getAttribute("mission");
         String role = (String) session.getAttribute("role");
-        model.addAttribute("role", role != null ? role : "guest");
-        
+        String resolvedRole = role != null ? role : "guest";
+        session.setAttribute("role", resolvedRole);
+        model.addAttribute("role", resolvedRole);
+                
         if (userInput != null && !userInput.isEmpty()) {
 
             Object[] productData = productRepository.findProductArray(userInput); 
@@ -418,6 +518,7 @@ public String resolveIssue(@RequestParam Long reportId) {
         model.addAttribute("userAnswer", userAnswer);
         model.addAttribute("mission", mission);
         model.addAttribute("userInput", userInput);
+        model.addAttribute("anchor", anchor);
         
         return "index";
     }
@@ -428,7 +529,9 @@ public String resolveIssue(@RequestParam Long reportId) {
         //get the role and username of the user
         String role = (String) session.getAttribute("role");
         //sets user to guest if not loggied in as verifier
-        model.addAttribute("role", role != null ? role : "guest");
+        String resolvedRole = role != null ? role : "guest";
+        session.setAttribute("role", resolvedRole);
+        model.addAttribute("role", resolvedRole);
         return "compare";
     }
 
@@ -440,8 +543,10 @@ public String resolveIssue(@RequestParam Long reportId) {
         
         Mission mission = (Mission) session.getAttribute("mission");
         String role = (String) session.getAttribute("role");
-        model.addAttribute("role", role != null ? role : "guest");
-                
+        String resolvedRole = role != null ? role : "guest";
+        session.setAttribute("role", resolvedRole);
+        model.addAttribute("role", resolvedRole);
+                        
         if (userInput != null && !userInput.isEmpty()) {
 
             Object[] productData = productRepository.findProductArray(userInput); 

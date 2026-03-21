@@ -11,6 +11,7 @@ public class SessionListener implements HttpSessionListener {
     @Override
     public void sessionCreated(HttpSessionEvent session) {
         session.getSession().setAttribute("points", 0);
+        session.getSession().setAttribute("role", "guest");
     }
     
     @Override

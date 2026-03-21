@@ -1,11 +1,16 @@
 package Group4.tracer.model;
 
+import java.util.Map;
+
+import Group4.tracer.enums.Rank;
 import Group4.tracer.enums.UserType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "app_users")
@@ -13,22 +18,45 @@ public class User {
     @Id
     private String userId;
 
-    private String userName;
+    @Column(name = "\"user_name\"")
+    private String username;
+
+    @Column(name = "\"password\"")
     private String password;
 
+    @Column(name = "\"user_type\"")
     @Enumerated(EnumType.STRING)
     private UserType userType;
 
+    @Column(name = "score")
+    private int score;
+
+    @Column(name = "questions")
+    private String missions = "";
+
+    @Transient
+    public Map<Rank, Integer> rankMax = Map.of(
+        Rank.Copper, 15,
+        Rank.Bronze, 30,
+        Rank.Silver, 60,
+        Rank.Gold, 90,
+        Rank.Platinum, 150,
+        Rank.Diamond, 210,
+        Rank.Legendary, -1
+    );
+    @Transient
+    public Map<Rank, Integer> rankMin = Map.of(
+        Rank.Copper, 0,
+        Rank.Bronze, 15,
+        Rank.Silver, 30,
+        Rank.Gold, 60,
+        Rank.Platinum, 90,
+        Rank.Diamond, 150,
+        Rank.Legendary, 210
+    );
+
     public User() {
     }
-
-    public User(String userId, String userName, String password, String userType) {
-        this.userId = userId;
-        this.userName = userName;
-        this.password = password;
-        setUserTypeString(userType);
-    }
-
 
     //getters and setters
     public String getUserId() {
@@ -38,10 +66,10 @@ public class User {
         userId = Id;
     }
     public String getUserName() {
-        return userName;
+        return username;
     }
     public void setUserName(String name) {
-        userName = name;
+        username = name;
     }
     public String getPassword() {
         return password;
@@ -71,4 +99,49 @@ public class User {
         }
         this.userType = null;
     }
+    public int getScore() {
+        return score;
+    }
+    public void addToScore(int points) {
+        score += points;
+    }
+
+    public String getMissions() {
+        return missions;
+    }
+    public void addMission(String id) {
+        if (missions.isEmpty()) {
+            missions = id;
+        } else {
+            missions = missions.concat("," + id);
+        }
+    }
+    public void emptyMissions() {
+        missions = "";
+    }
+    public void checkFields() {
+        if (missions == null) {
+            missions = "";
+        }
+    }
+
+    
+    public Rank getRank() {
+        if (score < 15) {
+            return Rank.Copper;
+        } else if (score < 30) {
+            return Rank.Bronze;
+        } else if (score < 60) {
+            return Rank.Silver;
+        } else if (score < 90) {
+            return Rank.Gold;
+        } else if (score < 150) {
+            return Rank.Platinum;
+        } else if (score < 210) {
+            return Rank.Diamond;
+        } else {
+            return Rank.Legendary;
+        }
+    }
+
 }
