@@ -186,10 +186,13 @@ public class TracerController {
     @GetMapping("/verify-claim")
     public String verifyClaimForm(@RequestParam String claimId, Model model) {
         model.addAttribute("claimId", claimId);
-        
+        Claims claim = claimRepository.findById(claimId).orElse(null);
+        if (claim != null) {
+            model.addAttribute("productId", claim.getProductId());
+    }
+
         // Fetch all actual evidence records from the PostgreSQL database
         Iterable<Evidence> evidenceFromDb = evidenceRepository.findAll();
-        
         // Pass the database records to the HTML page
         model.addAttribute("evidenceList", evidenceFromDb);
         return "verify-claim";
@@ -368,6 +371,7 @@ public String resolveIssue(@RequestParam Long reportId) {
                         
                         Claims c = new Claims(
                             claimRow[0].toString(), // claimId
+                            //claimRow[1].toString(), // productId
                             claimRow[3].toString(), // type
                             claimRow[4].toString(), // text
                             claimRow[5].toString(), // confidence
@@ -494,6 +498,7 @@ public String resolveIssue(@RequestParam Long reportId) {
                         
                         Claims c = new Claims(
                             claimRow[0].toString(), // claimId
+                            // claimRow[1].toString(), // productId
                             claimRow[3].toString(), // type
                             claimRow[4].toString(), // text
                             claimRow[5].toString(), // confidence
