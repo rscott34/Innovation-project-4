@@ -371,12 +371,12 @@ public String resolveIssue(@RequestParam Long reportId) {
                         
                         Claims c = new Claims(
                             claimRow[0].toString(), // claimId
-                            //claimRow[1].toString(), // productId
                             claimRow[3].toString(), // type
                             claimRow[4].toString(), // text
                             claimRow[5].toString(), // confidence
                             claimRow[6].toString()  // rationale
                         );
+                        c.setProductId(userInput); // set the productId
 
                         if (evidenceData != null) {
                             for (int j = 0; j < evidenceData.length; j++) {
@@ -498,12 +498,12 @@ public String resolveIssue(@RequestParam Long reportId) {
                         
                         Claims c = new Claims(
                             claimRow[0].toString(), // claimId
-                            // claimRow[1].toString(), // productId
                             claimRow[3].toString(), // type
                             claimRow[4].toString(), // text
                             claimRow[5].toString(), // confidence
                             claimRow[6].toString()  // rationale
                         );
+                        c.setProductId(userInput); // set the productId
 
                         if (evidenceData != null) {
                             for (int j = 0; j < evidenceData.length; j++) {
@@ -601,6 +601,7 @@ public String resolveIssue(@RequestParam Long reportId) {
                             claimRow[5].toString(), // confidence
                             claimRow[6].toString()  // rationale
                         );
+                        c.setProductId(userInput); // set the productId
 
                         if (evidenceData != null) {
                             for (int j = 0; j < evidenceData.length; j++) {

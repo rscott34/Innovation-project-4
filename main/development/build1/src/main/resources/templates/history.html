@@ -1,47 +1,95 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Change History</title>
-    <link rel="stylesheet" th:href="@{/style.css}">
+    <title>soucr — Change History</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['DM Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
-    <div class="header">
-        <h1>Database Change Log</h1>
-    </div>
+<body class="min-h-screen text-gray-100" style="background: radial-gradient(ellipse at top left, rgba(34,197,94,0.15) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(34,197,94,0.08) 0%, transparent 50%), #0a0f0a;">
 
-    <div class="history-container">
-        <div class="back-button">
-            <a href="/"><button>← Back to Search</button></a>
+    <!-- Navbar -->
+    <nav class="top-0 z-50">
+        <div class="max-w-6xl mx-auto px-6 h-16 grid grid-cols-3 items-center">
+            <div>
+                <a href="/"><img th:src="@{/assets/favicon.png}" alt="soucr" class="h-8 w-auto"></a>
+            </div>
+            <div></div>
+            <div class="flex items-center justify-end">
+                <a href="/" class="px-4 py-2 text-sm font-semibold text-white hover:text-brand-400 transition-all">
+                    <span class="text-brand-400">←</span> Back
+                </a>
+            </div>
         </div>
-        <table class="history-table">
-            <thead>
-                <tr>
-                    <th>Entity Type</th>
-                    <th>Entity ID</th>
-                    <th>Changed By</th>
-                    <th>Timestamp</th>
-                    <th>Change Summary</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="log : ${logs}">
-                    <td th:text="${log.entityType}">Stage</td>
-                    <td th:text="${log.entityId}">S001</td>
-                    <td th:text="${log.changedBy}">admin</td>
-                    <td th:text="${log.timestamp}">2024-01-01</td>
-                    <td th:text="${log.changeSummary}">Updated location</td>
-                </tr>
-            </tbody>
-        </table>
-        <div th:if="${logs == null or #lists.isEmpty(logs)}" class="empty-state">
-            <p>No change log entries found.</p>
+    </nav>
+
+    <main class="max-w-6xl mx-auto px-6 py-12">
+
+        <!-- Header -->
+        <div class="mb-8">
+            <div class="flex items-center gap-3 mb-2">
+                <i class="fas fa-clock-rotate-left text-brand-400"></i>
+                <h1 class="text-2xl font-bold text-white">Change Log</h1>
+            </div>
+            <p class="text-gray-400 text-sm">A record of all edits made by verifiers.</p>
         </div>
-    </div>
-    <footer>
-        <p>This is an educational prototype, do not trust the official certifications for synthetic data</p>
+        <!-- Empty State -->
+        <div th:if="${logs == null or #lists.isEmpty(logs)}" class="py-20 text-center">
+            <i class="fas fa-clock-rotate-left text-gray-700 text-5xl mb-4"></i>
+            <p class="text-gray-400">No change log entries found.</p>
+        </div>
+        <!-- Log Table -->
+        <div th:if="${logs != null and not #lists.isEmpty(logs)}" class="rounded-2xl bg-white/5 border border-white/10 overflow-hidden">
+            <table class="w-full text-sm">
+                <thead>
+                    <tr class="border-b border-white/5">
+                        <th class="text-left px-6 py-3 text-xs text-gray-500 uppercase tracking-widest">Entity Type</th>
+                        <th class="text-left px-6 py-3 text-xs text-gray-500 uppercase tracking-widest">Entity ID</th>
+                        <th class="text-left px-6 py-3 text-xs text-gray-500 uppercase tracking-widest">Changed By</th>
+                        <th class="text-left px-6 py-3 text-xs text-gray-500 uppercase tracking-widest">Timestamp</th>
+                        <th class="text-left px-6 py-3 text-xs text-gray-500 uppercase tracking-widest">Change Summary</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="log : ${logs}" class="border-b border-white/5 last:border-0 hover:bg-white/5 transition-all">
+                        <td class="px-6 py-4">
+                            <span class="px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 text-xs font-semibold" th:text="${log.entityType}">Stage</span>
+                        </td>
+                        <td class="px-6 py-4 text-white font-medium" th:text="${log.entityId}">S001</td>
+                        <td class="px-6 py-4 text-gray-300" th:text="${log.changedBy}">admin</td>
+                        <td class="px-6 py-4 text-gray-400 text-xs" th:text="${log.timestamp}">2024-01-01</td>
+                        <td class="px-6 py-4 text-gray-300" th:text="${log.changeSummary}">Updated location</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/5 mt-16 py-8 text-center">
+        <p class="text-xs text-gray-600">This is an educational prototype — do not trust official certifications for synthetic data.</p>
     </footer>
+
 </body>
 </html>

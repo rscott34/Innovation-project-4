@@ -1,368 +1,376 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Tracer Input</title>
-    <link rel="stylesheet" th:href="@{/style.css}">
+    <title>soucr — Compare</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['DM Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
-</head> 
-<body>
-    <div class="navbar">
-        <div class="navbar-left">
-            <a href="/questions/generate"><button>Question</button></a>
-            <form th:if="${productFound != null && productFound == true}" action="/submit" method="post" style="display: inline;">
-                <input type="hidden" name="questionGenerated" value="false">
-                <input type="hidden" name="userAnswer">
-                <input type="hidden" name="userInput" th:value="${userInput}"/>
-                <button type="submit">Simple View</button>
-            </form>
-            <form th:if="${productFound == null || productFound == false}" action="/" method="get">
-                <button type="submit">Simple View</button>
-            </form>
-        </div>
-        <div class="navbar-right">
-            <span th:if="${role == 'guest'}">
-                <a href="/login"><button>Login as Verifier</button></a>
-            </span>
-            <span th:if="${role == 'verifier'}">
-                Logged in as Verifier 
-                <a href="/history"><button>View History</button></a>
-                <a href="/logout"><button>Logout</button></a>
-            </span>
-        </div>
-    </div>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="min-h-screen text-gray-100" style="background: radial-gradient(ellipse at top left, rgba(34,197,94,0.15) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(34,197,94,0.08) 0%, transparent 50%), #0a0f0a;">
 
-    <div class="logo-container">
-        <img th:src="@{/assets/InnovationLogo.png}" alt="Tracer Logo" class="site-logo">
-    </div>
-
-    <div class="split">
-        <div class = "split-column">
-            <div class="header">
-                <h1>Enter Product ID</h1>
+    <!-- Navbar -->
+    <nav class="top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 h-16 grid grid-cols-3 items-center">
+            <div>
+                <a href="/"><img th:src="@{/assets/favicon.png}" alt="soucr" class="h-8 w-auto"></a>
             </div>
-
-            
-            
-            <div class="search">
-                <form action="/compare/submit" method="post">
-                    <input type="text" name="userInput" placeholder="e.g. P100" required/>
-                    <input type="hidden" name="userInput2" th:value="${userInput2}"/>
-                    <button type="submit">Send</button>
-                </form>
-            </div>
-            <main th:if="${productFound != null && productFound == true}"> 
-                <div class="product-section" >
-                    <h2 class="section-header">Product Information</h2>
-                    <div class="info">
-                        <span class="label"> <b>Product ID:</b></span>
-                        <span class="value" th:text="${p.getProductId()}">P100</span>
-                    </div>
-                    <div class="info">
-                        <span class="label"><b>Name:</b></span>
-                        <span class="value" th:text="${p.getName()}">P100</span>
-                    </div>
-                    <div class="info">
-                        <span class="label"><b>Category:</b></span>
-                        <span class="value" th:text="${p.getCategoryText()}">P100</span>
-                    </div>
-                    <div class="info">
-                        <span class="label"><b>Brand:</b></span>
-                        <span class="value" th:text="${p.getBrand()}">P100</span>
-                    </div>
-                    <div class="info">
-                        <span class="label"><b>Description:</b></span>
-                        <span class="value" th:text="${p.getDescription()}">P100</span>
-                    </div>
-                    <div class="info">
-                        <details class="evidence-section">
-                            <summary><b>View Ingredient Breakdown</b></summary>
-                            <div class="evidence-card">
-                                <div th:if="${shares1 == null or #lists.isEmpty(shares1)}" class="evidence-info">
-                                    <span><b>Notice:</b></span>
-                                    <span>No ingredient data available for this product.</span>
-                                </div>
-                                <div th:if="${shares1 != null and not #lists.isEmpty(shares1)}">
-                                    <div style="max-width: 480px; margin: 0 auto;">
-                                        <canvas id="ingredientChart1"></canvas>
-                                    </div>
-                                    <div id="chart-data1">
-                                        <span th:each="share : ${shares1}"
-                                            th:data-label="${share[2]}"
-                                            th:data-value="${share[4]}"
-                                            th:data-origin="${share[1]}"
-                                            th:data-country="${share[3]}"
-                                            class="chart-item">
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </details>
-                    </div>
-                </div>
-                <div class="traceability-section" th:if="${hasStages != null && hasStages == true}">
-                    <h2 class="section-header">Traceability Stages</h2>
-                    <div class="stage-card" th:each="stage, iterStat : ${stages}">
-                        <div th:if="${role == 'verifier'}" style="margin-top: 10px;">
-                            <a th:href="@{/edit-stage(stageId=${stage[0]})}"><button>Edit Product Stage</button></a>
-                        </div>
-                        <h3>Stage <span th:text="${iterStat.count}">1</span></h3>
-                        <div class="stage-info">
-                            <span><b>Stage ID:</b></span>
-                            <span th:text="${stage[0]}">S1-001</span>
-                        </div>
-                        <div class="stage-info">
-                            <span><b>Stage Type:</b></span>
-                            <span th:text="${stage[1]}">Manufacturing</span>
-                        </div>
-                        <div class="stage-info">
-                            <span><b>Location:</b></span>
-                            <span th:text="${stage[2]}">Italy</span>
-                        </div>
-                        <div class="stage-info">
-                            <span><b>Start Date:</b></span>
-                            <span th:text="${stage[3]}">2024-01-01</span>
-                        </div>
-                        <div class="stage-info">
-                            <span><b>Description:</b></span>
-                            <span th:text="${stage[5]}">Description of the stage</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="claim-section section" th:if="${hasClaims == true}">
-                    <h2 class="section-header">Claims and Evidence</h2>
-                    <div class="claim-card" th:each="claim, claimStat : ${claimsList}"> 
-                        <h3>Claim <span th:text="${claimStat.count}">1</span></h3>
-                        
-                        <div th:if="${role == 'verifier'}" style="margin-top: 10px;">
-                            <a th:href="@{/verify-claim(claimId=${claim.claimId})}"><button>Verify Claim</button></a>
-                        </div>
-                        <div class="stage-info">
-                            <span><b>Claim ID:</b></span>
-                            <span th:text="${claim.claimId}"></span>
-                        </div>
-                        <div class="stage-info">
-                            <span><b>Claim Type:</b></span>
-                            <span th:text="${claim.claimType}"></span>
-                        </div>
-                        <div class="stage-info">
-                            <span><b>Text:</b></span>
-                            <span th:text="${claim.claimText}"></span>
-                        </div>
-                        <div class="stage-info">
-                            <span><b>Confidence:</b></span>
-                            <span th:text="${claim.confidenceLabelText}"></span>
-                        </div>
-                        <div class="stage-info">
-                            <span><b>Rationale:</b></span>
-                            <span th:text="${claim.rationale}"></span>
-                        </div>
-                        <details class="evidence-section" th:each="ev : ${claim.getListOfEvidenceDetails()}">
-                            <summary><b>View Evidence</b></summary>
-                            <div class="evidence-card">
-                                <div class="evidence-info">
-                                    <span><b>Evidence Id:</b></span>
-                                    <span th:text="${ev[0]}"></span>
-                                </div>
-                                <div class="evidence-info">
-                                    <span><b>Evidence Type:</b></span>
-                                    <span th:text="${ev[1]}"></span>
-                                </div>
-                                <div class="evidence-info">
-                                    <span><b>Issuer:</b></span>
-                                    <span th:text="${ev[2]}"></span>
-                                </div>
-                                <div class="evidence-info">
-                                    <span><b>Date:</b></span>
-                                    <span th:text="${ev[3]}"></span>
-                                </div>
-                                <div class="evidence-info">
-                                    <span><b>Summary:</b></span>
-                                    <span th:text="${ev[4]}"></span>
-                                </div>
-                                <div class="evidence-info">
-                                    <span><b>Certification Image:</b></span>
-                                    <div class="evidence-image">
-                                        <img th:src="${ev[5]}" alt="Evidence Image">
-                                    </div>
-                                </div>
-                            </div>
-                        </details>
-                    </div>
-                </div>
-            </main>
-            <div class="error-card" th:if="${productFound != null && productFound == false}">
-                <p th:text="${errorMessage}">Error message</p>
-            </div>
-        </div>
-
-        <div class = "split-column">
-            <div class="header">
-                <h1>Enter Product ID</h1>
-            </div>
-
-            
-            
-            <div class="search">
-                <form action="/compare/submit" method="post">
+            <div class="flex items-center justify-center gap-1">
+                <a href="/questions/generate" class="px-4 py-2 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-white/10 transition-all">Question</a>
+                <a href="/contact" class="px-4 py-2 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-white/10 transition-all">Contact</a>
+                <form action="/submit" method="post" th:if="${productFound != null && productFound == true}">
+                    <input type="hidden" name="questionGenerated" value="false"/>
+                    <input type="hidden" name="userAnswer" value=""/>
                     <input type="hidden" name="userInput" th:value="${userInput}"/>
-                    <input type="text" name="userInput2" placeholder="e.g. P100" required/>
-                    <button type="submit">Send</button>
+                    <button type="submit" class="px-4 py-2 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-white/10 transition-all">Single View</button>
+                </form>
+                <form action="/" method="get" th:if="${productFound == null || productFound == false}">
+                    <button type="submit" class="px-4 py-2 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-white/10 transition-all">Single View</button>
                 </form>
             </div>
-            <main th:if="${productFound2 != null && productFound2 == true}"> 
-                <div class="product-section" >
-                    <h2 class="section-header">Product Information</h2>
-                    <div class="info">
-                        <span class="label"> <b>Product ID:</b></span>
-                        <span class="value" th:text="${p2.getProductId()}">P100</span>
-                    </div>
-                    <div class="info">
-                        <span class="label"><b>Name:</b></span>
-                        <span class="value" th:text="${p2.getName()}">P100</span>
-                    </div>
-                    <div class="info">
-                        <span class="label"><b>Category:</b></span>
-                        <span class="value" th:text="${p2.getCategoryText()}">P100</span>
-                    </div>
-                    <div class="info">
-                        <span class="label"><b>Brand:</b></span>
-                        <span class="value" th:text="${p2.getBrand()}">P100</span>
-                    </div>
-                    <div class="info">
-                        <span class="label"><b>Description:</b></span>
-                        <span class="value" th:text="${p2.getDescription()}">P100</span>
-                    </div>
-                    <div class="info">
-                        <details class="evidence-section">
-                            <summary><b>View Ingredient Breakdown</b></summary>
-                            <div class="evidence-card">
-                                <div th:if="${shares2 == null or #lists.isEmpty(shares2)}" class="evidence-info">
-                                    <span><b>Notice:</b></span>
-                                    <span>No ingredient data available for this product.</span>
-                                </div>
-                                <div th:if="${shares2 != null and not #lists.isEmpty(shares2)}">
-                                    <div style="max-width: 480px; margin: 0 auto;">
-                                        <canvas id="ingredientChart2"></canvas>
-                                    </div>
-                                    <div id="chart-data2">
-                                        <span th:each="share : ${shares2}"
-                                            th:data-label="${share[2]}"
-                                            th:data-value="${share[4]}"
-                                            th:data-origin="${share[1]}"
-                                            th:data-country="${share[3]}"
-                                            class="chart-item">
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </details>
-                    </div>
-                </div>
-                <div class="traceability-section" th:if="${hasStages2 != null && hasStages2 == true}">
-                    <h2 class="section-header">Traceability Stages</h2>
-                    <div class="stage-card" th:each="stage, iterStat : ${stages2}">
-                        <div th:if="${role == 'verifier'}" style="margin-top: 10px;">
-                            <a th:href="@{/edit-stage(stageId=${stage[0]})}"><button>Edit Product Stage</button></a>
-                        </div>
-                        <h3>Stage <span th:text="${iterStat.count}">1</span></h3>
-                        <div class="stage-info">
-                            <span><b>Stage ID:</b></span>
-                            <span th:text="${stage[0]}">S1-001</span>
-                        </div>
-                        <div class="stage-info">
-                            <span><b>Stage Type:</b></span>
-                            <span th:text="${stage[1]}">Manufacturing</span>
-                        </div>
-                        <div class="stage-info">
-                            <span><b>Location:</b></span>
-                            <span th:text="${stage[2]}">Italy</span>
-                        </div>
-                        <div class="stage-info">
-                            <span><b>Start Date:</b></span>
-                            <span th:text="${stage[3]}">2024-01-01</span>
-                        </div>
-                        <div class="stage-info">
-                            <span><b>Description:</b></span>
-                            <span th:text="${stage[5]}">Description of the stage</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="claim-section section" th:if="${hasClaims2 == true}">
-                    <h2 class="section-header">Claims and Evidence</h2>
-                    <div class="claim-card" th:each="claim, claimStat : ${claimsList2}"> 
-                        <h3>Claim <span th:text="${claimStat.count}">1</span></h3>
-                        
-                        <div th:if="${role == 'verifier'}" style="margin-top: 10px;">
-                            <a th:href="@{/verify-claim(claimId=${claim.claimId})}"><button>Verify Claim</button></a>
-                        </div>
-                        <div class="stage-info">
-                            <span><b>Claim ID:</b></span>
-                            <span th:text="${claim.claimId}"></span>
-                        </div>
-                        <div class="stage-info">
-                            <span><b>Claim Type:</b></span>
-                            <span th:text="${claim.claimType}"></span>
-                        </div>
-                        <div class="stage-info">
-                            <span><b>Text:</b></span>
-                            <span th:text="${claim.claimText}"></span>
-                        </div>
-                        <div class="stage-info">
-                            <span><b>Confidence:</b></span>
-                            <span th:text="${claim.confidenceLabelText}"></span>
-                        </div>
-                        <div class="stage-info">
-                            <span><b>Rationale:</b></span>
-                            <span th:text="${claim.rationale}"></span>
-                        </div>
-                        <details class="evidence-section" th:each="ev : ${claim.getListOfEvidenceDetails()}">
-                            <summary><b>View Evidence</b></summary>
-                            <div class="evidence-card">
-                                <div class="evidence-info">
-                                    <span><b>Evidence Id:</b></span>
-                                    <span th:text="${ev[0]}"></span>
-                                </div>
-                                <div class="evidence-info">
-                                    <span><b>Evidence Type:</b></span>
-                                    <span th:text="${ev[1]}"></span>
-                                </div>
-                                <div class="evidence-info">
-                                    <span><b>Issuer:</b></span>
-                                    <span th:text="${ev[2]}"></span>
-                                </div>
-                                <div class="evidence-info">
-                                    <span><b>Date:</b></span>
-                                    <span th:text="${ev[3]}"></span>
-                                </div>
-                                <div class="evidence-info">
-                                    <span><b>Summary:</b></span>
-                                    <span th:text="${ev[4]}"></span>
-                                </div>
-                                <div class="evidence-info">
-                                    <span><b>Certification Image:</b></span>
-                                    <div class="evidence-image">
-                                        <img th:src="${ev[5]}" alt="Evidence Image">
-                                    </div>
-                                </div>
-                            </div>
-                        </details>
-                    </div>
-                </div>
-            </main>
-            <div class="error-card" th:if="${productFound2 != null && productFound2 == false}">
-                <p th:text="${errorMessage2}">Error message</p>
+            <div class="flex items-center justify-end gap-3">
+                <span th:if="${role == 'guest'}">
+                    <a href="/login" class="px-4 py-2 text-sm font-semibold text-white hover:text-brand-400 transition-all">
+                        Login <span class="text-brand-400">→</span>
+                    </a>
+                </span>
+                <span th:if="${role == 'verifier'}" class="flex items-center gap-3">
+                    <span class="px-3 py-1 rounded-full bg-brand-500/20 border border-brand-500/30 text-brand-400 text-xs font-semibold">Verifier</span>
+                    <a href="/history" class="text-sm text-gray-300 hover:text-white transition-all">History</a>
+                    <a href="/logout" class="text-sm text-gray-300 hover:text-white transition-all">Logout</a>
+                </span>
             </div>
         </div>
-    </div>
+    </nav>
 
-    <footer>
-        <p>This is an educational prototype, do not trust the official certifications for synthetic data</p>
+    <main class="max-w-7xl mx-auto px-6 py-12">
+
+        <!-- Two column split -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+            <!-- ===== LEFT COLUMN ===== -->
+            <div class="space-y-6">
+                <h2 class="text-lg font-semibold text-white">Product 1</h2>
+
+                <!-- Search -->
+                <form action="/compare/submit" method="post" class="flex gap-3">
+                    <div class="relative flex-1">
+                        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-sm"></i>
+                        <input type="text" name="userInput" placeholder="e.g. P001"
+                               class="w-full pl-11 pr-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none text-sm"/>
+                    </div>
+                    <input type="hidden" name="userInput2" th:value="${userInput2}"/>
+                    <button type="submit" class="px-5 py-3 rounded-xl bg-brand-500 hover:bg-brand-600 text-white font-semibold text-sm transition-all">Search</button>
+                </form>
+
+                <!-- Error -->
+                <div th:if="${productFound != null && productFound == false}" class="flex items-center gap-3 p-4 rounded-2xl bg-red-500/10 border border-red-500/20 text-sm">
+                    <i class="fas fa-circle-exclamation text-red-400"></i>
+                    <p class="text-red-300" th:text="${errorMessage}"></p>
+                </div>
+
+                <!-- Product Results -->
+                <div th:if="${productFound != null && productFound == true}" class="space-y-4">
+
+                    <!-- Product Info -->
+                    <div class="rounded-2xl bg-white/5 border border-white/10 overflow-hidden">
+                        <div class="flex items-center justify-between px-5 py-3 border-b border-white/5">
+                            <div class="flex items-center gap-2">
+                                <i class="fas fa-box text-brand-400 text-xs"></i>
+                                <h3 class="font-semibold text-white text-sm">Product Information</h3>
+                            </div>
+                        </div>
+                        <div class="p-5 grid grid-cols-2 gap-3 text-sm">
+                            <div>
+                                <p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Product ID</p>
+                                <p class="text-white font-medium" th:text="${p.getProductId()}"></p>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Name</p>
+                                <p class="text-white font-medium" th:text="${p.getName()}"></p>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Category</p>
+                                <p class="text-white font-medium" th:text="${p.getCategoryText()}"></p>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Brand</p>
+                                <p class="text-white font-medium" th:text="${p.getBrand()}"></p>
+                            </div>
+                            <div class="col-span-2">
+                                <p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Description</p>
+                                <p class="text-white font-medium" th:text="${p.getDescription()}"></p>
+                            </div>
+                        </div>
+
+                        <!-- Ingredient Breakdown -->
+                        <div class="border-t border-white/5">
+                            <details class="group">
+                                <summary class="flex items-center justify-between px-5 py-3 cursor-pointer hover:bg-white/5 transition-all text-sm">
+                                    <div class="flex items-center gap-2">
+                                        <i class="fas fa-chart-pie text-blue-400 text-xs"></i>
+                                        <span class="font-medium text-white">Ingredient Breakdown</span>
+                                    </div>
+                                    <i class="fas fa-chevron-down text-gray-500 text-xs group-open:rotate-180 transition-transform"></i>
+                                </summary>
+                                <div class="px-5 pb-5">
+                                    <div th:if="${shares1 == null or #lists.isEmpty(shares1)}" class="text-gray-400 text-sm">No ingredient data available.</div>
+                                    <div th:if="${shares1 != null and not #lists.isEmpty(shares1)}">
+                                        <div class="max-w-xs mx-auto"><canvas id="ingredientChart1"></canvas></div>
+                                        <div id="chart-data1">
+                                            <span th:each="share : ${shares1}" th:data-label="${share[2]}" th:data-value="${share[4]}" th:data-origin="${share[1]}" th:data-country="${share[3]}" class="chart-item hidden"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </details>
+                        </div>
+                    </div>
+
+                    <!-- Stages -->
+                    <div th:if="${hasStages != null && hasStages == true}" class="rounded-2xl bg-white/5 border border-white/10 overflow-hidden">
+                        <div class="flex items-center gap-2 px-5 py-3 border-b border-white/5">
+                            <i class="fas fa-route text-purple-400 text-xs"></i>
+                            <h3 class="font-semibold text-white text-sm">Stages</h3>
+                        </div>
+                        <div class="p-5 space-y-3">
+                            <div th:each="stage, iterStat : ${stages}" class="p-3 rounded-xl bg-white/5 border border-white/5 text-sm">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 text-xs font-semibold" th:text="${stage[1]}">Type</span>
+                                    <div th:if="${role == 'verifier'}">
+                                        <a th:href="@{/edit-stage(stageId=${stage[0]})}" class="text-xs text-gray-400 hover:text-white border border-white/10 px-2 py-1 rounded-lg transition-all">
+                                            <i class="fas fa-pen text-xs"></i> Edit
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <div><p class="text-xs text-gray-500 mb-0.5">Location</p><p class="text-white" th:text="${stage[2]}"></p></div>
+                                    <div><p class="text-xs text-gray-500 mb-0.5">Start Date</p><p class="text-white" th:text="${stage[3]}"></p></div>
+                                    <div class="col-span-2"><p class="text-xs text-gray-500 mb-0.5">Description</p><p class="text-gray-300" th:text="${stage[5]}"></p></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Claims -->
+                    <div th:if="${hasClaims == true}" class="rounded-2xl bg-white/5 border border-white/10 overflow-hidden">
+                        <div class="flex items-center gap-2 px-5 py-3 border-b border-white/5">
+                            <i class="fas fa-certificate text-amber-400 text-xs"></i>
+                            <h3 class="font-semibold text-white text-sm">Claims & Evidence</h3>
+                        </div>
+                        <div class="p-5 space-y-3">
+                            <div th:each="claim, claimStat : ${claimsList}" class="rounded-xl border border-white/5 overflow-hidden">
+                                <div class="flex items-center justify-between p-3 bg-white/5">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-xs text-gray-500">Claim <span th:text="${claimStat.count}">1</span></span>
+                                        <span class="px-2 py-0.5 rounded-full text-xs font-semibold"
+                                              th:classappend="${claim.confidenceLabelText == 'Verified'} ? 'bg-brand-500/20 text-brand-400' : 'bg-red-500/20 text-red-400'"
+                                              th:text="${claim.confidenceLabelText}"></span>
+                                    </div>
+                                    <div th:if="${role == 'verifier'}">
+                                        <a th:href="@{/verify-claim(claimId=${claim.claimId})}" class="text-xs text-gray-400 hover:text-white border border-white/10 px-2 py-1 rounded-lg transition-all">Verify</a>
+                                    </div>
+                                </div>
+                                <div class="p-3 grid grid-cols-2 gap-2 text-sm">
+                                    <div><p class="text-xs text-gray-500 mb-0.5">Type</p><p class="text-white" th:text="${claim.claimType}"></p></div>
+                                    <div class="col-span-2"><p class="text-xs text-gray-500 mb-0.5">Text</p><p class="text-white" th:text="${claim.claimText}"></p></div>
+                                    <div class="col-span-2"><p class="text-xs text-gray-500 mb-0.5">Rationale</p><p class="text-gray-300" th:text="${claim.rationale}"></p></div>
+                                </div>
+                                <details th:each="ev : ${claim.getListOfEvidenceDetails()}" class="group border-t border-white/5">
+                                    <summary class="flex items-center justify-between px-3 py-2 cursor-pointer hover:bg-white/5 text-xs text-gray-400 hover:text-white">
+                                        <div class="flex items-center gap-2"><i class="fas fa-file-lines text-xs"></i><span>View Evidence</span></div>
+                                        <i class="fas fa-chevron-down text-xs group-open:rotate-180 transition-transform"></i>
+                                    </summary>
+                                    <div class="px-3 pb-3 grid grid-cols-2 gap-2 text-xs">
+                                        <div><p class="text-gray-500 mb-0.5">Issuer</p><p class="text-white" th:text="${ev[2]}"></p></div>
+                                        <div><p class="text-gray-500 mb-0.5">Date</p><p class="text-white" th:text="${ev[3]}"></p></div>
+                                        <div class="col-span-2"><p class="text-gray-500 mb-0.5">Summary</p><p class="text-gray-300" th:text="${ev[4]}"></p></div>
+                                        <div th:if="${ev[5] != null && ev[5] != 'N/A'}" class="col-span-2">
+                                            <img th:src="${ev[5]}" alt="Evidence" class="max-h-24 rounded-lg border border-white/10">
+                                        </div>
+                                    </div>
+                                </details>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- ===== RIGHT COLUMN ===== -->
+            <div class="space-y-6">
+                <h2 class="text-lg font-semibold text-white">Product 2</h2>
+
+                <!-- Search -->
+                <form action="/compare/submit" method="post" class="flex gap-3">
+                    <input type="hidden" name="userInput" th:value="${userInput}"/>
+                    <div class="relative flex-1">
+                        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-sm"></i>
+                        <input type="text" name="userInput2" placeholder="e.g. P002"
+                               class="w-full pl-11 pr-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none text-sm"/>
+                    </div>
+                    <button type="submit" class="px-5 py-3 rounded-xl bg-brand-500 hover:bg-brand-600 text-white font-semibold text-sm transition-all">Search</button>
+                </form>
+
+                <!-- Error -->
+                <div th:if="${productFound2 != null && productFound2 == false}" class="flex items-center gap-3 p-4 rounded-2xl bg-red-500/10 border border-red-500/20 text-sm">
+                    <i class="fas fa-circle-exclamation text-red-400"></i>
+                    <p class="text-red-300" th:text="${errorMessage2}"></p>
+                </div>
+
+                <!-- Product Results -->
+                <div th:if="${productFound2 != null && productFound2 == true}" class="space-y-4">
+
+                    <!-- Product Info -->
+                    <div class="rounded-2xl bg-white/5 border border-white/10 overflow-hidden">
+                        <div class="flex items-center gap-2 px-5 py-3 border-b border-white/5">
+                            <i class="fas fa-box text-brand-400 text-xs"></i>
+                            <h3 class="font-semibold text-white text-sm">Product Information</h3>
+                        </div>
+                        <div class="p-5 grid grid-cols-2 gap-3 text-sm">
+                            <div>
+                                <p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Product ID</p>
+                                <p class="text-white font-medium" th:text="${p2.getProductId()}"></p>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Name</p>
+                                <p class="text-white font-medium" th:text="${p2.getName()}"></p>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Category</p>
+                                <p class="text-white font-medium" th:text="${p2.getCategoryText()}"></p>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Brand</p>
+                                <p class="text-white font-medium" th:text="${p2.getBrand()}"></p>
+                            </div>
+                            <div class="col-span-2">
+                                <p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Description</p>
+                                <p class="text-white font-medium" th:text="${p2.getDescription()}"></p>
+                            </div>
+                        </div>
+
+                        <!-- Ingredient Breakdown -->
+                        <div class="border-t border-white/5">
+                            <details class="group">
+                                <summary class="flex items-center justify-between px-5 py-3 cursor-pointer hover:bg-white/5 transition-all text-sm">
+                                    <div class="flex items-center gap-2">
+                                        <i class="fas fa-chart-pie text-blue-400 text-xs"></i>
+                                        <span class="font-medium text-white">Ingredient Breakdown</span>
+                                    </div>
+                                    <i class="fas fa-chevron-down text-gray-500 text-xs group-open:rotate-180 transition-transform"></i>
+                                </summary>
+                                <div class="px-5 pb-5">
+                                    <div th:if="${shares2 == null or #lists.isEmpty(shares2)}" class="text-gray-400 text-sm">No ingredient data available.</div>
+                                    <div th:if="${shares2 != null and not #lists.isEmpty(shares2)}">
+                                        <div class="max-w-xs mx-auto"><canvas id="ingredientChart2"></canvas></div>
+                                        <div id="chart-data2">
+                                            <span th:each="share : ${shares2}" th:data-label="${share[2]}" th:data-value="${share[4]}" th:data-origin="${share[1]}" th:data-country="${share[3]}" class="chart-item hidden"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </details>
+                        </div>
+                    </div>
+
+                    <!-- Stages -->
+                    <div th:if="${hasStages2 != null && hasStages2 == true}" class="rounded-2xl bg-white/5 border border-white/10 overflow-hidden">
+                        <div class="flex items-center gap-2 px-5 py-3 border-b border-white/5">
+                            <i class="fas fa-route text-purple-400 text-xs"></i>
+                            <h3 class="font-semibold text-white text-sm">Stages</h3>
+                        </div>
+                        <div class="p-5 space-y-3">
+                            <div th:each="stage, iterStat : ${stages2}" class="p-3 rounded-xl bg-white/5 border border-white/5 text-sm">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 text-xs font-semibold" th:text="${stage[1]}">Type</span>
+                                    <div th:if="${role == 'verifier'}">
+                                        <a th:href="@{/edit-stage(stageId=${stage[0]})}" class="text-xs text-gray-400 hover:text-white border border-white/10 px-2 py-1 rounded-lg transition-all">
+                                            <i class="fas fa-pen text-xs"></i> Edit
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <div><p class="text-xs text-gray-500 mb-0.5">Location</p><p class="text-white" th:text="${stage[2]}"></p></div>
+                                    <div><p class="text-xs text-gray-500 mb-0.5">Start Date</p><p class="text-white" th:text="${stage[3]}"></p></div>
+                                    <div class="col-span-2"><p class="text-xs text-gray-500 mb-0.5">Description</p><p class="text-gray-300" th:text="${stage[5]}"></p></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Claims -->
+                    <div th:if="${hasClaims2 == true}" class="rounded-2xl bg-white/5 border border-white/10 overflow-hidden">
+                        <div class="flex items-center gap-2 px-5 py-3 border-b border-white/5">
+                            <i class="fas fa-certificate text-amber-400 text-xs"></i>
+                            <h3 class="font-semibold text-white text-sm">Claims & Evidence</h3>
+                        </div>
+                        <div class="p-5 space-y-3">
+                            <div th:each="claim, claimStat : ${claimsList2}" class="rounded-xl border border-white/5 overflow-hidden">
+                                <div class="flex items-center justify-between p-3 bg-white/5">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-xs text-gray-500">Claim <span th:text="${claimStat.count}">1</span></span>
+                                        <span class="px-2 py-0.5 rounded-full text-xs font-semibold"
+                                              th:classappend="${claim.confidenceLabelText == 'Verified'} ? 'bg-brand-500/20 text-brand-400' : 'bg-red-500/20 text-red-400'"
+                                              th:text="${claim.confidenceLabelText}"></span>
+                                    </div>
+                                    <div th:if="${role == 'verifier'}">
+                                        <a th:href="@{/verify-claim(claimId=${claim.claimId})}" class="text-xs text-gray-400 hover:text-white border border-white/10 px-2 py-1 rounded-lg transition-all">Verify</a>
+                                    </div>
+                                </div>
+                                <div class="p-3 grid grid-cols-2 gap-2 text-sm">
+                                    <div><p class="text-xs text-gray-500 mb-0.5">Type</p><p class="text-white" th:text="${claim.claimType}"></p></div>
+                                    <div class="col-span-2"><p class="text-xs text-gray-500 mb-0.5">Text</p><p class="text-white" th:text="${claim.claimText}"></p></div>
+                                    <div class="col-span-2"><p class="text-xs text-gray-500 mb-0.5">Rationale</p><p class="text-gray-300" th:text="${claim.rationale}"></p></div>
+                                </div>
+                                <details th:each="ev : ${claim.getListOfEvidenceDetails()}" class="group border-t border-white/5">
+                                    <summary class="flex items-center justify-between px-3 py-2 cursor-pointer hover:bg-white/5 text-xs text-gray-400 hover:text-white">
+                                        <div class="flex items-center gap-2"><i class="fas fa-file-lines text-xs"></i><span>View Evidence</span></div>
+                                        <i class="fas fa-chevron-down text-xs group-open:rotate-180 transition-transform"></i>
+                                    </summary>
+                                    <div class="px-3 pb-3 grid grid-cols-2 gap-2 text-xs">
+                                        <div><p class="text-gray-500 mb-0.5">Issuer</p><p class="text-white" th:text="${ev[2]}"></p></div>
+                                        <div><p class="text-gray-500 mb-0.5">Date</p><p class="text-white" th:text="${ev[3]}"></p></div>
+                                        <div class="col-span-2"><p class="text-gray-500 mb-0.5">Summary</p><p class="text-gray-300" th:text="${ev[4]}"></p></div>
+                                        <div th:if="${ev[5] != null && ev[5] != 'N/A'}" class="col-span-2">
+                                            <img th:src="${ev[5]}" alt="Evidence" class="max-h-24 rounded-lg border border-white/10">
+                                        </div>
+                                    </div>
+                                </details>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/5 mt-16 py-8 text-center">
+        <p class="text-xs text-gray-600">This is an educational prototype — do not trust official certifications for synthetic data.</p>
     </footer>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
     <script th:src="@{/piechart.js}"></script>
 </body>
 </html>
-

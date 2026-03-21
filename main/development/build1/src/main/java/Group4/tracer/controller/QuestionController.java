@@ -74,13 +74,14 @@ public class QuestionController {
         
 
         if (isCorrect) {
-            int points = 0;
-
-            points = switch (mission.getDifficulty()) {
-                case Easy -> 5;
-                case Medium -> 10;
-                case Hard -> 20;
-            };
+            int points = 5; // default
+            if (mission.getDifficulty() != null) {
+                points = switch (mission.getDifficulty()) {
+                    case Easy -> 5;
+                    case Medium -> 10;
+                    case Hard -> 20;
+                };
+            }
             session.setAttribute("points", (int) session.getAttribute("points") + points);
             model.addAttribute("resultMessage", "Correct!");
             model.addAttribute("feedback", String.format("Well done! You scored %d points for this question!", points));

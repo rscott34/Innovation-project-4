@@ -8,6 +8,8 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Column;
+
 
 @Entity
 @Table(name = "claims")
@@ -20,6 +22,8 @@ public class Claims {
     private ConfidenceLevel confidenceLabel;
     private String rationale;
     private ArrayList<Evidence> evidence;
+    @Column(name = "product_id", insertable = false, updatable = false)
+    private String productId;
 
     public Claims() {
     }
@@ -116,5 +120,11 @@ public class Claims {
     }
     public int getNumEvidence() {
         return evidence.size();
+    }
+    public String getProductId() {
+        return productId;
+    }
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 }
