@@ -28,6 +28,7 @@ import Group4.tracer.model.issueReport;
 import Group4.tracer.repository.ChangeLogRepository;
 import Group4.tracer.repository.ClaimRepository;
 import Group4.tracer.repository.EvidenceRepository;
+import Group4.tracer.repository.ImageRepository;
 import Group4.tracer.repository.InputSharesRepository;
 import Group4.tracer.repository.IssueRepository;
 import Group4.tracer.repository.ProductRepository;
@@ -48,6 +49,8 @@ public class TracerController {
     @Autowired private InputSharesRepository inputSharesRepository;
     @Autowired private IssueRepository issueRepository;
     @Autowired private BCryptPasswordEncoder passwordEncoder;
+    @Autowired private ImageRepository imageRepository;
+
 
     //get mapping for login page  
     @GetMapping("/login")
@@ -419,8 +422,18 @@ public String resolveIssue(@RequestParam Long reportId) {
             Object[] traceData = stageRepository.findStageArray(userInput);
             Object[] claimData = claimRepository.findClaimArray(userInput);
             Object[] evidenceData = evidenceRepository.findEvidenceArray(userInput);
-
             List<Object[]> shares = inputSharesRepository.findInputSharesArray(userInput);
+
+            Object[] imageData = imageRepository.findImageArray(userInput);
+                        String productImagePath = "assets/default-product.png"; // Default fallback
+
+                        if (imageData != null && imageData.length > 0) {
+                            // Your repository returns Object[], so we access index 2 for file_location
+                            Object[] innerImageData = (Object[]) imageData[0];
+                            productImagePath = innerImageData[2].toString(); 
+                        }
+                        model.addAttribute("productImage", productImagePath);
+
             model.addAttribute("shares", shares);
 
             if (productData != null && productData.length > 0) { 

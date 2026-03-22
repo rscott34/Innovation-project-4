@@ -28,8 +28,8 @@ public class Evidence {
         this.date = date;
         this.summary = summary;
         this.fileReference = fileReference;
-        // **TO DO** - write stageLinked part (later)
     }
+    
     public Evidence(String id, String evidenceType, String issuer, String date, String summary, String fileReference) {
         evidenceId = id;
         this.evidenceType = evidenceType;
