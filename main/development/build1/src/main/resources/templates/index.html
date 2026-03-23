@@ -166,6 +166,12 @@
                         <p class="text-white font-medium" th:text="${p.getDescription()}"></p>
                     </div>
                 </div>
+                <div class="border-t border-white/5 px-6 py-4">
+                    <img th:src="@{'/assets/' + ${p.getProductId()} + '.png'}" 
+                        alt="Product Image" 
+                        class="max-h-48 object-contain rounded-xl border border-white/10"
+                        onerror="this.parentElement.style.display='none'">
+                </div>
                 <!-- Ingredient Breakdown -->
                 <div class="border-t border-white/5">
                     <details class="group">
