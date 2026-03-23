@@ -67,11 +67,9 @@
 
         <!-- Two column split -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-
             <!-- ===== LEFT COLUMN ===== -->
             <div class="space-y-6">
                 <h2 class="text-lg font-semibold text-white">Product 1</h2>
-
                 <!-- Search -->
                 <form action="/compare/submit" method="post" class="flex gap-3">
                     <div class="relative flex-1">
@@ -82,22 +80,19 @@
                     <input type="hidden" name="userInput2" th:value="${userInput2}"/>
                     <button type="submit" class="px-5 py-3 rounded-xl bg-brand-500 hover:bg-brand-600 text-white font-semibold text-sm transition-all">Search</button>
                 </form>
-
                 <!-- Error -->
                 <div th:if="${productFound != null && productFound == false}" class="flex items-center gap-3 p-4 rounded-2xl bg-red-500/10 border border-red-500/20 text-sm">
                     <i class="fas fa-circle-exclamation text-red-400"></i>
                     <p class="text-red-300" th:text="${errorMessage}"></p>
                 </div>
-
                 <!-- Product Results -->
                 <div th:if="${productFound != null && productFound == true}" class="space-y-4">
-
                     <!-- Product Info -->
                     <div class="rounded-2xl bg-white/5 border border-white/10 overflow-hidden">
                         <div class="flex items-center justify-between px-5 py-3 border-b border-white/5">
                             <div class="flex items-center gap-2">
                                 <i class="fas fa-box text-brand-400 text-xs"></i>
-                                <h3 class="font-semibold text-white text-sm">Product Information</h3>
+                                <h3 class="font-semibold text-white text-sm" th:text="${p.getName()}"></h3>
                             </div>
                         </div>
                         <div class="p-5 grid grid-cols-2 gap-3 text-sm">
@@ -106,23 +101,21 @@
                                 <p class="text-white font-medium" th:text="${p.getProductId()}"></p>
                             </div>
                             <div>
-                                <p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Name</p>
-                                <p class="text-white font-medium" th:text="${p.getName()}"></p>
+                                <p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Brand</p>
+                                <p class="text-white font-medium" th:text="${p.getBrand()}"></p>
                             </div>
                             <div>
                                 <p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Category</p>
                                 <p class="text-white font-medium" th:text="${p.getCategoryText()}"></p>
                             </div>
                             <div>
-                                <p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Brand</p>
-                                <p class="text-white font-medium" th:text="${p.getBrand()}"></p>
-                            </div>
-                            <div class="col-span-2">
                                 <p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Description</p>
                                 <p class="text-white font-medium" th:text="${p.getDescription()}"></p>
                             </div>
                         </div>
-
+                        <div class="border-t border-white/5 px-6 py-4">
+                            <img th:src="@{'/assets/productImgs/' + ${p.getProductId()} + '.png'}" alt="Product Image" class="max-h-48 object-contain rounded-xl border border-white/10" onerror="this.parentElement.style.display='none'">
+                        </div>
                         <!-- Ingredient Breakdown -->
                         <div class="border-t border-white/5">
                             <details class="group">
@@ -245,7 +238,7 @@
                     <div class="rounded-2xl bg-white/5 border border-white/10 overflow-hidden">
                         <div class="flex items-center gap-2 px-5 py-3 border-b border-white/5">
                             <i class="fas fa-box text-brand-400 text-xs"></i>
-                            <h3 class="font-semibold text-white text-sm">Product Information</h3>
+                            <h3 class="font-semibold text-white text-sm" th:text="${p2.getName()}"></h3>
                         </div>
                         <div class="p-5 grid grid-cols-2 gap-3 text-sm">
                             <div>
@@ -253,23 +246,21 @@
                                 <p class="text-white font-medium" th:text="${p2.getProductId()}"></p>
                             </div>
                             <div>
-                                <p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Name</p>
-                                <p class="text-white font-medium" th:text="${p2.getName()}"></p>
+                                <p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Brand</p>
+                                <p class="text-white font-medium" th:text="${p2.getBrand()}"></p>
                             </div>
                             <div>
                                 <p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Category</p>
                                 <p class="text-white font-medium" th:text="${p2.getCategoryText()}"></p>
                             </div>
                             <div>
-                                <p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Brand</p>
-                                <p class="text-white font-medium" th:text="${p2.getBrand()}"></p>
-                            </div>
-                            <div class="col-span-2">
                                 <p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Description</p>
                                 <p class="text-white font-medium" th:text="${p2.getDescription()}"></p>
                             </div>
                         </div>
-
+                        <div class="border-t border-white/5 px-6 py-4">
+                            <img th:src="@{'/assets/productImgs/' + ${p2.getProductId()} + '.png'}" alt="Product Image" class="max-h-48 object-contain rounded-xl border border-white/10" onerror="this.parentElement.style.display='none'">
+                        </div>
                         <!-- Ingredient Breakdown -->
                         <div class="border-t border-white/5">
                             <details class="group">
