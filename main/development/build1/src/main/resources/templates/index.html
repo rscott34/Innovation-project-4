@@ -101,7 +101,6 @@
                 </form>
             </div>
         </div>
-
         <!-- Hero Search -->
         <div class="text-center mb-12">
             <div th:if="${questionGenerated == false}">
@@ -135,7 +134,7 @@
                 <div class="flex items-center justify-between px-6 py-4 border-b border-white/5">
                     <div class="flex items-center gap-3">
                         <i class="fas fa-box text-brand-400"></i>
-                        <h2 class="font-semibold text-white">Product Information</h2>
+                        <h2 class="font-semibold text-white" th:text="${product.name}"></h2>
                     </div>
                     <div th:if="${role == 'verifier'}">
                         <a th:href="@{/edit-product(productId=${product.productId})}"
@@ -150,16 +149,12 @@
                         <p class="text-white font-medium" th:text="${p.getProductId()}"></p>
                     </div>
                     <div>
-                        <p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Name</p>
-                        <p class="text-white font-medium" th:text="${p.getName()}"></p>
+                        <p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Brand</p>
+                        <p class="text-white font-medium" th:text="${p.getBrand()}"></p>
                     </div>
                     <div>
                         <p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Category</p>
                         <p class="text-white font-medium" th:text="${p.getCategory()}"></p>
-                    </div>
-                    <div>
-                        <p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Brand</p>
-                        <p class="text-white font-medium" th:text="${p.getBrand()}"></p>
                     </div>
                     <div>
                         <p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Description</p>
