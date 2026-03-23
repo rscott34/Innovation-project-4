@@ -24,4 +24,7 @@ public interface UserRepository extends CrudRepository<User, String> {
     // Legendary has no upper bound
     @Query("SELECT u FROM User u WHERE u.score >= :floor ORDER BY u.score DESC LIMIT 20")
     List<User> findTop20Legendary(@Param("floor") int floor);
+
+    @Query("SELECT u FROM User u ORDER BY u.score DESC LIMIT 20")
+    List<User> findTop20All();
 }

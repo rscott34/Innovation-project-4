@@ -173,12 +173,7 @@ public class TracerController {
         model.addAttribute("pointsLeft", user.rankMax.get(rank) - user.getScore());
 
         //logic for getting top users
-        List<User> top;
-        if (rank == Rank.Legendary) {
-            top = userRepository.findTop20Legendary(min);
-        } else {
-            top = userRepository.findTop20InRange(min, max);
-        }
+        List<User> top = userRepository.findTop20All();
 
         model.addAttribute("leaderboard", top);
 
