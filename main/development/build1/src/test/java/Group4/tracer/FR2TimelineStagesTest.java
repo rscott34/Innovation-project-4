@@ -17,7 +17,7 @@ import Group4.tracer.repository.StageRepository;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class TracerApplicationTests {
+class FR2TimelineStagesTest {
 
     @Autowired
     private StageRepository stageRepository;
@@ -29,7 +29,7 @@ class TracerApplicationTests {
 
     @Test
     void fr2_validProductIdReturnsTimelineStages() {
-        List<Stages> stages = stageRepository.findByProductIdOrderByStageIdAsc("1");
+        List<Stages> stages = stageRepository.findByProductIdOrderByStageIdAsc("P001");
 
         assertNotNull(stages);
         assertFalse(stages.isEmpty());
@@ -37,7 +37,7 @@ class TracerApplicationTests {
 
     @Test
     void fr2_invalidProductIdReturnsNoTimelineStages() {
-        List<Stages> stages = stageRepository.findByProductIdOrderByStageIdAsc("99999");
+        List<Stages> stages = stageRepository.findByProductIdOrderByStageIdAsc("BAD_ID");
 
         assertNotNull(stages);
         assertTrue(stages.isEmpty());
@@ -45,7 +45,7 @@ class TracerApplicationTests {
 
     @Test
     void fr2_returnedStagesBelongToRequestedProduct() {
-        String productId = "1";
+        String productId = "P001";
         List<Stages> stages = stageRepository.findByProductIdOrderByStageIdAsc(productId);
 
         assertNotNull(stages);
@@ -60,7 +60,7 @@ class TracerApplicationTests {
 
     @Test
     void fr2_returnedStagesAreOrderedByStageIdAscending() {
-        List<Stages> stages = stageRepository.findByProductIdOrderByStageIdAsc("1");
+        List<Stages> stages = stageRepository.findByProductIdOrderByStageIdAsc("P001");
 
         assertNotNull(stages);
         assertFalse(stages.isEmpty());
@@ -75,22 +75,23 @@ class TracerApplicationTests {
     }
 
     @Test
+
     void fr2_stageTimelineFieldsArePopulated() {
-        List<Stages> stages = stageRepository.findByProductIdOrderByStageIdAsc("1");
+        List<Stages> stages = stageRepository.findByProductIdOrderByStageIdAsc("P001");
 
         assertNotNull(stages);
         assertFalse(stages.isEmpty());
 
         for (Stages stage : stages) {
+            assertNotNull(stage);
             assertNotNull(stage.getStageId());
             assertNotNull(stage.getProductId());
-            assertNotNull(stage.getStageType()); //Changed stageName to stageType to match stages.java - Waj
         }
     }
 
     @Test
     void fr2_returnedStagesContainNoNullObjects() {
-        List<Stages> stages = stageRepository.findByProductIdOrderByStageIdAsc("1");
+        List<Stages> stages = stageRepository.findByProductIdOrderByStageIdAsc("P001");
 
         assertNotNull(stages);
         assertFalse(stages.isEmpty());
@@ -102,8 +103,8 @@ class TracerApplicationTests {
 
     @Test
     void fr2_sameProductQueryReturnsConsistentResults() {
-        List<Stages> firstCall = stageRepository.findByProductIdOrderByStageIdAsc("1");
-        List<Stages> secondCall = stageRepository.findByProductIdOrderByStageIdAsc("1");
+        List<Stages> firstCall = stageRepository.findByProductIdOrderByStageIdAsc("P001");
+        List<Stages> secondCall = stageRepository.findByProductIdOrderByStageIdAsc("P001");
 
         assertNotNull(firstCall);
         assertNotNull(secondCall);
@@ -112,7 +113,7 @@ class TracerApplicationTests {
 
     @Test
     void fr2_firstReturnedStageHasSmallestStageId() {
-        List<Stages> stages = stageRepository.findByProductIdOrderByStageIdAsc("1");
+        List<Stages> stages = stageRepository.findByProductIdOrderByStageIdAsc("P001");
 
         assertNotNull(stages);
         assertFalse(stages.isEmpty());

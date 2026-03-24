@@ -26,6 +26,7 @@ public class Mission {
 
     public Mission() {
     }
+
     public Mission(String mission_id, String product_id, String tier, String question, String answer, String grading_type, String options, String feedback, String anchor) {
         this.missionId = mission_id;
         this.productId = product_id;
@@ -41,12 +42,15 @@ public class Mission {
     public String getQuestion() {
         return question;
     }
+
     public String getAnswer() {
         return answer;
     }
+
     public String getPassport() {
         return productId;
     }
+
     public String getExplanation() {
         return feedback;
     }
@@ -68,12 +72,13 @@ public class Mission {
                 return;
             }
         }
-        this.tier = null;
+        this.gradingType = null;
     }
 
     public GradingType getGradingType() {
         return gradingType;
     }
+
     public String getGradingTypeText() {
         if (gradingType == null) {
             return "null";
@@ -84,15 +89,18 @@ public class Mission {
     public MissionDifficulty getDifficulty() {
         return tier;
     }
+
     public String getDifficultyText() {
         if (tier == null) {
             return "null";
         }
         return tier.name();
     }
+
     public String getAnchor() {
         return anchor;
     }
+
     public String[] getOptions() {
         String[] shuffled = options.clone();
         List<String> list = Arrays.asList(shuffled);
