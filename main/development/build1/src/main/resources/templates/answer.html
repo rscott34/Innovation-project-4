@@ -82,6 +82,7 @@
             <input type="hidden" name="questionGenerated" value="false">
             <input type="hidden" name="userAnswer" value="">
             <input type="hidden" name="userInput" th:value="${passport}"/>
+            <input type="hidden" name="anchor" th:value="${anchor}"/>
             <button type="submit" class="w-full py-3.5 rounded-xl bg-brand-500 hover:bg-brand-600 text-white font-semibold transition-all">
                 View Product Passport
             </button>
@@ -92,18 +93,6 @@
     <!-- Footer -->
     <footer class="border-t border-white/5 mt-16 py-8 text-center">
         <p class="text-xs text-gray-600">This is an educational prototype — do not trust official certifications for synthetic data.</p>
-        <div class="passport-link">
-            <form action="/submit" method="post">
-                <input type="hidden" name="questionGenerated" value="false">
-                <input type="hidden" name="userAnswer">
-                <input type="hidden" name="userInput" th:value="${passport}"/>
-                <input type="hidden" name="anchor" th:value="${anchor}"/>
-                <button type="submit">View Passport</button>
-            </form>
-        </div>
-    </div>
-    <footer>
-        <p>This is an educational prototype, do not trust the official certifications for synthetic data</p>
     </footer>
 
 </body>
