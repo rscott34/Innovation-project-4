@@ -134,7 +134,7 @@
         <!-- Product Results -->
         <div th:if="${productFound != null && productFound == true}" class="space-y-6">
             <!-- Product Info Card -->
-            <div class="rounded-2xl bg-white/5 border border-white/10 card-glow overflow-hidden">
+            <div id="information" class="rounded-2xl bg-white/5 border border-white/10 card-glow overflow-hidden">
                 <div class="flex items-center justify-between px-6 py-4 border-b border-white/5">
                     <div class="flex items-center gap-3">
                         <i class="fas fa-box text-brand-400"></i>
@@ -169,7 +169,7 @@
                     <img th:src="@{'/assets/productImgs/' + ${p.getProductId()} + '.png'}" alt="Product Image" class="max-h-48 object-contain rounded-xl border border-white/10" onerror="this.parentElement.style.display='none'">
                 </div>
                 <!-- Ingredient Breakdown -->
-                <div class="border-t border-white/5">
+                <div id="origin" class="border-t border-white/5">
                     <details class="group">
                         <summary class="flex items-center justify-between px-6 py-4 cursor-pointer hover:bg-white/5 transition-all">
                             <div class="flex items-center gap-3">
@@ -201,7 +201,7 @@
                 </div>
             </div>
             <!-- Traceability Stages -->
-            <div th:if="${hasStages != null && hasStages == true}" class="rounded-2xl bg-white/5 border border-white/10 card-glow overflow-hidden">
+            <div id="stages" th:if="${hasStages != null && hasStages == true}" class="rounded-2xl bg-white/5 border border-white/10 card-glow overflow-hidden">
                 <div class="px-6 py-4 border-b border-white/5">
                     <div class="flex items-center gap-3">
                         <i class="fas fa-route text-purple-400"></i>
@@ -258,7 +258,7 @@
                 </div>
             </div>
             <!-- Claims and Evidence -->
-            <div th:if="${hasClaims == true}" class="rounded-2xl bg-white/5 border border-white/10 card-glow overflow-hidden">
+            <div id="claims" th:if="${hasClaims == true}" class="rounded-2xl bg-white/5 border border-white/10 card-glow overflow-hidden">
                 <div class="px-6 py-4 border-b border-white/5">
                     <div class="flex items-center gap-3">
                         <i class="fas fa-certificate text-amber-400"></i>
@@ -268,7 +268,7 @@
                         How do you know if a product claiming to be fair trade is or not? This view lets you see which claims retail companies make are authentic, which have been verified by a team of trusted verifiers.
                     </p>
                 </div>
-                <div class="p-6 space-y-4">
+                <div id="evidence" class="p-6 space-y-4">
                     <div th:each="claim, claimStat : ${claimsList}" class="rounded-xl border border-white/5 overflow-hidden">
                         <div class="flex items-center justify-between p-4 bg-white/5">
                             <div class="flex items-center gap-3">
@@ -366,11 +366,22 @@
     <script th:src="@{/piechart.js}"></script>
 
     <script th:inline="javascript">
-        const anchor = /*[[${anchor}]]*/ null;
-        if (anchor) {
+        document.addEventListener("DOMContentLoaded", function() {
+            const anchor = /*[[${anchor}]]*/ null;
+            if (!anchor) return;
+
             const el = document.getElementById(anchor.replace('#', ''));
-            if (el) el.scrollIntoView({ behavior: 'smooth' });
-        }
+            if (!el) return;
+
+            // Open any parent <details> elements (e.g. for #origin)
+            let parent = el.closest('details');
+            while (parent) {
+                parent.open = true;
+                parent = parent.parentElement.closest('details');
+            }
+
+            el.scrollIntoView({ behavior: 'smooth' });
+        });
     </script>
 
     <script th:inline="javascript">
