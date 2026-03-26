@@ -1,12 +1,12 @@
 package Group4.tracer.model;
 
 import Group4.tracer.enums.StageType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "Stages")
@@ -22,7 +22,7 @@ public class Stages {
     private String endDate;
     private String description;
 
-    @Transient
+    @Column(name = "product_id")
     private String productId;
 
     public Stages() {
